@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-quem-somos',
   standalone: true,
   templateUrl: './QuemSomos.component.html',
-  styleUrls: ['./QuemSomos.component.css']
+  styleUrls: ['./QuemSomos.component.scss']
 })
 export class QuemSomosComponent {}

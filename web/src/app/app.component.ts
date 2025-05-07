@@ -5,8 +5,6 @@ import { RouterOutlet, RouterModule } from '@angular/router';
   selector: 'app-root',
   imports: [RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
-  styles: [],
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'web';
-}
+export class AppComponent {}
