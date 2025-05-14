@@ -20,11 +20,20 @@ public class User extends PanacheEntity {
     @Column(name = "email", unique = true)
     public String email;
 
-    @Column(name = "oauthMethod")
+    @Column(name = "oauth_id")
+    public String oauthId;
+    
+    @Column(name = "oauth_method")
     public String oauthMethod;
 
+    @Column(name = "picture_url")
+    public String pictureUrl;
+    
     @Column(name = "type")
     public String type;
+    
+    @Column(name = "locale")
+    public String locale;
 
     @OneToMany(mappedBy = "user")
     public List<Subscription> subscriptions;
@@ -34,4 +43,12 @@ public class User extends PanacheEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     public UserDetail detail;
+
+    public static User findByEmail(String email) {
+        return find("email", email).firstResult();
+    }
+
+    public static User findByOauthId(String oauthId, String oauthMethod) {
+        return find("oauthId = ?1 and oauthMethod = ?2", oauthId, oauthMethod).firstResult();
+    }
 }
