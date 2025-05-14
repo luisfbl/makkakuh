@@ -35,7 +35,7 @@
     padding: 3px;
 }
 
-.cardContainer{
+.container{
     width: 70%;
     margin: auto;
 }
@@ -71,8 +71,80 @@
     color: #fff;
 }
 
-.cardText > h2 {
+.EnchantedTitle {
     font-family: 'EnchantedLand', sans-serif;
     font-size: 3rem;
     color: #E9C01A;
+}
+
+.EventsContainer {
+    text-align: center;
+}
+
+.EventScroll{
+    color: #FFF;
+    width: 100%;
+    margin: 1rem;
+    padding-bottom: 0.25rem;
+    display: grid;
+    overflow-x: scroll;
+    gap: 0 1rem;
+    grid-auto-columns: 28.5%;
+    scrollbar-width: thin;              /* Firefox */
+    scrollbar-color: #fff #2b2d31;   /* Firefox */
+}
+
+.EventScroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.EventScroll::-webkit-scrollbar-track {
+    background: #2b2d31;
+    border-radius: 4px;
+}
+
+.EventScroll::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 4px;
+}
+.EventScroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.EventFieldFirst {
+    border-radius: 1rem 1rem 0 0;
+    padding: 1rem 1rem 0 1rem !important;
+}
+.EventField {
+    border: 0px solid #00000000;
+    background-color: #414141;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    padding: 0 1rem 0 1rem;
+}
+.EventFieldLast {
+    border-radius: 0 0 1rem 1rem;
+    padding: 0 1rem 1rem 1rem !important;
+}
+.ellipsis {
+    text-align: left;
+  white-space: nowrap;     /* Impede que o texto quebre para outra linha */
+  overflow: hidden;        /* Esconde o conteúdo que ultrapassa a caixa */
+  text-overflow: ellipsis; /* Adiciona "..." no final do texto cortado */
+}
+
+.agendaCompleta {
+    width: 70%; 
+    margin: auto; 
+    text-align: center; 
+    margin-bottom: 3rem;
+}
+.agendaCompleta a{
+    color: #E9C01A; 
+    font-size: larger; 
+    text-decoration: none;
 }

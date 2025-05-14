@@ -41,13 +41,13 @@
   </button>
 </div>
 
-<div class="cardContainer">
+<div class="cardContainer container">
 
   <div class="cardInicio">
       <div style="background-image: url(../../../assets/cardImg01.png);" class="cardImg ImgDiv"></div>
 
     <div class="cardText">
-      <h2>Tudo começou assim...</h2>
+      <h2 class="EnchantedTitle">Tudo começou assim...</h2>
       <p>O grupo Protetores da Cachoeira do Makka-Kuh foi organizado em 2016, por um grupo de jovens que buscavam uma alternativa divertida e saudável de esporte em Palmas - TO, através do swordplay boffering.</p>
       <p>Com o tempo, nos tornamos uma pequena comunidade, acolhendo qualquer pessoa que compartilhe da vontade de aprender, o desejo de ajudar e dar boas risadas no dia-a-dia. Nossa família passou por muitas mudanças, aprendemos muito e vamos estar sempre aqui para acolher uns aos outros, principalmente os desajustados da sociedade, no nosso esporte. Também passamos a fazer jogos de LARP e algumas ações sociais, que complementam nosso grupo.</p>
     </div>
@@ -56,7 +56,7 @@
 
   <div class="cardInicio">
     <div class="cardText">
-      <h2>faça parte do clã!</h2>
+      <h2 class="EnchantedTitle">faça parte do clã!</h2>
       <p>Se você tem 12 anos ou mais, faça-nos uma visita e um treino de experiência no Espaço Cultural de Palmas, aos sábados, às 16h, ou na UFT - Campus Palmas, às 19h, às quartas-feiras.</p>
       <p>Nosso grupo pratica um esporte chamado swordplay boffering, que uma versão segura, lúdica, divertida e saudável dos combates medievais.</p>
       <p>Estamos sempre de braços abertos para receber novos membros em nossa família. Convidamos você a explorar nosso clã através do nosso site ou das nossas redes sociais, e ficar à vontade para nos visitar e participar dos nossos treinos. Esperamos ansiosamente por sua presença!</p>
@@ -65,5 +65,48 @@
     <div style="background-image: url(../../../assets/cardImg02.png);" class="cardImg ImgDiv"></div>
   </div>
 
+</div>
 
+<div class="EventsContainer container">
+  <h2 class="EnchantedTitle">Eventos da semana</h2>
+  <div class="EventScroll">
+
+    <ng-container *ngFor="let Event of eventsDeMentira; let i = index">
+
+      <div class="EventField EventFieldFirst"  [style.grid-column]="(i + 1)" [style.grid-row]="1">
+        <h4 style="color: #E9C01A;">{{Event.title}}</h4>
+      </div>
+
+      <div class="EventField"  [style.grid-column]="(i + 1)" [style.grid-row]="2">
+        <p>{{Event.description}}</p>
+      </div>
+
+      <div class="EventField ellipsis"  [style.grid-column]="(i + 1)" [style.grid-row]="3">
+        <span><b style="color: #E9C01A;">Data: </b>{{Event.date}}</span>
+      </div>
+
+      <div class="EventField ellipsis" [style.grid-column]="(i + 1)" [style.grid-row]="4">
+        <span><b style="color: #E9C01A;">Local: </b>{{Event.place}}</span>
+      </div>
+
+      <div class="EventField ellipsis EventFieldLast"  [style.grid-column]="(i + 1)" [style.grid-row]="5">
+        <span><b style="color: #E9C01A;">Inscritos: </b>
+          {{
+            Event.maxParticipants == null 
+            ? Event.subscriptions.length
+            : Event.subscriptions.length + ' de ' + Event.maxParticipants 
+          }}
+        </span>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
+
+<div class="agendaCompleta">
+<a href="" >
+  veja a agenda completa de eventos
+  <img src="assets/dashboard_icon_color.png" alt="">
+</a>
 </div>
