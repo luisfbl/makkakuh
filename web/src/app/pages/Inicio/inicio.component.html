@@ -73,23 +73,23 @@
 
     <ng-container *ngFor="let Event of eventsDeMentira; let i = index">
 
-      <div class="EventField EventFieldFirst"  [style.grid-column]="(i + 1)" [style.grid-row]="1">
+      <a href="" routerLink="/Dashboard" class="EventField EventFieldFirst"  [style.grid-column]="(i + 1)" [style.grid-row]="1">
         <h4 style="color: #E9C01A;">{{Event.title}}</h4>
-      </div>
+      </a>
 
-      <div class="EventField"  [style.grid-column]="(i + 1)" [style.grid-row]="2">
+      <a href="" routerLink="/Dashboard" class="EventField"  [style.grid-column]="(i + 1)" [style.grid-row]="2">
         <p>{{Event.description}}</p>
-      </div>
+      </a>
 
-      <div class="EventField ellipsis"  [style.grid-column]="(i + 1)" [style.grid-row]="3">
+      <a href="" routerLink="/Dashboard" class="EventField ellipsis"  [style.grid-column]="(i + 1)" [style.grid-row]="3">
         <span><b style="color: #E9C01A;">Data: </b>{{Event.date}}</span>
-      </div>
+      </a>
 
-      <div class="EventField ellipsis" [style.grid-column]="(i + 1)" [style.grid-row]="4">
+      <a href="" routerLink="/Dashboard" class="EventField ellipsis" [style.grid-column]="(i + 1)" [style.grid-row]="4">
         <span><b style="color: #E9C01A;">Local: </b>{{Event.place}}</span>
-      </div>
+      </a>
 
-      <div class="EventField ellipsis EventFieldLast"  [style.grid-column]="(i + 1)" [style.grid-row]="5">
+      <a href="" routerLink="/Dashboard" class="EventField ellipsis EventFieldLast"  [style.grid-column]="(i + 1)" [style.grid-row]="5">
         <span><b style="color: #E9C01A;">Inscritos: </b>
           {{
             Event.maxParticipants == null 
@@ -97,7 +97,7 @@
             : Event.subscriptions.length + ' de ' + Event.maxParticipants 
           }}
         </span>
-      </div>
+      </a>
 
     </ng-container>
 
@@ -105,7 +105,7 @@
 </div>
 
 <div class="agendaCompleta">
-<a href="" >
+<a href="" routerLink="/Dashboard">
   veja a agenda completa de eventos
   <img src="assets/dashboard_icon_color.png" alt="">
 </a>

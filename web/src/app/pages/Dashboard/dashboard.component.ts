@@ -3,17 +3,14 @@ import {RouterModule } from '@angular/router';
 import {CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-inicio',
+  selector: 'dashboard',
   standalone: true,
   imports: [RouterModule, CommonModule],
-  templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.scss']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class InicioComponent {
-  carrouselImages = [
-    'assets/img1.png'
-  ];
-
+export class DashboardComponent {
+  
   eventsDeMentira = [
   {
     "id": 1,
