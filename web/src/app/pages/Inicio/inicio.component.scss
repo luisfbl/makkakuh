@@ -1,0 +1,150 @@
+.ImgDiv {
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+.carouselInicioImg{
+    height: 300px;
+}
+
+.TreineConosco {
+    background-color: #00000000;
+    border: 0px solid #00000000; 
+}
+
+.carousel-control-next-icon{
+    background-image: url(../../../assets/fi-sr-angle-right.png); 
+}
+.carousel-control-prev-icon{
+    background-image: url(../../../assets/fi-sr-angle-left.png); 
+}
+
+.carousel-indicators [data-bs-target]{
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-radius: 20px;
+    background-color: #00000000;
+}
+
+.carousel-indicators .active{
+    border: 0px solid #E9C01A;
+    background-color: #E9C01A;
+    padding: 3px;
+}
+
+.container{
+    width: 70%;
+    margin: auto;
+}
+
+.cardInicio {
+    background-color: #414141;
+    border: 0px solid #414141;
+    border-radius: 20px;
+    margin: 1rem;
+    display: flex;
+    align-items: stretch; /* garante que os filhos tenham a mesma altura */
+    overflow: hidden;
+}
+
+.cardImg {
+    aspect-ratio: 1 / 1; /* mantém a imagem quadrada */
+    border: 0px solid #414141;
+    border-radius: 20px;
+    height: auto;
+    width: auto;
+    flex: 0 0 auto;
+    min-width: 40%;  /* valor base para largura mínima */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.cardText {
+    flex-grow: 1;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.EnchantedTitle {
+    font-family: 'EnchantedLand', sans-serif;
+    font-size: 3rem;
+    color: #E9C01A;
+}
+
+.EventsContainer {
+    text-align: center;
+}
+
+.EventScroll{
+    color: #FFF;
+    width: 100%;
+    margin: 1rem;
+    padding-bottom: 0.25rem;
+    display: grid;
+    overflow-x: scroll;
+    gap: 0 1rem;
+    grid-auto-columns: 28.5%;
+    scrollbar-width: thin;              /* Firefox */
+    scrollbar-color: #fff #2b2d31;   /* Firefox */
+}
+
+.EventScroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.EventScroll::-webkit-scrollbar-track {
+    background: #2b2d31;
+    border-radius: 4px;
+}
+
+.EventScroll::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 4px;
+}
+.EventScroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.EventFieldFirst {
+    border-radius: 1rem 1rem 0 0;
+    padding: 1rem 1rem 0 1rem !important;
+}
+.EventField {
+    border: 0px solid #00000000;
+    background-color: #414141;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    padding: 0 1rem 0 1rem;
+}
+.EventFieldLast {
+    border-radius: 0 0 1rem 1rem;
+    padding: 0 1rem 1rem 1rem !important;
+}
+.ellipsis {
+    text-align: left;
+  white-space: nowrap;     /* Impede que o texto quebre para outra linha */
+  overflow: hidden;        /* Esconde o conteúdo que ultrapassa a caixa */
+  text-overflow: ellipsis; /* Adiciona "..." no final do texto cortado */
+}
+
+.agendaCompleta {
+    width: 70%; 
+    margin: auto; 
+    text-align: center; 
+    margin-bottom: 3rem;
+}
+.agendaCompleta a{
+    color: #E9C01A; 
+    font-size: larger; 
+    text-decoration: none;
+}

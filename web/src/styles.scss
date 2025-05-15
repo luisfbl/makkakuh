@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
+
+@font-face {
+  font-family: 'EnchantedLand';
+  src: url('assets/fonts/EnchantedLand.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif; 
+}
+
+$Sections-color: #262626;
+$Text-color: #FFFFFF;
