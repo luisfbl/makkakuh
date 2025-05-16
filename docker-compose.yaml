@@ -16,9 +16,11 @@ services:
       dockerfile: ./rest-server/Dockerfile
     expose:
       - "8080"
-    environment:
-      - WEBSITE_MAKKAKUH_FRONTEND_URL=http://localhost
+    env_file:
+      - ./.env
     restart: always
+    volumes:
+      - ./rest-server:/app
     depends_on:
       postgres:
         condition: service_healthy
@@ -28,10 +30,12 @@ services:
       context: .
       dockerfile: ./web/Dockerfile
     expose:
-      - "80"
+      - "4200:4200"
     restart: always
-    environment:
-      - API_URL=/api
+    volumes:
+      - ./web:/app
+    env_file:
+      - ./.env
 
   postgres:
     image: postgres:latest
