@@ -1,0 +1,16 @@
+FROM gradle:8.5-jdk17
+
+WORKDIR /app
+COPY gradle/ /app/gradle/
+COPY gradle.properties /app/
+COPY settings.gradle.kts /app/
+COPY rest-server/build.gradle.kts /app/rest-server/
+
+RUN cd /app && gradle dependencies
+
+WORKDIR /app/rest-server
+
+EXPOSE 8080
+EXPOSE 5005
+
+CMD ["gradle", "quarkusDev", "-Ddebug=5005", "--continuous"]
