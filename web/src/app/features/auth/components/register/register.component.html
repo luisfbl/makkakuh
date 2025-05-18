@@ -1,0 +1,110 @@
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <img src="assets/makkakuh_logo_large.png" alt="Makka-kuh Logo" class="register-logo">
+            <h1 class="register-title">Junte-se ao Clã</h1>
+            <p class="register-subtitle">Crie sua conta para participar da comunidade Makka-kuh</p>
+        </div>
+
+        <div *ngIf="!showForm" class="register-options">
+            <button class="register-btn google-btn" (click)="registerWithGoogle()">
+                <img src="assets/google_icon.png" alt="Google">
+                <span>Cadastrar com Google</span>
+            </button>
+
+            <div class="register-login-link">
+                <p>Já tem uma conta? <a routerLink="/login">Entrar</a></p>
+            </div>
+        </div>
+
+        <div *ngIf="showForm" class="register-form-container">
+            <div class="form-divider">
+                <span class="divider-text">complete seu perfil</span>
+            </div>
+
+            <div class="user-preview">
+                <div class="avatar-container">
+                    <img [src]="userImageUrl || 'assets/default-avatar.png'" alt="Imagem de perfil" class="user-avatar">
+                    <div class="avatar-edit" *ngIf="oAuthData?.pictureUrl">
+                        <span class="avatar-info">Imagem importada do {{ oAuthData?.provider }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <form [formGroup]="userForm" (ngSubmit)="completeRegistration()" class="register-form">
+                <div class="form-group">
+                    <label for="fullName">Nome completo</label>
+                    <input
+                            type="text"
+                            id="fullName"
+                            formControlName="fullName"
+                            placeholder="Digite seu nome completo"
+                            class="form-input"
+                    >
+                    <div *ngIf="userForm.get('fullName')?.errors?.['required'] && userForm.get('fullName')?.touched" class="error-message">
+                        Nome completo é obrigatório
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Seu apelido no clã</label>
+                    <input
+                            type="text"
+                            id="username"
+                            formControlName="username"
+                            placeholder="Escolha um nome de usuário"
+                            class="form-input"
+                    >
+                    <div *ngIf="userForm.get('username')?.errors?.['required'] && userForm.get('username')?.touched" class="error-message">
+                        Nome de usuário é obrigatório
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                            type="email"
+                            id="email"
+                            formControlName="email"
+                            placeholder="Digite seu email"
+                            [readOnly]="!!oAuthData"
+                            class="form-input"
+                            [ngClass]="{'readonly-input': !!oAuthData}"
+                    >
+                    <div *ngIf="userForm.get('email')?.errors?.['required'] && userForm.get('email')?.touched" class="error-message">
+                        Email é obrigatório
+                    </div>
+                    <div *ngIf="userForm.get('email')?.errors?.['email'] && userForm.get('email')?.touched" class="error-message">
+                        Email inválido
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button
+                            type="submit"
+                            [disabled]="userForm.invalid || isLoading"
+                            class="submit-btn"
+                    >
+                        <span *ngIf="isLoading" class="spinner"></span>
+                        <span>{{ isLoading ? 'Processando...' : 'Completar Cadastro' }}</span>
+                    </button>
+
+                    <button type="button" class="cancel-btn" (click)="cancelRegistration()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+
+            <div *ngIf="errorMessage" class="error-alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                {{ errorMessage }}
+            </div>
+        </div>
+    </div>
+
+    <div class="register-background">
+        <div class="shield-decoration shield-left"></div>
+        <div class="shield-decoration shield-right"></div>
+        <div class="banner-decoration"></div>
+    </div>
+</div>

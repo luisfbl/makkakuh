@@ -1,0 +1,41 @@
+@import '../../../../../styles.scss';
+
+.account-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: $background-color;
+  border-radius: 8px;
+  @include card-shadow;
+
+  h2 {
+    margin-bottom: $spacing-lg;
+    color: $primary-color;
+    border-bottom: 1px solid $secondary-color;
+    padding-bottom: $spacing-sm;
+  }
+
+  h3 {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    margin-bottom: $spacing-sm;
+  }
+
+  button {
+    margin-top: $spacing-lg;
+    padding: $spacing-sm $spacing-lg;
+    background-color: $primary-color;
+    color: $background-color;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
