@@ -1,1 +1,25 @@
-<p >tela de dashboard</p>
+<div class="container">
+  <h2 class="EnchantedTitle">Eventos da semana</h2>
+
+  <div class="event-section">
+    
+    <div class="event-list">
+      <div class="event-card" *ngFor="let Event of eventsDeMentira">
+        <h4 class="event-title">{{ Event.title }}</h4>
+        <p class="event-description">{{ Event.description }}</p>
+        <p><b>Data:</b> {{ Event.date }}</p>
+        <p><b>Local:</b> {{ Event.place }}</p>
+        <p>
+          <b>Inscritos:</b>
+          {{
+            Event.maxParticipants == null 
+            ? Event.subscriptions.length
+            : Event.subscriptions.length + ' de ' + Event.maxParticipants 
+          }}
+        </p>
+      </div>
+    </div>
+
+    
+  </div>
+</div>
