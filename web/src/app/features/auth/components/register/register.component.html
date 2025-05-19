@@ -33,15 +33,15 @@
 
             <form [formGroup]="userForm" (ngSubmit)="completeRegistration()" class="register-form">
                 <div class="form-group">
-                    <label for="fullName">Nome completo</label>
+                    <label for="name">Nome completo</label>
                     <input
                             type="text"
-                            id="fullName"
-                            formControlName="fullName"
+                            id="name"
+                            formControlName="name"
                             placeholder="Digite seu nome completo"
                             class="form-input"
                     >
-                    <div *ngIf="userForm.get('fullName')?.errors?.['required'] && userForm.get('fullName')?.touched" class="error-message">
+                    <div *ngIf="userForm.get('name')?.errors?.['required'] && userForm.get('name')?.touched" class="error-message">
                         Nome completo é obrigatório
                     </div>
                 </div>

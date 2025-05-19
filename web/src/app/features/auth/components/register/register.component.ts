@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
         private router: Router
     ) {
         this.userForm = this.fb.group({
-            fullName: ['', Validators.required],
+            name: ['', Validators.required],
             username: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]]
         });
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate(['/account']);
+            this.router.navigate(['/dashboard']);
             return;
         }
 
@@ -42,8 +42,9 @@ export class RegisterComponent implements OnInit {
             try {
                 const profileData = JSON.parse(tempProfile);
                 this.oAuthData = profileData;
+                this.userImageUrl = profileData.pictureUrl;
                 this.userForm.patchValue({
-                    fullName: profileData.name || '',
+                    name: profileData.name || '',
                     username: profileData.email?.split('@')[0] || '',
                     email: profileData.email || ''
                 });
@@ -82,14 +83,14 @@ export class RegisterComponent implements OnInit {
         this.errorMessage = '';
 
         const userData = {
-            ...this.userForm.value,
-            active: true
+            pictureUrl: this.userImageUrl,
+            ...this.userForm.value
         };
 
         this.authService.completeSignUp(userData).subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/account']);
+                this.router.navigate(['/dashboard']);
             },
             error: (error: any) => {
                 this.errorMessage = 'Falha ao completar o cadastro. Verifique os dados e tente novamente.';

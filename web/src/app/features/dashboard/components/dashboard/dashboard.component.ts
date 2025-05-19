@@ -5,10 +5,10 @@ import {User} from '../../../../core/auth/models/user.model';
 
 @Component({
     selector: 'app-account',
-    templateUrl: './account.component.html',
-    styleUrls: ['./account.component.scss']
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss']
 })
-export class AccountComponent implements OnInit {
+export class DashboardComponent implements OnInit {
     user: User | null = null;
 
     constructor(
@@ -24,6 +24,7 @@ export class AccountComponent implements OnInit {
         }
 
         this.user = this.authService.getCurrentUser();
+        console.log(this.user)
     }
 
     logout(): void {

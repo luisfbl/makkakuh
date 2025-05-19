@@ -1,8 +1,8 @@
 export interface User {
-  id?: number;
+  id?: string;
   username: string;
-  password?: string;
   email?: string;
-  fullName?: string;
-  active: boolean;
+  name?: string;
+  pictureUrl: string;
+  provider: string;
 }

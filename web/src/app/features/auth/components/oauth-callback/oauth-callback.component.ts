@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {AuthService} from '../../../../core/auth/services/auth.service';
 import {CommonModule} from "@angular/common";
+import {LoadingComponent} from "../../../../shared/components/loading.component";
 
 @Component({
     selector: 'app-oauth-callback',
     templateUrl: './oauth-callback.component.html',
+    styleUrls: ['./oauth-callback.component.scss'],
     standalone: true,
-    imports: [CommonModule, RouterModule]
+    imports: [CommonModule, RouterModule, LoadingComponent]
 })
 export class OAuthCallbackComponent implements OnInit {
     constructor(
@@ -33,7 +35,7 @@ export class OAuthCallbackComponent implements OnInit {
 
                             this.router.navigate(['/auth/register']);
                         } else {
-                            this.router.navigate(['/account']);
+                            this.router.navigate(['/dashboard']);
                         }
                     },
                     error: (error: any) => {

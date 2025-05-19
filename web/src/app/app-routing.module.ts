@@ -11,8 +11,8 @@ export const routes: Routes = [
         loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
     },
     {
-        path: 'account',
-        loadChildren: () => import('./features/account/account.module').then(m => m.AccountModule)
+        path: 'dashboard',
+        loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
     },
     {
         path: 'quem-somos',

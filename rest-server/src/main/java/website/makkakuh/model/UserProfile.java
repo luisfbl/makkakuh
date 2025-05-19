@@ -68,7 +68,6 @@ public class UserProfile {
         this.provider = provider;
     }
 
-    // Create User from UserProfile
     public User toUser() {
         User user = new User();
         user.name = this.name;
