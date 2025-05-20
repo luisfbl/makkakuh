@@ -7,17 +7,19 @@ public class UserProfile {
     private String pictureUrl;
     private String locale;
     private String provider;
+    private String bio;
 
     public UserProfile() {
     }
 
-    public UserProfile(String id, String name, String email, String pictureUrl, String locale, String provider) {
+    public UserProfile(String id, String name, String email, String pictureUrl, String locale, String provider, String bio) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.pictureUrl = pictureUrl;
         this.locale = locale;
         this.provider = provider;
+        this.bio = bio;
     }
 
     public String getId() {
@@ -68,6 +70,14 @@ public class UserProfile {
         this.provider = provider;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     public User toUser() {
         User user = new User();
         user.name = this.name;
@@ -76,6 +86,7 @@ public class UserProfile {
         user.oauthMethod = this.provider;
         user.pictureUrl = this.pictureUrl;
         user.locale = this.locale;
+        user.bio = this.bio;
         return user;
     }
 }

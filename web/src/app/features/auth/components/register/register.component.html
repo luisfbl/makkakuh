@@ -6,7 +6,7 @@
             <p class="register-subtitle">Crie sua conta para participar da comunidade Makka-kuh</p>
         </div>
 
-        <div *ngIf="!showForm" class="register-options">
+        <div *ngIf="!showForm && !showBioForm" class="register-options">
             <button class="register-btn google-btn" (click)="registerWithGoogle()">
                 <img src="assets/google_icon.png" alt="Google">
                 <span>Cadastrar com Google</span>
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div *ngIf="showForm" class="register-form-container">
+        <div *ngIf="showForm && !showBioForm" class="register-form-container">
             <div class="form-divider">
                 <span class="divider-text">complete seu perfil</span>
             </div>
@@ -26,12 +26,12 @@
                 <div class="avatar-container">
                     <img [src]="userImageUrl || 'assets/default-avatar.png'" alt="Imagem de perfil" class="user-avatar">
                     <div class="avatar-edit" *ngIf="oAuthData?.pictureUrl">
-                        <span class="avatar-info">Imagem importada do {{ oAuthData?.provider }}</span>
+                        <span class="avatar-info">Imagem importada do <strong>{{ oAuthData?.provider }}</strong></span>
                     </div>
                 </div>
             </div>
 
-            <form [formGroup]="userForm" (ngSubmit)="completeRegistration()" class="register-form">
+            <form [formGroup]="userForm" (ngSubmit)="proceedToBio()" class="register-form">
                 <div class="form-group">
                     <label for="name">Nome completo</label>
                     <input
@@ -61,36 +61,60 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input
-                            type="email"
-                            id="email"
-                            formControlName="email"
-                            placeholder="Digite seu email"
-                            [readOnly]="!!oAuthData"
-                            class="form-input"
-                            [ngClass]="{'readonly-input': !!oAuthData}"
+                    <button
+                            type="submit"
+                            [disabled]="userForm.get('username')?.invalid || isLoading"
+                            class="submit-btn"
                     >
-                    <div *ngIf="userForm.get('email')?.errors?.['required'] && userForm.get('email')?.touched" class="error-message">
-                        Email é obrigatório
-                    </div>
-                    <div *ngIf="userForm.get('email')?.errors?.['email'] && userForm.get('email')?.touched" class="error-message">
-                        Email inválido
+                        <span>Próximo</span>
+                    </button>
+
+                    <button type="button" class="cancel-btn" (click)="cancelRegistration()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div *ngIf="showBioForm" class="register-form-container">
+            <div class="form-divider">
+                <span class="divider-text">conte um pouco sobre você</span>
+            </div>
+
+            <div class="user-preview">
+                <div class="avatar-container">
+                    <img [src]="userImageUrl || 'assets/default-avatar.png'" alt="Imagem de perfil" class="user-avatar">
+                    <div class="username-display">{{ userForm.get('username')?.value }}</div>
+                </div>
+            </div>
+
+            <form [formGroup]="bioForm" (ngSubmit)="completeRegistration()" class="register-form">
+                <div class="form-group">
+                    <label for="bio">Sua bio</label>
+                    <textarea
+                            id="bio"
+                            formControlName="bio"
+                            placeholder="Conte um pouco sobre você, seus interesses, experiência com o esporte..."
+                            class="form-input bio-textarea"
+                            rows="5"
+                    ></textarea>
+                    <div class="bio-hint">
+                        Esta informação ajudará outros membros a conhecê-lo melhor (opcional)
                     </div>
                 </div>
 
                 <div class="form-group">
                     <button
                             type="submit"
-                            [disabled]="userForm.invalid || isLoading"
+                            [disabled]="isLoading"
                             class="submit-btn"
                     >
                         <span *ngIf="isLoading" class="spinner"></span>
                         <span>{{ isLoading ? 'Processando...' : 'Completar Cadastro' }}</span>
                     </button>
 
-                    <button type="button" class="cancel-btn" (click)="cancelRegistration()">
-                        Cancelar
+                    <button type="button" class="back-btn" (click)="backToProfile()">
+                        Voltar
                     </button>
                 </div>
             </form>
@@ -108,3 +132,84 @@
         <div class="banner-decoration"></div>
     </div>
 </div>
+
+<style>
+    .username-display {
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(233, 192, 26, 0.9);
+        color: #262626;
+        padding: 0.4rem 1rem;
+        border-radius: 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .bio-textarea {
+        resize: vertical;
+        min-height: 120px;
+        max-height: 200px;
+        line-height: 1.6;
+        font-family: inherit;
+    }
+
+    .bio-hint {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+
+    .back-btn {
+        flex: 1;
+        background-color: transparent;
+        color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        padding: 0.875rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.9);
+            border-color: rgba(233, 192, 26, 0.3);
+        }
+    }
+
+    .register-form-container {
+        animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .bio-textarea {
+            min-height: 100px;
+            font-size: 0.9rem;
+        }
+
+        .username-display {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            bottom: -30px;
+        }
+
+        .bio-hint {
+            font-size: 0.75rem;
+        }
+    }
+</style>

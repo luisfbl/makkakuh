@@ -13,9 +13,11 @@ import {CommonModule} from "@angular/common";
 })
 export class RegisterComponent implements OnInit {
     userForm: FormGroup;
+    bioForm: FormGroup;
     isLoading = false;
     errorMessage = '';
     showForm = false;
+    showBioForm = false;
     oAuthData: any = null;
     userImageUrl: string | null = null;
 
@@ -26,8 +28,11 @@ export class RegisterComponent implements OnInit {
     ) {
         this.userForm = this.fb.group({
             name: ['', Validators.required],
-            username: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]]
+            username: ['', Validators.required]
+        });
+
+        this.bioForm = this.fb.group({
+            bio: ['']
         });
     }
 
@@ -45,8 +50,7 @@ export class RegisterComponent implements OnInit {
                 this.userImageUrl = profileData.pictureUrl;
                 this.userForm.patchValue({
                     name: profileData.name || '',
-                    username: profileData.email?.split('@')[0] || '',
-                    email: profileData.email || ''
+                    username: profileData.email?.split('@')[0] || ''
                 });
 
                 this.showForm = true;
@@ -74,17 +78,30 @@ export class RegisterComponent implements OnInit {
         });
     }
 
-    completeRegistration(): void {
-        if (this.userForm.invalid) {
+    proceedToBio(): void {
+        if (this.userForm.get('username')?.invalid || this.userForm.get('name')?.invalid) {
             return;
         }
 
+        this.showForm = false;
+        this.showBioForm = true;
+    }
+
+    backToProfile(): void {
+        this.showBioForm = false;
+        this.showForm = true;
+    }
+
+    completeRegistration(): void {
         this.isLoading = true;
         this.errorMessage = '';
 
         const userData = {
-            pictureUrl: this.userImageUrl,
-            ...this.userForm.value
+            pictureUrl: this.userImageUrl!!,
+            name: this.oAuthData?.name || '',
+            email: this.oAuthData?.email || '',
+            username: this.userForm.get('username')?.value,
+            bio: this.bioForm.get('bio')?.value || ''
         };
 
         this.authService.completeSignUp(userData).subscribe({
@@ -103,8 +120,10 @@ export class RegisterComponent implements OnInit {
     cancelRegistration(): void {
         sessionStorage.removeItem('tempUserProfile');
         this.showForm = false;
+        this.showBioForm = false;
         this.oAuthData = null;
         this.userImageUrl = null;
         this.userForm.reset();
+        this.bioForm.reset();
     }
 }
