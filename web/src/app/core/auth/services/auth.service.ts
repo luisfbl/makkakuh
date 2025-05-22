@@ -105,6 +105,11 @@ export class AuthService {
         this.loggedIn = true;
         localStorage.setItem(this.userDataKey, JSON.stringify(user));
     }
+    
+    updateCurrentUser(user: User): void {
+        this.user = user;
+        localStorage.setItem(this.userDataKey, JSON.stringify(user));
+    }
 
     clearUserData(): void {
         this.user = null;

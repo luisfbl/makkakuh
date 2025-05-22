@@ -20,5 +20,11 @@
     <orderEntry type="library" name="Gradle: io.quarkus:quarkus-hibernate-orm-panache:3.22.1" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.ws.rs:jakarta.ws.rs-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.transaction:jakarta.transaction-api:2.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.quarkus:quarkus-panache-common:3.22.2" level="project" />
+    <orderEntry type="library" name="quarkus-core-3.22.2.jar" level="project" />
+    <orderEntry type="library" name="Gradle: jakarta.enterprise:jakarta.enterprise.cdi-api:4.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.quarkus.resteasy.reactive:resteasy-reactive-common:3.22.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jboss.logging:jboss-logging:3.6.1.Final" level="project" />
+    <orderEntry type="library" name="jakarta.inject-api-2.0.1.jar" level="project" />
   </component>
 </module>

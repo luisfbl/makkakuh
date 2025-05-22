@@ -17,6 +17,9 @@ public class Honor extends PanacheEntity {
 
     @Column(name = "icon")
     public String icon;
+    
+    @Column(name = "icon_filename")
+    public String iconFilename;
 
     @OneToMany(mappedBy = "honor")
     public List<UserHonor> userHonors;

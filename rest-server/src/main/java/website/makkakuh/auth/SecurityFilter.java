@@ -57,9 +57,19 @@ public class SecurityFilter implements ContainerRequestFilter {
     }
 
     private boolean isPublicPath(String path) {
-        return path.startsWith("/auth/") ||
-                path.equals("/api/health") ||
-                path.equals("/api/users");
+        if (path.startsWith("/api/auth/") || path.equals("/api/health")) {
+            return true;
+        }
+
+        if (routingContext.request().method().name().equals("GET") && (
+                path.startsWith("/api/mural") ||
+                path.startsWith("/api/users") ||
+                path.startsWith("/api/cdn")
+        )) {
+            return true;
+        }
+
+        return false;
     }
 
     private String computeHmac(String data) {

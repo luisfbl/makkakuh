@@ -11,7 +11,7 @@ public class User extends PanacheEntity {
     @Column(name = "name", nullable = false)
     public String name;
 
-    @Column(name = "bio")
+    @Column(name = "bio", length = 4096)
     public String bio;
 
     @Column(name = "nickname")
@@ -26,9 +26,12 @@ public class User extends PanacheEntity {
     @Column(name = "oauth_method")
     public String oauthMethod;
 
-    @Column(name = "picture_url")
+    @Column(name = "picture_url", length = 1024)
     public String pictureUrl;
-    
+
+    @Column(name = "avatar_filename")
+    public String avatarFilename;
+
     @Column(name = "type")
     public String type;
     

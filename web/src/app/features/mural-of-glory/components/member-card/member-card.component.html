@@ -1,0 +1,58 @@
+<div class="member-card" [class.expanded]="expanded">
+    <div class="card-header" (click)="toggleExpand()">
+        <div class="profile-image"
+             [style.background-image]="avatarUrl ? 'url(' + avatarUrl + ')' : null">
+            <div class="profile-placeholder" *ngIf="!avatarUrl">
+                {{ member.user.name?.charAt(0) || 'U' }}
+            </div>
+        </div>
+
+        <div class="member-info">
+            <h3 class="member-name">{{ member.user.name || member.user.username }}</h3>
+            <div class="member-rank">
+                <span class="patent">{{ member.userDetail.patent }}</span>
+                <span class="dan" *ngIf="member.userDetail.dan > 0">Dan {{ getDanLevel(member.userDetail.dan) }}</span>
+            </div>
+        </div>
+
+        <div class="expand-icon">
+            <i class="arrow-icon" [class.up]="expanded"></i>
+        </div>
+    </div>
+
+    <div class="card-content" *ngIf="expanded">
+        <div class="stats-section">
+            <div class="stars-container">
+                <div class="stars-row">
+                    <span class="stars-label">Estrelas de Batalha:</span>
+                    <div class="stars">
+                        <div class="star battle-star"
+                             *ngFor="let star of getStars(member.userDetail.battleStarAmount)"></div>
+                    </div>
+                </div>
+                <div class="stars-row">
+                    <span class="stars-label">Estrelas de Status:</span>
+                    <div class="stars">
+                        <div class="star status-star"
+                             *ngFor="let star of getStars(member.userDetail.statusStarAmount)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="honors-section" *ngIf="member.honors && member.honors.length > 0">
+            <h4>Honórias</h4>
+            <div class="honors-list">
+                <app-honor-badge
+                        *ngFor="let honor of member.honors"
+                        [honor]="honor.honor">
+                </app-honor-badge>
+            </div>
+        </div>
+
+        <div class="bio-section" *ngIf="member.user.bio">
+            <h4>Biografia</h4>
+            <p>{{ member.user.bio }}</p>
+        </div>
+    </div>
+</div>

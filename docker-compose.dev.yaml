@@ -22,6 +22,7 @@ services:
     volumes:
       - ./rest-server:/app/rest-server
       - gradle-cache:/home/gradle/.gradle
+      - cdn-data-dev:/app/rest-server/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -61,3 +62,4 @@ volumes:
   pgdata:
   gradle-cache:
   node_modules:
+  cdn-data-dev:

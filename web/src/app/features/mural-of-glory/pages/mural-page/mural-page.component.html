@@ -1,0 +1,73 @@
+<div class="mural-container">
+    <div class="mural-header">
+        <h1>Mural da Glória</h1>
+        <p class="subtitle">Conquistas e honórias dos guerreiros Makka-Kuh</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+        <app-loading></app-loading>
+    </div>
+
+    <div class="mural-sections">
+        <div class="section-container">
+            <h2>Legiões</h2>
+            <div class="section-content">
+                <div class="legion-item" *ngFor="let i of [1,2,3,4]">
+                    <div class="legion-icon"></div>
+                    <h3>Legião {{ i }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <h2>Feitos Gloriosos</h2>
+            <div class="section-content">
+                <div class="achievement-item" *ngFor="let i of [1,2,3,4,5]">
+                    <div class="achievement-icon"></div>
+                    <h3>Feito Heroico {{ i }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+        Ocorreu um erro ao carregar os perfis. Por favor, tente novamente.
+    </div>
+
+    <div *ngIf="!loading && !error && members.length === 0" class="empty-state">
+        <div class="empty-icon"></div>
+        <h3>Nenhum membro encontrado</h3>
+        <p>Não há membros para mostrar no mural.</p>
+    </div>
+
+    <div *ngIf="!loading && !error && members.length > 0" class="members-grid">
+        <app-member-card
+                *ngFor="let member of members"
+                [member]="member">
+        </app-member-card>
+    </div>
+
+    <div *ngIf="!loading && !error && totalPages > 1" class="pagination">
+        <button 
+            [disabled]="currentPage === 0"
+            (click)="goToPage(currentPage - 1)" 
+            class="pagination-button prev">
+            &laquo;
+        </button>
+        
+        <button 
+            *ngFor="let pageNum of pages" 
+            [class.active]="pageNum === currentPage"
+            (click)="goToPage(pageNum)" 
+            class="pagination-button page-number">
+            {{ pageNum + 1 }}
+        </button>
+        
+        <button 
+            [disabled]="currentPage === totalPages - 1"
+            (click)="goToPage(currentPage + 1)" 
+            class="pagination-button next">
+            &raquo;
+        </button>
+    </div>
+</div>

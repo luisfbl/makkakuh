@@ -14,6 +14,7 @@ import website.makkakuh.model.OAuthPKCE;
 import website.makkakuh.model.OAuthSession;
 import website.makkakuh.model.User;
 import website.makkakuh.model.UserProfile;
+import website.makkakuh.service.CDNService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -108,9 +109,27 @@ public class OAuthService {
                 } else {
                     user.oauthId = userProfile.getId();
                     user.oauthMethod = provider;
-                    if (user.pictureUrl == null) {
+
+                    if (userProfile.getPictureUrl() != null && !userProfile.getPictureUrl().isEmpty()) {
+                        try {
+                            if (user.avatarFilename == null || user.avatarFilename.isEmpty()) {
+                                String avatarFilename = CDNService.getInstance().downloadImageFromUrl(
+                                        userProfile.getPictureUrl(), "avatar", user.id.toString());
+
+                                user.avatarFilename = avatarFilename.length() > 255 ? 
+                                    avatarFilename.substring(0, 255) : avatarFilename;
+                                LOG.info("Downloaded avatar from OAuth provider for user: " + user.id);
+                            }
+                        } catch (Exception e) {
+                            LOG.warn("Failed to download avatar from OAuth provider: " + e.getMessage());
+                            if (user.pictureUrl == null) {
+                                user.pictureUrl = userProfile.getPictureUrl();
+                            }
+                        }
+                    } else if (user.pictureUrl == null) {
                         user.pictureUrl = userProfile.getPictureUrl();
                     }
+                    
                     user.persist();
                 }
             }
@@ -143,7 +162,22 @@ public class OAuthService {
 
             User newUser = userProfile.toUser();
             newUser.type = "USER";
+
             newUser.persist();
+            
+            if (userProfile.getPictureUrl() != null && !userProfile.getPictureUrl().isEmpty()) {
+                try {
+                    String avatarFilename = CDNService.getInstance().downloadImageFromUrl(
+                            userProfile.getPictureUrl(), "avatar", newUser.id.toString());
+
+                    newUser.avatarFilename = avatarFilename.length() > 255 ? 
+                        avatarFilename.substring(0, 255) : avatarFilename;
+                    newUser.persist();
+                    LOG.info("Downloaded avatar from OAuth provider for new user: " + newUser.id);
+                } catch (Exception e) {
+                    LOG.warn("Failed to download avatar for new user: " + e.getMessage());
+                }
+            }
 
             return Response.ok(Map.of("user", newUser)).build();
         } catch (Exception e) {
@@ -219,14 +253,12 @@ public class OAuthService {
             String value = parts[0];
             long expiryTime = Long.parseLong(parts[1]);
             String signature = parts[2];
-            
-            // Check if expired
+
             if (System.currentTimeMillis() > expiryTime) {
                 LOG.warn("Signed value has expired");
                 return null;
             }
-            
-            // Verify signature
+
             String payload = value + "|" + expiryTime;
             String computedSignature = computeHmac(payload);
             
@@ -244,22 +276,19 @@ public class OAuthService {
 
     private void storeOAuthSessionInCookie(RoutingContext context, OAuthSession session) {
         try {
-            // Serialize session data
             String sessionData = session.getProvider() + ":" + 
                 session.getState() + ":" +
                 session.getCodeVerifier() + ":" + 
                 session.getNonce();
-                
-            // Encode and sign the session data
+
             String serialized = Base64.getUrlEncoder().encodeToString(
                     sessionData.getBytes(StandardCharsets.UTF_8));
             String signedValue = createSignedValue(serialized, OAUTH_SESSION_EXPIRY_SECONDS);
-            
-            // Create secure cookie
+
             Cookie cookie = Cookie.cookie(OAUTH_SESSION_KEY, signedValue)
                     .setPath("/")
                     .setHttpOnly(true)
-                    .setSecure(true) // Always set secure for auth cookies
+                    .setSecure(true)
                     .setSameSite(CookieSameSite.LAX) // Prevent CSRF
                     .setMaxAge(OAUTH_SESSION_EXPIRY_SECONDS);
     
@@ -291,7 +320,6 @@ public class OAuthService {
                 return null;
             }
 
-            // Immediately invalidate this cookie after using it once (single-use token)
             Cookie invalidatedCookie = Cookie.cookie(OAUTH_SESSION_KEY, "invalid")
                     .setPath("/")
                     .setHttpOnly(true)
@@ -309,19 +337,17 @@ public class OAuthService {
     }
 
     private void storeUserInSession(RoutingContext context, User user) {
-        // Generate a session token instead of just using the user ID
         String sessionToken = generateSecureRandomString();
-        
-        // Create a signed session token with user ID
+
         String sessionData = user.id + ":" + sessionToken;
         String signedValue = createSignedValue(sessionData, SESSION_EXPIRY_SECONDS);
         
         Cookie cookie = Cookie.cookie(SESSION_COOKIE_NAME, signedValue)
                 .setPath("/")
                 .setHttpOnly(true)
-                .setSecure(true) // Always set secure for auth cookies
-                .setSameSite(CookieSameSite.LAX) // Prevent CSRF
-                .setMaxAge(SESSION_EXPIRY_SECONDS); // Reduced from 24 hours to 1 hour
+                .setSecure(true)
+                .setSameSite(CookieSameSite.LAX)
+                .setMaxAge(SESSION_EXPIRY_SECONDS);
 
         context.response().addCookie(cookie);
     }
@@ -338,15 +364,13 @@ public class OAuthService {
             
             if (extractedValue == null) {
                 LOG.warn("Invalid or expired session");
-                // Remove invalid cookie
                 Cookie invalidCookie = Cookie.cookie(SESSION_COOKIE_NAME, "invalid")
                     .setPath("/")
                     .setMaxAge(0);
                 context.response().addCookie(invalidCookie);
                 return null;
             }
-            
-            // Session value format is "userId:sessionToken"
+
             String[] parts = extractedValue.split(":", 2);
             if (parts.length != 2) {
                 LOG.warn("Malformed session data");
@@ -354,20 +378,15 @@ public class OAuthService {
             }
             
             String userId = parts[0];
-            // The sessionToken (parts[1]) could be stored in a database for additional validation
-            // or revocation capabilities, but we're using the signed cookie approach for now
             
             User user = User.findById(Long.parseLong(userId));
-            
-            // Auto-extend the session if it's valid and about to expire
+
             if (user != null) {
-                // Extract expiry time from the cookie value
                 String[] valueParts = signedValue.split("\\|", 3);
                 if (valueParts.length == 3) {
                     long expiryTime = Long.parseLong(valueParts[1]);
                     long halfExpiryThreshold = SESSION_EXPIRY_SECONDS * 1000 / 2;
-                    
-                    // If more than half the time has passed, refresh the session
+
                     if (System.currentTimeMillis() > (expiryTime - halfExpiryThreshold)) {
                         storeUserInSession(context, user);
                     }

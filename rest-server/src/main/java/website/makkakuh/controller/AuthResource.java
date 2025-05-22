@@ -10,7 +10,7 @@ import org.jboss.logging.Logger;
 import website.makkakuh.model.UserProfile;
 import website.makkakuh.service.OAuthService;
 
-@Path("/auth")
+@Path("/api/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {

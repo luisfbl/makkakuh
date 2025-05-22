@@ -21,6 +21,7 @@ services:
     restart: always
     volumes:
       - ./rest-server:/app
+      - cdn-data:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -56,3 +57,4 @@ services:
 
 volumes:
   pgdata:
+  cdn-data:

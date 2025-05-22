@@ -18,9 +18,14 @@ export const routes: Routes = [
         path: 'quem-somos',
         loadChildren: () => import('./features/quem-somos/quem-somos.module').then(m => m.QuemSomosModule)
     },
+    {
+        path: 'mural-da-gloria',
+        loadChildren: () => import('./features/mural-of-glory/mural.module').then(m => m.MuralModule)
+    },
     {path: 'login', redirectTo: 'auth/login', pathMatch: 'full'},
     {path: 'register', redirectTo: 'auth/register', pathMatch: 'full'},
     {path: 'QuemSomos', redirectTo: 'quem-somos', pathMatch: 'full'},
+    {path: 'mural', redirectTo: 'mural-da-gloria', pathMatch: 'full'},
 ];
 
 @NgModule({
