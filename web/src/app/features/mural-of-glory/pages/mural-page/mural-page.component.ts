@@ -1,74 +1,74 @@
-import { Component, OnInit } from '@angular/core';
-import { MuralService } from '../../services/mural.service';
-import { MemberProfile } from '../../models/member-profile.model';
-import { LoadingComponent } from "../../../../shared/components/loading.component";
-import { MemberCardComponent } from "../../components/member-card/member-card.component";
-import { CommonModule } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {MuralService} from '../../services/mural.service';
+import {MemberProfile} from '../../models/member-profile.model';
+import {LoadingComponent} from "../../../../shared/components/loading.component";
+import {MemberCardComponent} from "../../components/member-card/member-card.component";
+import {CommonModule} from '@angular/common';
 
 @Component({
-  selector: 'app-mural-page',
-  templateUrl: './mural-page.component.html',
-  styleUrls: ['./mural-page.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    LoadingComponent,
-    MemberCardComponent
-  ]
+    selector: 'app-mural-page',
+    templateUrl: './mural-page.component.html',
+    styleUrls: ['./mural-page.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        LoadingComponent,
+        MemberCardComponent
+    ]
 })
 export class MuralPageComponent implements OnInit {
-  members: MemberProfile[] = [];
-  loading = true;
-  error = false;
+    members: MemberProfile[] = [];
+    loading = true;
+    error = false;
 
-  // Paginação
-  currentPage = 0;
-  pageSize = 9; // 9 perfis por página (3x3 grid)
-  totalPages = 0;
-  totalItems = 0;
+    currentPage = 0;
+    pageSize = 9;
+    totalPages = 0;
+    totalItems = 0;
 
-  constructor(private muralService: MuralService) { }
-
-  ngOnInit(): void {
-    this.loadMembers();
-  }
-
-  loadMembers(page: number = 0): void {
-    this.loading = true;
-    this.error = false;
-    this.currentPage = page;
-
-    this.muralService.getMemberProfiles(page, this.pageSize).subscribe({
-      next: (response) => {
-        this.members = response.profiles;
-        this.totalPages = response.pagination.totalPages;
-        this.totalItems = response.pagination.totalItems;
-        this.currentPage = response.pagination.page;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar perfis:', err);
-        this.error = true;
-        this.loading = false;
-      }
-    });
-  }
-  
-  goToPage(page: number): void {
-    if (page >= 0 && page < this.totalPages) {
-      this.loadMembers(page);
+    constructor(private muralService: MuralService) {
     }
-  }
-  
-  get pages(): number[] {
-    const maxVisiblePages = 5;
-    const startPage = Math.max(0, Math.min(
-      this.currentPage - Math.floor(maxVisiblePages / 2),
-      this.totalPages - maxVisiblePages
-    ));
-    
-    const endPage = Math.min(startPage + maxVisiblePages, this.totalPages);
-    
-    return Array.from({length: endPage - startPage}, (_, i) => startPage + i);
-  }
+
+    ngOnInit(): void {
+        this.loadMembers();
+    }
+
+    loadMembers(page: number = 0): void {
+        this.loading = true;
+        this.error = false;
+        this.currentPage = page;
+
+        this.muralService.getMemberProfiles(page, this.pageSize).subscribe({
+            next: (response) => {
+                this.members = response.profiles;
+                this.totalPages = response.pagination.totalPages;
+                this.totalItems = response.pagination.totalItems;
+                this.currentPage = response.pagination.page;
+                this.loading = false;
+            },
+            error: (err) => {
+                console.error('Erro ao carregar perfis:', err);
+                this.error = true;
+                this.loading = false;
+            }
+        });
+    }
+
+    goToPage(page: number): void {
+        if (page >= 0 && page < this.totalPages) {
+            this.loadMembers(page);
+        }
+    }
+
+    get pages(): number[] {
+        const maxVisiblePages = 5;
+        const startPage = Math.max(0, Math.min(
+            this.currentPage - Math.floor(maxVisiblePages / 2),
+            this.totalPages - maxVisiblePages
+        ));
+
+        const endPage = Math.min(startPage + maxVisiblePages, this.totalPages);
+
+        return Array.from({length: endPage - startPage}, (_, i) => startPage + i);
+    }
 }

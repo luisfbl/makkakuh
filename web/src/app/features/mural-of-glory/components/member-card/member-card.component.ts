@@ -42,4 +42,20 @@ export class MemberCardComponent {
     getStars(count: number): number[] {
         return Array(count).fill(0).map((_, i) => i);
     }
+
+    getBioSizeClass(bio: string): string {
+        if (!bio || bio.trim().length === 0) {
+            return 'bio-empty';
+        }
+
+        const length = bio.trim().length;
+
+        if (length <= 100) {
+            return 'bio-short';
+        } else if (length <= 300) {
+            return 'bio-medium';
+        } else {
+            return 'bio-long';
+        }
+    }
 }

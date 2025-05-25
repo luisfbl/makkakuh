@@ -180,9 +180,110 @@
   margin-top: $spacing-sm;
 }
 
-.bio-section p {
-  margin: $spacing-sm 0 0 0;
-  font-size: 0.9rem;
-  color: $text-color;
-  line-height: 1.5;
+.bio-section {
+  transition: all 0.3s ease;
+
+  &.bio-expanded {
+    margin-left: -$spacing-md;
+    margin-right: -$spacing-md;
+    padding: 0 $spacing-md;
+  }
+
+  p {
+    margin: $spacing-sm 0 0 0;
+    font-size: 0.95rem;
+    color: $text-color;
+    line-height: 1.6;
+
+    word-wrap: break-word;
+    word-break: break-word;
+
+    padding: $spacing-sm;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid rgba($accent-color, 0.4);
+    transition: all 0.3s ease;
+
+    &.bio-short {
+      font-size: 0.9rem;
+      padding: $spacing-xs $spacing-sm;
+    }
+
+    &.bio-medium {
+      font-size: 0.95rem;
+      padding: $spacing-sm;
+    }
+
+    &.bio-long {
+      font-size: 0.9rem;
+      padding: $spacing-md;
+      max-height: 200px;
+      overflow-y: auto;
+
+      margin-left: -$spacing-sm;
+      margin-right: -$spacing-sm;
+      border-radius: 8px;
+      background-color: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba($accent-color, 0.2);
+      border-left: 4px solid rgba($accent-color, 0.6);
+
+      padding: $spacing-md $spacing-lg;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba($accent-color, 0.5);
+        border-radius: 3px;
+
+        &:hover {
+          background: rgba($accent-color, 0.7);
+        }
+      }
+
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    &.bio-empty {
+      font-style: italic;
+      color: rgba($text-color, 0.6);
+      text-align: center;
+      padding: $spacing-xs;
+      background-color: transparent;
+      border-left: none;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .bio-section p {
+    font-size: 0.85rem;
+
+    &.bio-long {
+      max-height: 150px;
+      margin-left: -$spacing-xs;
+      margin-right: -$spacing-xs;
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .bio-section p {
+    font-size: 0.8rem;
+    padding: $spacing-xs;
+
+    &.bio-long {
+      max-height: 120px;
+      margin-left: -$spacing-xs;
+      margin-right: -$spacing-xs;
+      padding: $spacing-xs $spacing-sm;
+    }
+  }
 }

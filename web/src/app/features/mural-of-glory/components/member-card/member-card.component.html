@@ -50,9 +50,16 @@
             </div>
         </div>
 
-        <div class="bio-section" *ngIf="member.user.bio">
+        <div class="bio-section" *ngIf="member.user.bio || member.user.bio === ''">
             <h4>Biografia</h4>
-            <p>{{ member.user.bio }}</p>
+            <p [class]="getBioSizeClass(member.user.bio)">
+        <span *ngIf="member.user.bio && member.user.bio.trim().length > 0; else emptyBio">
+            {{ member.user.bio }}
+        </span>
+                <ng-template #emptyBio>
+                    Nenhuma biografia informada
+                </ng-template>
+            </p>
         </div>
     </div>
 </div>
