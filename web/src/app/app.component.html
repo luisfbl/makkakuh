@@ -1,64 +1,123 @@
 <div class="container-fluid">
-
-    <div class="header">
-        <a class="InicioImg" routerLink="/">
-            <img src="assets/makkakuh_logo_large.png" alt="makkakuh_logo_large">
-        </a>
-
-        <nav class="pages">
-            <a class="Inicio" routerLink="/">Início</a>
-            <a class="QuemSomos" routerLink="/QuemSomos">Quem Somos?</a>
-            <a class="MuralDaGloria" routerLink="/mural-da-gloria">Mural da Glória</a>
-            <a class="PerguntasFrequentes" routerLink="/PerguntasFrequentes">Perguntas Frequentes</a>
-            <a class="AcoesSociais" routerLink="/AcoesSociais">Ações Sociais</a>
-        </nav>
-
-        <nav class="buttons">
-
-            <a class="FacaParte" routerLink="/FacaParte">Faça Parte!</a>
-
-            <a class="acount" routerLink="/dashboard">
-                <img src="assets/account_icon.png" alt="account_icon">
+    <header class="navbar">
+        <div class="navbar-container">
+            <a class="navbar-logo" routerLink="/">
+                <img src="assets/makkakuh_logo_large.png" alt="Makka-kuh Logo">
             </a>
 
-            <a class="Dashboard" routerLink="/Dashboard">
-                <img src="assets/dashboard_icon.png" alt="dashboard_icon">
-            </a>
+            <button class="mobile-menu-toggle" [class.active]="mobileMenuOpen" (click)="toggleMobileMenu()">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
 
-        </nav>
+            <nav class="navbar-nav" [class.active]="mobileMenuOpen">
+                <a class="nav-link" routerLink="/" (click)="closeMobileMenu()">Início</a>
 
-    </div>
+                <div class="nav-dropdown" *ngFor="let item of navItems">
+                    <a class="nav-link"
+                       *ngIf="!item.subItems || item.subItems.length === 0"
+                       [routerLink]="item.route">
+                        {{ item.label }}
+                    </a>
 
-    <div class="content">
+                    <a class="nav-link dropdown-toggle"
+                       *ngIf="item.subItems && item.subItems.length > 0"
+                       [routerLink]="item.route"
+                       (click)="handleDropdownClick(item.key, item.route, $event)">
+                        {{ item.label }}
+                        <i class="dropdown-arrow">▼</i>
+                    </a>
+
+                    <div class="dropdown-menu"
+                         *ngIf="item.subItems && item.subItems.length > 0"
+                         [class.show]="dropdowns[item.key]">
+                        <a class="dropdown-item"
+                           *ngFor="let subItem of item.subItems"
+                           (click)="navigateAndClose(subItem.route)">
+                            {{ subItem.label }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mobile-actions">
+                    <a class="btn-primary" routerLink="/auth/login" (click)="closeMobileMenu()">Faça Parte!</a>
+                    <div class="mobile-action-links">
+                        <a class="action-icon" routerLink="/dashboard" title="Minha Conta" (click)="closeMobileMenu()">
+                            <img src="assets/account_icon.png" alt="Conta">
+                        </a>
+                        <a class="action-icon" routerLink="/eventos" title="Eventos" (click)="closeMobileMenu()">
+                            <img src="assets/dashboard_icon.png" alt="Eventos">
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="navbar-actions">
+                <a class="btn-primary" routerLink="/auth/login">Faça Parte!</a>
+                <a class="action-icon" routerLink="/dashboard" title="Minha Conta">
+                    <img src="assets/account_icon.png" alt="Conta">
+                </a>
+                <a class="action-icon" routerLink="/eventos" title="Eventos">
+                    <img src="assets/dashboard_icon.png" alt="Eventos">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="content">
         <router-outlet></router-outlet>
-    </div>
+    </main>
 
-    <div class="footer">
-        <div class="media">
-
-            <a class="InicioImg" routerLink="/">
-                <img src="assets/makkakuh_logo_large.png" alt="makkakuh_logo_large">
-            </a>
-            <div class="media-accounts">
-                <p>Redes Sociais</p>
-                <div>
-                    <a href="">
-                        <img src="assets/instagram_icon.png" alt="instagram_icon">
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-section">
+                    <a class="footer-logo" routerLink="/">
+                        <img src="assets/makkakuh_logo_large.png" alt="Makka-kuh Logo">
                     </a>
+                    <p class="footer-description">
+                        Protetores da Cachoeira do Makka-Kuh - Uma comunidade dedicada ao swordplay boffering em
+                        Palmas-TO.
+                    </p>
+                </div>
 
-                    <a href="">
-                        <img src="assets/facebook_icon.png" alt="facebook_icon">
-                    </a>
+                <div class="footer-section" *ngFor="let section of footerSections">
+                    <h4>{{ section.title }}</h4>
+                    <ul class="footer-links">
+                        <li *ngFor="let link of section.links">
+                            <a [routerLink]="link.route || null">{{ link.label }}</a>
+                        </li>
+                    </ul>
+                </div>
 
-                    <a href="">
-                        <img src="assets/whatsapp_icon.png" alt="whatsapp_icon">
-                    </a>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link instagram">
+                            <img src="assets/instagram_icon.png" alt="Instagram">
+                        </a>
+                        <a href="#" class="social-link facebook">
+                            <img src="assets/facebook_icon.png" alt="Facebook">
+                        </a>
+                        <a href="#" class="social-link whatsapp">
+                            <img src="assets/whatsapp_icon.png" alt="WhatsApp">
+                        </a>
+                    </div>
+                    <div class="contact-info">
+                        <p><strong>Horários de Treino:</strong></p>
+                        <p>Sábados - 16h | Quartas - 19h</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-credits">
+                    <p>©2025 por alunos do curso de TADS 1ª turma, em parceria com os Protetores da Cachoeira do
+                        Makka-Kuh.</p>
+                    <p>Inspirado no site orgulhosamente criado por Gabriel e Amelia.</p>
                 </div>
             </div>
         </div>
-        <p>©2025 por alunos do curso de TADS 1ª turma, em parceria com os Protetores da Cachoeira do Makka-Kuh.</p>
-        <p>inspirado no site orgulhosamente criado por Gabriel e Amelia.</p>
-
-    </div>
-
+    </footer>
 </div>
