@@ -35,7 +35,7 @@ export class OAuthCallbackComponent implements OnInit {
 
                             this.router.navigate(['/auth/register']);
                         } else {
-                            this.router.navigate(['/dashboard']);
+                            this.router.navigate(['/users/@me']);
                         }
                     },
                     error: (error: any) => {

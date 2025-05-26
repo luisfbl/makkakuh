@@ -1,203 +1,366 @@
 @import '../../../../../styles.scss';
+@import "../../../../../styles/page_header";
 
-.mural-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: $spacing-xl 0;
+.mural-page {
+  background-color: #2B2D31;
+  min-height: 100vh;
+  color: $text-color;
+}
+
+.section-title {
+  font-family: $secondary-font;
+  font-size: 2.5rem;
+  color: $accent-color;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 
   @include mobile {
-    padding: $spacing-lg $spacing-sm;
+    font-size: 2rem;
+    text-align: center;
   }
 }
 
-.mural-header {
-  text-align: center;
-  margin-bottom: $spacing-xl;
-  padding-bottom: $spacing-lg;
-  border-bottom: 2px solid $accent-color;
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #2B2D31 0%, #1a1c20 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
 
-  h1 {
-    font-family: $secondary-font;
-    font-size: 3.5rem;
+.loading-content {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(54, 54, 54, 0.9);
+  border-radius: 20px;
+  border: 1px solid rgba($accent-color, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+/* Error Section */
+.error-section {
+  text-align: center;
+  padding: 4rem 0;
+  background: #363636;
+  border-radius: 15px;
+  margin-bottom: 3rem;
+
+  h3 {
     color: $accent-color;
-    margin-bottom: $spacing-sm;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-
-    @include mobile {
-      font-size: 2.5rem;
-    }
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
   }
 
-  .subtitle {
-    font-size: 1.2rem;
-    color: $text-color;
-    max-width: 600px;
-    margin: 0 auto;
-
-    @include mobile {
-      font-size: 1rem;
-    }
+  p {
+    color: #ccc;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
   }
 }
 
-.loading-container,
-.error-container {
-  width: 100%;
-  padding: $spacing-xl 0;
-  text-align: center;
+.retry-button {
+  background: linear-gradient(135deg, $accent-color, #FFD700);
+  color: #2b2d31;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
 
-  button {
-    margin-top: $spacing-md;
-    padding: $spacing-sm $spacing-lg;
-    background-color: $accent-color;
-    color: $background-color;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    @include transition;
-
-    &:hover {
-      background-color: darken($accent-color, 10%);
-    }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba($accent-color, 0.4);
   }
+}
+
+/* Empty Section */
+.empty-section {
+  text-align: center;
+  padding: 4rem 0;
+  background: #363636;
+  border-radius: 15px;
+  margin-bottom: 3rem;
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  h3 {
+    color: $accent-color;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #ccc;
+    font-size: 1.1rem;
+  }
+}
+
+/* Members Section */
+.members-section {
+  margin-top: 2rem;
+  margin-bottom: 5rem;
 }
 
 .members-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: $spacing-lg;
-  margin-bottom: $spacing-xl;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
 
   @include mobile {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 
-/* Paginação */
+/* Pagination */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: $spacing-lg 0 $spacing-xl;
-  
-  .pagination-button {
-    margin: 0 4px;
-    padding: 8px 12px;
-    background-color: #2B2D31;
-    border: 1px solid rgba($accent-color, 0.3);
-    border-radius: 4px;
-    color: $text-color;
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1;
-    transition: all 0.2s ease;
-    
-    &:hover:not([disabled]) {
-      background-color: rgba($accent-color, 0.2);
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 3rem 0;
+
+  @include mobile {
+    gap: 0.5rem;
+  }
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination-button {
+  padding: 0.75rem 1rem;
+  background-color: #363636;
+  border: 1px solid rgba($accent-color, 0.3);
+  border-radius: 8px;
+  color: $text-color;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 44px;
+  text-align: center;
+
+  @include mobile {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    min-width: 40px;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: rgba($accent-color, 0.2);
+    border-color: rgba($accent-color, 0.5);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $accent-color, #FFD700);
+    color: #2b2d31;
+    border-color: $accent-color;
+    font-weight: bold;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+
+    &:hover {
+      background-color: #363636;
+      border-color: rgba($accent-color, 0.3);
     }
-    
-    &.active {
-      background-color: $accent-color;
-      color: $background-color;
-      border-color: $accent-color;
-    }
-    
-    &[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    &.prev, &.next {
-      font-weight: bold;
+  }
+
+  &.prev, &.next {
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+
+    @include mobile {
+      padding: 0.5rem 1rem;
     }
   }
 }
 
-.mural-sections {
-  margin-top: $spacing-xl;
+/* Achievements Section */
+.achievements-section {
+  margin-top: 5rem;
 }
 
-.section-container {
-  margin-bottom: $spacing-xl;
-  background-color: #2B2D31;
-  border-radius: 8px;
-  padding: $spacing-lg;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+.achievements-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
 
-  h2 {
-    font-family: $secondary-font;
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.achievement-card {
+  background: #363636;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba($accent-color, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    border-color: rgba($accent-color, 0.5);
+  }
+}
+
+.achievement-header {
+  background: linear-gradient(135deg, #2b2d31 0%, #1a1c20 100%);
+  padding: 2rem;
+  text-align: center;
+  border-bottom: 2px solid $accent-color;
+
+  .section-title {
+    margin: 0;
     font-size: 2rem;
-    color: $accent-color;
-    margin-bottom: $spacing-lg;
-    border-bottom: 1px solid rgba($accent-color, 0.3);
-    padding-bottom: $spacing-sm;
 
     @include mobile {
       font-size: 1.5rem;
     }
   }
+}
 
-  .section-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: $spacing-md;
+.achievement-content {
+  padding: 2rem;
+}
+
+.achievement-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+.achievement-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  border: 1px solid rgba($accent-color, 0.2);
+  transition: all 0.3s ease;
+
+  @include mobile {
+    padding: 1rem;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    background: rgba($accent-color, 0.1);
+    border-color: rgba($accent-color, 0.4);
+  }
+
+  h4 {
+    margin: 0;
+    color: $text-color;
+    font-size: 1rem;
+    margin-top: 1rem;
 
     @include mobile {
-      grid-template-columns: repeat(2, 1fr);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.achievement-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba($accent-color, 0.3), rgba($accent-color, 0.1));
+  border: 2px solid $accent-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+
+  @include mobile {
+    width: 50px;
+    height: 50px;
+  }
+
+  .icon-symbol {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $accent-color;
+
+    @include mobile {
+      font-size: 1.2rem;
     }
   }
 
-  .legion-item,
-  .achievement-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(43, 45, 49, 0.7);
-    border-radius: 8px;
-    padding: $spacing-md;
-    border: 1px solid rgba($accent-color, 0.3);
-    @include transition;
+  &.legion-icon {
+    background: linear-gradient(135deg, rgba(255, 87, 34, 0.3), rgba(255, 87, 34, 0.1));
+    border-color: #FF5722;
 
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    .icon-symbol {
+      color: #FF5722;
     }
+  }
 
-    .legion-icon,
-    .achievement-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: rgba($accent-color, 0.2);
-      border: 2px solid $accent-color;
-      margin-bottom: $spacing-md;
-      position: relative;
-      overflow: hidden;
+  &.glory-icon {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.3), rgba(255, 193, 7, 0.1));
+    border-color: #FFC107;
 
-      &:before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 60%;
-        height: 60%;
-        background-color: rgba($accent-color, 0.5);
-        clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
-      }
+    .icon-symbol {
+      color: #FFC107;
     }
+  }
+}
 
-    h3 {
-      font-size: 1.2rem;
-      color: $text-color;
-      text-align: center;
-      margin: 0;
+.achievement-item:hover .achievement-icon {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba($accent-color, 0.3);
+}
 
-      @include mobile {
-        font-size: 1rem;
-      }
-    }
+@media (max-width: 768px) {
+
+  .members-section,
+  .achievements-section {
+    margin-bottom: 3rem;
+  }
+
+  .achievements-grid {
+    margin-top: 2rem;
+  }
+
+  .achievement-header {
+    padding: 1.5rem;
+  }
+
+  .achievement-content {
+    padding: 1.5rem;
   }
 }

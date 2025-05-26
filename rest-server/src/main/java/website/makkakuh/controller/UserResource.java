@@ -1,8 +1,11 @@
 package website.makkakuh.controller;
 
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import website.makkakuh.auth.UserContext;
 import website.makkakuh.model.User;
 import website.makkakuh.model.UserDetail;
 import website.makkakuh.model.UserHonor;
@@ -15,7 +18,9 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
-    
+    @Inject
+    UserContext userContext;
+
     @GET
     @Path("/{id}")
     public User getUserById(@PathParam("id") Long id) {
@@ -27,12 +32,10 @@ public class UserResource {
     }
     
     @PUT
-    @Path("/{id}")
-    public Response updateUser(@PathParam("id") Long id, Map<String, Object> updates) {
-        User user = User.findById(id);
-        if (user == null) {
-            throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
-        }
+    @Path("/@me")
+    @Transactional
+    public Response updateUser(Map<String, Object> updates) {
+        User user = userContext.getCurrentUser();
 
         if (updates.containsKey("name") && updates.get("name") != null) {
             user.name = (String) updates.get("name");
@@ -53,9 +56,8 @@ public class UserResource {
         if (updates.containsKey("avatarFilename") && updates.get("avatarFilename") != null) {
             user.avatarFilename = (String) updates.get("avatarFilename");
         }
-        
-        user.persist();
-        
+
+        user = user.getEntityManager().merge(user);
         return Response.ok(user).build();
     }
     

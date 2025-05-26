@@ -1,36 +1,104 @@
-<div class="image-upload-container" 
-     (dragover)="onDragOver($event)" 
+<div class="image-upload-container"
+     [class]="'upload-' + variant + ' upload-' + size"
+     [class.has-image]="imagePreview"
+     [class.uploading]="isUploading"
+     [class.error-state]="error"
+     (dragover)="onDragOver($event)"
      (drop)="onDrop($event)">
-  
-  <div class="image-preview" *ngIf="imagePreview">
-    <img [src]="imagePreview" alt="Preview" />
-  </div>
-  
-  <div class="placeholder" *ngIf="!imagePreview">
-    <div class="placeholder-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
-        <path d="M0 0h24v24H0z" fill="none"/>
-        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-      </svg>
+
+    <!-- Avatar Upload Style -->
+    <div *ngIf="variant === 'avatar'" class="avatar-upload">
+        <div class="avatar-preview">
+            <img *ngIf="imagePreview && !currentImage" [src]="imagePreview" alt="Avatar Preview" class="avatar-image" />
+            <img *ngIf="currentImage" [src]="currentImage" alt="Avatar atual" class="avatar-image">
+
+            <div *ngIf="!imagePreview && !currentImage" class="avatar-placeholder">
+                <span class="avatar-icon">👤</span>
+            </div>
+            <div *ngIf="isUploading" class="upload-overlay">
+                <div class="upload-spinner"></div>
+                <span class="upload-percentage">{{ progress }}%</span>
+            </div>
+        </div>
+
+        <div class="avatar-controls">
+            <label class="upload-button avatar-button">
+                <span class="button-icon">📷</span>
+                {{ buttonText }}
+                <input type="file" [accept]="acceptedTypes" (change)="onFileSelected($event)" />
+            </label>
+            <p class="upload-hint">{{ placeholderText }}</p>
+        </div>
     </div>
-    <p>{{ placeholderText }}</p>
-  </div>
-  
-  <div class="upload-controls">
-    <label class="upload-button">
-      {{ buttonText }}
-      <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="onFileSelected($event)" />
-    </label>
-    
-    <div class="progress-container" *ngIf="isUploading">
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="progress"></div>
-      </div>
-      <div class="progress-text">{{ progress }}%</div>
+
+    <!-- Card Upload Style -->
+    <div *ngIf="variant === 'card'" class="card-upload">
+        <div class="image-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Preview" class="preview-image" />
+            <div *ngIf="isUploading" class="upload-overlay">
+                <div class="upload-spinner"></div>
+                <span class="upload-percentage">{{ progress }}%</span>
+            </div>
+        </div>
+
+        <div class="upload-placeholder" *ngIf="!imagePreview">
+            <div class="placeholder-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                </svg>
+            </div>
+            <p class="placeholder-text">{{ placeholderText }}</p>
+
+            <label class="upload-button card-button">
+                {{ buttonText }}
+                <input type="file" [accept]="acceptedTypes" (change)="onFileSelected($event)" />
+            </label>
+        </div>
     </div>
-    
+
+    <!-- Compact Upload Style -->
+    <div *ngIf="variant === 'compact'" class="compact-upload">
+        <div class="compact-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Preview" class="compact-image" />
+        </div>
+
+        <div class="compact-controls">
+            <label class="upload-button compact-button">
+                <span class="button-icon">📎</span>
+                {{ buttonText }}
+                <input type="file" [accept]="acceptedTypes" (change)="onFileSelected($event)" />
+            </label>
+
+            <button *ngIf="imagePreview && allowRemove"
+                    type="button"
+                    class="remove-button"
+                    (click)="removeImage()">
+                <span class="button-icon">🗑️</span>
+                Remover
+            </button>
+        </div>
+    </div>
+
+    <div class="progress-container" *ngIf="isUploading && showProgress">
+        <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="progress"></div>
+        </div>
+        <div class="progress-text">{{ progress }}%</div>
+    </div>
+
     <div class="error-message" *ngIf="error">
-      {{ error }}
+        <span class="error-icon">⚠️</span>
+        {{ error }}
     </div>
-  </div>
+
+    <div class="success-message" *ngIf="successMessage">
+        <span class="success-icon">✅</span>
+        {{ successMessage }}
+    </div>
+
+    <div class="upload-instructions" *ngIf="showInstructions && !imagePreview">
+        <p>{{ instructions }}</p>
+        <small>Tipos aceitos: {{ allowedTypesText }} | Tamanho máximo: {{ maxSizeText }}</small>
+    </div>
 </div>

@@ -1,0 +1,256 @@
+@import '../../../../../styles.scss';
+@import "../../../../../styles/page_header";
+
+.quem-somos-page {
+  background-color: #2B2D31;
+  min-height: 100vh;
+  color: $text-color;
+}
+
+.about-section {
+  margin-bottom: 5rem;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.about-text {
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: #e0e0e0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.highlight {
+  color: $accent-color;
+  font-weight: bold;
+  background: rgba($accent-color, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.about-image {
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}
+
+.training-section {
+  margin-bottom: 5rem;
+}
+
+.section-title {
+  font-family: $secondary-font;
+  font-size: 2.5rem;
+  color: $accent-color;
+  text-align: center;
+  margin-bottom: 3rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+.training-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.training-image {
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}
+
+.training-info {
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: #e0e0e0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.info-card {
+  background: linear-gradient(135deg, #363636 0%, #404040 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba($accent-color, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($accent-color, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    border-color: rgba($accent-color, 0.5);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.info-card h3 {
+  font-size: 1.4rem;
+  color: $accent-color;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.info-card p {
+  color: #ccc;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 2;
+}
+
+.card-button {
+  background: linear-gradient(135deg, $accent-color, #FFD700);
+  color: #2b2d31;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba($accent-color, 0.4);
+  }
+}
+
+@media (max-width: 992px) {
+  .about-content,
+  .training-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 2rem 0;
+  }
+
+  .about-section,
+  .training-section {
+    margin-bottom: 3rem;
+  }
+
+  .about-text p,
+  .training-info p {
+    font-size: 1rem;
+  }
+
+  .info-card {
+    padding: 1.5rem;
+  }
+
+  .info-grid {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+  }
+
+  .info-card h3 {
+    font-size: 1.2rem;
+  }
+}

@@ -41,9 +41,8 @@
                 </div>
 
                 <div class="mobile-actions">
-                    <a class="btn-primary" routerLink="/auth/login" (click)="closeMobileMenu()">Faça Parte!</a>
                     <div class="mobile-action-links">
-                        <a class="action-icon" routerLink="/dashboard" title="Minha Conta" (click)="closeMobileMenu()">
+                        <a class="action-icon" routerLink="/users/@me" title="Minha Conta" (click)="closeMobileMenu()">
                             <img src="assets/account_icon.png" alt="Conta">
                         </a>
                         <a class="action-icon" routerLink="/eventos" title="Eventos" (click)="closeMobileMenu()">
@@ -54,8 +53,7 @@
             </nav>
 
             <div class="navbar-actions">
-                <a class="btn-primary" routerLink="/auth/login">Faça Parte!</a>
-                <a class="action-icon" routerLink="/dashboard" title="Minha Conta">
+                <a class="action-icon" routerLink="/users/@me" title="Minha Conta">
                     <img src="assets/account_icon.png" alt="Conta">
                 </a>
                 <a class="action-icon" routerLink="/eventos" title="Eventos">

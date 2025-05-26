@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/users/@me']);
             return;
         }
 
@@ -107,7 +107,7 @@ export class RegisterComponent implements OnInit {
         this.authService.completeSignUp(userData).subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/users/@me']);
             },
             error: (error: any) => {
                 this.errorMessage = 'Falha ao completar o cadastro. Verifique os dados e tente novamente.';

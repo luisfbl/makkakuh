@@ -11,8 +11,8 @@ export const routes: Routes = [
         loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
     },
     {
-        path: 'dashboard',
-        loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
+        path: 'users',
+        loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule)
     },
     {
         path: 'quem-somos',
@@ -21,11 +21,7 @@ export const routes: Routes = [
     {
         path: 'mural-da-gloria',
         loadChildren: () => import('./features/mural-of-glory/mural.module').then(m => m.MuralModule)
-    },
-    {path: 'login', redirectTo: 'auth/login', pathMatch: 'full'},
-    {path: 'register', redirectTo: 'auth/register', pathMatch: 'full'},
-    {path: 'QuemSomos', redirectTo: 'quem-somos', pathMatch: 'full'},
-    {path: 'mural', redirectTo: 'mural-da-gloria', pathMatch: 'full'},
+    }
 ];
 
 @NgModule({

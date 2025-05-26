@@ -1,0 +1,35 @@
+.page-header {
+  background: linear-gradient(135deg, #363636 0%, #2B2D31 100%);
+  padding: 3rem 0;
+  text-align: center;
+  border-bottom: 2px solid $accent-color;
+}
+
+.page-title {
+  font-family: $secondary-font;
+  font-size: 3.5rem;
+  color: $accent-color;
+  margin: 0 0 1rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  @include mobile {
+    font-size: 2.5rem;
+  }
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: #ccc;
+  max-width: 600px;
+  margin: 0 auto;
+
+  @include mobile {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header {
+    padding: 2rem 0;
+  }
+}

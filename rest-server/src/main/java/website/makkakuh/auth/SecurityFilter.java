@@ -40,6 +40,9 @@ public class SecurityFilter implements ContainerRequestFilter {
     @ConfigProperty(name = "website.makkakuh.cookie.secret", defaultValue = "changeme_this_is_not_secure_enough_for_production")
     String cookieSecret;
 
+    @Inject
+    UserContext userContext;
+    
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getPath();
@@ -53,7 +56,10 @@ public class SecurityFilter implements ContainerRequestFilter {
                     Response.status(Response.Status.UNAUTHORIZED)
                             .entity("Authentication required")
                             .build());
+            return;
         }
+
+        userContext.setCurrentUser(user);
     }
 
     private boolean isPublicPath(String path) {
@@ -61,15 +67,11 @@ public class SecurityFilter implements ContainerRequestFilter {
             return true;
         }
 
-        if (routingContext.request().method().name().equals("GET") && (
+        return routingContext.request().method().name().equals("GET") && (
                 path.startsWith("/api/mural") ||
-                path.startsWith("/api/users") ||
-                path.startsWith("/api/cdn")
-        )) {
-            return true;
-        }
-
-        return false;
+                        path.startsWith("/api/users") ||
+                        path.startsWith("/api/cdn")
+        );
     }
 
     private String computeHmac(String data) {

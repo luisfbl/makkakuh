@@ -1,0 +1,123 @@
+<div class="profile-edit-page">
+    <div *ngIf="loading" class="loading-overlay">
+        <div class="loading-content">
+            <app-loading type="spinner" size="large" text="Carregando perfil..." [showText]="true"></app-loading>
+        </div>
+    </div>
+
+    <div *ngIf="!loading">
+        <div class="main-content">
+            <div class="container">
+                <div *ngIf="error" class="error-section">
+                    <h3>Ops! Algo deu errado</h3>
+                    <p>{{ error }}</p>
+                    <button (click)="loadUserData()" class="retry-button">Tentar Novamente</button>
+                </div>
+
+                <div *ngIf="!error" class="profile-form-section">
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+
+                        <div class="avatar-section">
+                            <h2 class="section-title">Foto de Perfil</h2>
+                            <div class="avatar-content">
+                                <app-image-upload
+                                        variant="avatar"
+                                        size="large"
+                                        type="avatar"
+                                        [currentImage]="avatarUrl"
+                                        buttonText="Alterar Foto"
+                                        placeholderText="Escolha uma foto de perfil"
+                                        (imageUploaded)="onAvatarUploaded($event)"
+                                        (uploadError)="onUploadError($event)">
+                                </app-image-upload>
+                            </div>
+                        </div>
+
+                        <div class="personal-info-section">
+                            <h2 class="section-title">Informações Pessoais</h2>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="name">Nome Completo *</label>
+                                    <input
+                                            type="text"
+                                            id="name"
+                                            formControlName="name"
+                                            class="form-input"
+                                            placeholder="Digite seu nome completo">
+                                    <div *ngIf="profileForm.get('name')?.errors?.['required'] && profileForm.get('name')?.touched"
+                                         class="error-message">
+                                        Nome é obrigatório
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nickname">Apelido no Clã</label>
+                                    <input
+                                            type="text"
+                                            id="nickname"
+                                            formControlName="nickname"
+                                            class="form-input"
+                                            placeholder="Como você é conhecido no grupo">
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="email">Email</label>
+                                    <input
+                                            type="email"
+                                            id="email"
+                                            formControlName="email"
+                                            class="form-input readonly"
+                                            readonly
+                                            title="Email não pode ser alterado">
+                                    <small class="input-help">O email não pode ser alterado</small>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="bio">Biografia</label>
+                                    <textarea
+                                            id="bio"
+                                            formControlName="bio"
+                                            class="form-textarea"
+                                            rows="4"
+                                            placeholder="Conte um pouco sobre você, seus interesses, experiência com o esporte..."></textarea>
+                                    <small class="input-help">Máximo 500 caracteres</small>
+                                    <div class="character-count">
+                                        {{ profileForm.get('bio')?.value?.length || 0 }}/500
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button
+                                    type="button"
+                                    class="btn-secondary"
+                                    (click)="onCancel()"
+                                    [disabled]="isSubmitting">
+                                Cancelar
+                            </button>
+
+                            <button
+                                    type="submit"
+                                    class="btn-primary"
+                                    [disabled]="profileForm.invalid || isSubmitting">
+                                <span *ngIf="isSubmitting" class="spinner"></span>
+                                {{ isSubmitting ? 'Salvando...' : 'Salvar Alterações' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div *ngIf="successMessage" class="success-section">
+                    <div class="success-content">
+                        <div class="success-icon">✓</div>
+                        <h3>Perfil Atualizado!</h3>
+                        <p>{{ successMessage }}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
