@@ -97,11 +97,23 @@ public class OAuthService {
                     .await().indefinitely();
 
             User user = User.findByOauthId(userProfile.getId(), provider);
-
             if (user == null) {
                 user = User.findByEmail(userProfile.getEmail());
 
                 if (user == null) {
+                    if (userProfile.getPictureUrl() != null && !userProfile.getPictureUrl().isEmpty()) {
+                        try {
+                            String tempUserId = java.util.UUID.randomUUID().toString();
+                            String avatarFilename = CDNService.getInstance().downloadImageFromUrl(
+                                    userProfile.getPictureUrl(), "avatar", tempUserId);
+
+                            userProfile.setAvatarFilename(avatarFilename);
+                            LOG.info("Downloaded avatar from OAuth provider for new user");
+                        } catch (Exception e) {
+                            LOG.warn("Failed to download avatar for new user: " + e.getMessage());
+                        }
+                    }
+
                     return Response.ok(Map.of(
                             "isNewUser", true,
                             "userProfile", userProfile
@@ -116,8 +128,8 @@ public class OAuthService {
                                 String avatarFilename = CDNService.getInstance().downloadImageFromUrl(
                                         userProfile.getPictureUrl(), "avatar", user.id.toString());
 
-                                user.avatarFilename = avatarFilename.length() > 255 ? 
-                                    avatarFilename.substring(0, 255) : avatarFilename;
+                                user.avatarFilename = avatarFilename.length() > 255 ?
+                                        avatarFilename.substring(0, 255) : avatarFilename;
                                 LOG.info("Downloaded avatar from OAuth provider for user: " + user.id);
                             }
                         } catch (Exception e) {
@@ -129,7 +141,7 @@ public class OAuthService {
                     } else if (user.pictureUrl == null) {
                         user.pictureUrl = userProfile.getPictureUrl();
                     }
-                    
+
                     user.persist();
                 }
             }
@@ -164,18 +176,17 @@ public class OAuthService {
             newUser.type = "USER";
 
             newUser.persist();
-            
-            if (userProfile.getPictureUrl() != null && !userProfile.getPictureUrl().isEmpty()) {
-                try {
-                    String avatarFilename = CDNService.getInstance().downloadImageFromUrl(
-                            userProfile.getPictureUrl(), "avatar", newUser.id.toString());
 
-                    newUser.avatarFilename = avatarFilename.length() > 255 ? 
-                        avatarFilename.substring(0, 255) : avatarFilename;
+            if (userProfile.getAvatarFilename() != null && !userProfile.getAvatarFilename().isEmpty()) {
+                try {
+                    String oldFilename = userProfile.getAvatarFilename();
+
+                    newUser.avatarFilename = CDNService.getInstance().renameAvatarFile(
+                            oldFilename, newUser.id.toString());
                     newUser.persist();
-                    LOG.info("Downloaded avatar from OAuth provider for new user: " + newUser.id);
+                    LOG.info("Renamed avatar file for new user: " + newUser.id);
                 } catch (Exception e) {
-                    LOG.warn("Failed to download avatar for new user: " + e.getMessage());
+                    LOG.warn("Failed to rename avatar file for new user: " + e.getMessage());
                 }
             }
 

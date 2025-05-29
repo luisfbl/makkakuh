@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {User} from '../models/user.model';
+import {User, UserResponse} from '../models/user.model';
 import {environment} from '../../../../environments/environment';
 
 interface OAuthCallbackResponseType {
@@ -75,9 +75,10 @@ export class AuthService {
     }
 
     completeSignUp(userData: Partial<User>): Observable<User> {
-        return this.http.post<User>(`${this.apiUrl}/auth/sign-in`, userData)
+        // @ts-ignore
+        return this.http.post<UserResponse>(`${this.apiUrl}/auth/sign-in`, userData)
             .pipe(
-                tap(user => this.setAuthenticated(user)),
+                tap(user => this.setAuthenticated(user.user)),
                 catchError(error => {
                     console.error('Erro ao completar registro:', error);
                     return throwError(() => new Error('Falha ao completar registro'));

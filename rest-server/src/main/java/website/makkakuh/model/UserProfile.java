@@ -5,6 +5,7 @@ public class UserProfile {
     private String name;
     private String email;
     private String pictureUrl;
+    private String avatarFilename;
     private String locale;
     private String provider;
     private String bio;
@@ -22,61 +23,29 @@ public class UserProfile {
         this.bio = bio;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getPictureUrl() { return pictureUrl; }
+    public void setPictureUrl(String pictureUrl) { this.pictureUrl = pictureUrl; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getLocale() { return locale; }
+    public void setLocale(String locale) { this.locale = locale; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getProvider() { return provider; }
+    public void setProvider(String provider) { this.provider = provider; }
 
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
+    public String getAvatarFilename() { return avatarFilename; }
+    public void setAvatarFilename(String avatarFilename) { this.avatarFilename = avatarFilename; }
 
     public User toUser() {
         User user = new User();
@@ -85,6 +54,7 @@ public class UserProfile {
         user.oauthId = this.id;
         user.oauthMethod = this.provider;
         user.pictureUrl = this.pictureUrl;
+        user.avatarFilename = this.avatarFilename;
         user.locale = this.locale;
         user.bio = this.bio;
         return user;

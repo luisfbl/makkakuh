@@ -370,6 +370,40 @@ public class CDNService {
         userUploadCounts.put(userId, currentCount + 1);
     }
 
+    public String renameAvatarFile(String oldFilename, String newUserId) throws IOException {
+        if (oldFilename == null || oldFilename.isEmpty()) {
+            throw new IllegalArgumentException("Old filename cannot be null or empty");
+        }
+
+        String extension = getExtension(oldFilename);
+        if (extension.isEmpty()) {
+            extension = "jpg";
+        }
+
+        String timestamp = LocalDateTime.now().format(TIMESTAMP_FORMAT);
+        String newFilename = timestamp + "_" + newUserId + "." + extension;
+
+        Path oldPath = Paths.get(uploadDirectory, "avatars", oldFilename);
+        Path newPath = Paths.get(uploadDirectory, "avatars", newFilename);
+
+        if (!Files.exists(oldPath)) {
+            throw new IOException("Original avatar file not found: " + oldFilename);
+        }
+
+        Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+
+        for (int size : avatarSizes) {
+            Path oldSizedPath = Paths.get(uploadDirectory, "avatars", size + "_" + oldFilename);
+            Path newSizedPath = Paths.get(uploadDirectory, "avatars", size + "_" + newFilename);
+
+            if (Files.exists(oldSizedPath)) {
+                Files.move(oldSizedPath, newSizedPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+
+        return newFilename;
+    }
+
     private String getExtension(String filename) {
         if (filename == null || filename.isEmpty()) {
             return "";

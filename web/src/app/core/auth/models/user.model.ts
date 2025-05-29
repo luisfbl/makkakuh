@@ -9,3 +9,7 @@ export interface User {
   bio?: string;
   nickname?: string;
 }
+
+export interface UserResponse {
+  user: User
+}

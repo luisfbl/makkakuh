@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {Router, RouterModule} from '@angular/router';
 import {AuthService} from '../../../../core/auth/services/auth.service';
 import {CommonModule} from "@angular/common";
+import {CDNService} from "../../../../core/auth/services/cdn.service";
 
 @Component({
     selector: 'app-register',
@@ -23,6 +24,7 @@ export class RegisterComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private cdnService: CDNService,
         private authService: AuthService,
         private router: Router
     ) {
@@ -47,7 +49,7 @@ export class RegisterComponent implements OnInit {
             try {
                 const profileData = JSON.parse(tempProfile);
                 this.oAuthData = profileData;
-                this.userImageUrl = profileData.pictureUrl;
+                this.userImageUrl = this.cdnService.getImageUrl(profileData.avatarFilename, 'avatar');
                 this.userForm.patchValue({
                     name: profileData.name || '',
                     username: profileData.email?.split('@')[0] || ''
