@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Makkakuh API
+  description: API do MVP do projeto Makkakuh - Sistema de reconhecimento e honras
+  version: 1.0.0
+  contact:
+    name: Equipe Makkakuh
+servers:
+  - url: http://localhost
+    description: Servidor do nginx
+paths:
+  /api/users/{id}:
+    get:
+      summary: Obter usuário por ID
+      description: Retorna os dados de um usuário específico pelo seu ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID único do usuário
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Usuário encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/auth/oauth/{provider}:
+    get:
+      summary: Iniciar autenticação OAuth
+      description: Inicia o fluxo de autenticação OAuth com o provedor especificado
+      tags:
+        - Authentication
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          description: Nome do provedor OAuth (ex. google)
+          schema:
+            type: string
+            enum: [ google ]
+            example: google
+      responses:
+        '200':
+          description: URL de autorização gerada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                    description: URL para redirecionamento do usuário
+                    example: "https://accounts.google.com/oauth2/auth?client_id=..."
+                required:
+                  - url
+        '400':
+          description: Provedor inválido ou parâmetros incorretos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID único do usuário
+          example: 1
+        name:
+          type: string
+          description: Nome completo do usuário
+          example: "João Silva"
+        nickname:
+          type: string
+          description: Apelido do usuário
+          example: "joao_s"
+        email:
+          type: string
+          format: email
+          description: Email do usuário
+          example: "joao.silva@email.com"
+        bio:
+          type: string
+          maxLength: 4096
+          description: Biografia do usuário
+          example: "Desenvolvedor apaixonado por tecnologia"
+        pictureUrl:
+          type: string
+          format: uri
+          maxLength: 1024
+          description: URL da foto de perfil
+          example: "https://localhost/cdn/avatar.jpg"
+        avatarFilename:
+          type: string
+          description: Nome do arquivo do avatar
+          example: "avatar_123.jpg"
+        oauthId:
+          type: string
+          description: ID do usuário no provedor OAuth
+          example: "123456789"
+        oauthMethod:
+          type: string
+          description: Método OAuth utilizado
+          example: "google"
+        type:
+          type: string
+          description: Tipo do usuário
+          example: "member"
+        locale:
+          type: string
+          description: Localização do usuário
+          example: "pt-BR"
+      required:
+        - id
+        - name
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Descrição do erro
+          example: "User not found"
+        message:
+          type: string
+          description: Mensagem detalhada do erro
+          example: "O usuário com ID 999 não foi encontrado"
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp do erro
+          example: "2024-01-15T10:30:00Z"
+      required:
+        - error
+        - message
