@@ -21,6 +21,10 @@ export const routes: Routes = [
     {
         path: 'mural-da-gloria',
         loadChildren: () => import('./features/mural-of-glory/mural.module').then(m => m.MuralModule)
+    },
+    {
+        path: 'eventos',
+        loadChildren: () => import('./features/events/events.module').then(m => m.EventsModule)
     }
 ];
 

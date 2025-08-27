@@ -38,6 +38,9 @@ public class User extends PanacheEntity {
     @Column(name = "locale")
     public String locale;
 
+    @Column(name = "role")
+    public String role = "USER"; // Default role
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     public List<Subscription> subscriptions;
 

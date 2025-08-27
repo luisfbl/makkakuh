@@ -1,0 +1,300 @@
+@import '../../../../../styles.scss';
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: #363636;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba($accent-color, 0.3);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid $accent-color;
+
+  h2 {
+    font-family: $secondary-font;
+    color: $accent-color;
+    margin: 0;
+    font-size: 1.8rem;
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba($accent-color, 0.1);
+      color: $accent-color;
+    }
+  }
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: $accent-color;
+    font-weight: bold;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba($accent-color, 0.3);
+    border-radius: 8px;
+    background: #2B2D31;
+    color: $text-color;
+    font-family: $primary-font;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.event-details {
+  .detail-item {
+    margin-bottom: 1.5rem;
+
+    strong {
+      display: block;
+      color: $accent-color;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    span,
+    p {
+      color: #e0e0e0;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    p {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.75rem;
+      border-radius: 6px;
+      border-left: 3px solid $accent-color;
+    }
+  }
+
+  .detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid rgba($accent-color, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include mobile {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+
+  @include mobile {
+    width: 100%;
+
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-family: $primary-font;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.btn-primary {
+    background: $accent-color;
+    color: #2B2D31;
+
+    &:hover:not(:disabled) {
+      background: #FFD700;
+      transform: translateY(-1px);
+    }
+  }
+
+  &.btn-secondary {
+    background: #2B2D31;
+    color: $text-color;
+    border: 1px solid rgba($accent-color, 0.3);
+
+    &:hover {
+      background: #3a3c40;
+      border-color: $accent-color;
+    }
+  }
+
+  &.btn-danger {
+    background: #dc3545;
+    color: white;
+
+    &:hover {
+      background: #c82333;
+      transform: translateY(-1px);
+    }
+  }
+
+  @include mobile {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  &.btn-success {
+    background: #28a745;
+    color: white;
+
+    &:hover {
+      background: #218838;
+    }
+  }
+
+  &.btn-warning {
+    background: #ffc107;
+    color: #212529;
+
+    &:hover {
+      background: #e0a800;
+    }
+  }
+}
+
+// Subscription specific styles
+.subscription-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba($accent-color, 0.2);
+}
+
+.subscription-status {
+  margin: 1rem 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.9rem;
+
+  &.subscribed {
+    background: rgba(#28a745, 0.2);
+    color: #28a745;
+    border: 1px solid rgba(#28a745, 0.3);
+  }
+
+  &.full {
+    background: rgba(#dc3545, 0.2);
+    color: #dc3545;
+    border: 1px solid rgba(#dc3545, 0.3);
+  }
+}
+
+.subscription-actions {
+  display: flex;
+  gap: 1rem;
+
+  @include mobile {
+    width: 100%;
+    
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+.loading-subscription {
+  display: flex;
+  align-items: center;
+  color: $accent-color;
+  font-style: italic;
+}

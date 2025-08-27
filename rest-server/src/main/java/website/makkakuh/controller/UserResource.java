@@ -35,17 +35,29 @@ public class UserResource {
     @Path("/@me")
     @Transactional
     public Response updateUser(Map<String, Object> updates) {
+        if (!userContext.isAuthenticated()) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", "Authentication required"))
+                    .build();
+        }
+
         User user = userContext.getCurrentUser();
+        
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", "User not found in session"))
+                    .build();
+        }
 
         if (updates.containsKey("name") && updates.get("name") != null) {
             user.name = (String) updates.get("name");
         }
         
-        if (updates.containsKey("bio") && updates.get("bio") != null) {
+        if (updates.containsKey("bio")) {
             user.bio = (String) updates.get("bio");
         }
         
-        if (updates.containsKey("nickname") && updates.get("nickname") != null) {
+        if (updates.containsKey("nickname")) {
             user.nickname = (String) updates.get("nickname");
         }
         
@@ -57,7 +69,6 @@ public class UserResource {
             user.avatarFilename = (String) updates.get("avatarFilename");
         }
 
-        user = user.getEntityManager().merge(user);
         return Response.ok(user).build();
     }
     

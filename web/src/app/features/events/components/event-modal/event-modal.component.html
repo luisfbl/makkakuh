@@ -1,0 +1,189 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>{{ modalTitle }}</h2>
+            <button class="close-btn" (click)="onClose()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <form *ngIf="canEdit; else readOnlyView">
+                <div class="form-group">
+                    <label for="title">Título *</label>
+                    <input
+                            type="text"
+                            id="title"
+                            [(ngModel)]="formData.title"
+                            name="title"
+                            required
+                            placeholder="Digite o título do evento">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descrição *</label>
+                    <textarea
+                            id="description"
+                            [(ngModel)]="formData.description"
+                            name="description"
+                            required
+                            rows="4"
+                            placeholder="Descreva o evento..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Data *</label>
+                        <input
+                                type="date"
+                                id="date"
+                                [(ngModel)]="formData.date"
+                                name="date"
+                                required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxParticipants">Máx. Participantes</label>
+                        <input
+                                type="number"
+                                id="maxParticipants"
+                                [(ngModel)]="formData.maxParticipants"
+                                name="maxParticipants"
+                                min="1"
+                                placeholder="Sem limite">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="place">Local *</label>
+                    <input
+                            type="text"
+                            id="place"
+                            [(ngModel)]="formData.place"
+                            name="place"
+                            required
+                            placeholder="Local do evento">
+                </div>
+
+                <div class="form-group">
+                    <label for="recurrence">Repetição</label>
+                    <select
+                            id="recurrence"
+                            [(ngModel)]="formData.recurrence"
+                            name="recurrence">
+                        <option *ngFor="let option of recurrenceOptions" [value]="option.value">
+                            {{ option.label }}
+                        </option>
+                    </select>
+                </div>
+            </form>
+
+            <ng-template #readOnlyView>
+                <div class="event-details">
+                    <div class="detail-item">
+                        <strong>Título:</strong>
+                        <span>{{ event?.title }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <strong>Descrição:</strong>
+                        <p>{{ event?.description }}</p>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-item">
+                            <strong>Data:</strong>
+                            <span>{{ event?.date | date:'dd/MM/yyyy' }}</span>
+                        </div>
+
+                        <div class="detail-item" *ngIf="event?.maxParticipants">
+                            <strong>Máx. Participantes:</strong>
+                            <span>{{ event?.maxParticipants }}</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <strong>Local:</strong>
+                        <span>{{ event?.place }}</span>
+                    </div>
+
+                    <div class="detail-item" *ngIf="event?.recurrence !== 'none'">
+                        <strong>Repetição:</strong>
+                        <span>{{ getRecurrenceLabel(event?.recurrence) }}</span>
+                    </div>
+
+                    <!-- Subscription Status -->
+                    <div class="subscription-section" *ngIf="subscriptionStatus">
+                        <div class="detail-item">
+                            <strong>Participantes:</strong>
+                            <span>
+                                {{ subscriptionStatus.totalSubscriptions }}
+                                <span *ngIf="subscriptionStatus.maxParticipants">
+                                    / {{ subscriptionStatus.maxParticipants }}
+                                </span>
+                                <span *ngIf="!subscriptionStatus.maxParticipants">
+                                    participantes
+                                </span>
+                            </span>
+                        </div>
+                        
+                        <div class="subscription-status" *ngIf="subscriptionStatus.isSubscribed">
+                            <div class="status-badge subscribed">
+                                ✓ Você está inscrito neste evento
+                            </div>
+                        </div>
+                        
+                        <div class="subscription-status" *ngIf="subscriptionStatus.isFull && !subscriptionStatus.isSubscribed">
+                            <div class="status-badge full">
+                                🚫 Evento lotado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="onClose()">
+                {{ canEdit ? 'Cancelar' : 'Fechar' }}
+            </button>
+
+            <!-- Admin Actions -->
+            <div class="action-buttons" *ngIf="canEdit">
+                <button
+                        *ngIf="isEditing && event?.id"
+                        class="btn btn-danger"
+                        (click)="onDelete()">
+                    Excluir
+                </button>
+
+                <button
+                        class="btn btn-primary"
+                        (click)="onSave()"
+                        [disabled]="!isFormValid()">
+                    {{ isEditing ? 'Salvar' : 'Criar' }}
+                </button>
+            </div>
+
+            <!-- Subscription Actions (for regular users) -->
+            <div class="subscription-actions" *ngIf="!canEdit && subscriptionStatus && !isLoadingSubscription">
+                <button
+                        *ngIf="!subscriptionStatus.isSubscribed && !subscriptionStatus.isFull"
+                        class="btn btn-success"
+                        (click)="onSubscribe()">
+                    ✓ Confirmar Presença
+                </button>
+
+                <button
+                        *ngIf="subscriptionStatus.isSubscribed"
+                        class="btn btn-warning"
+                        (click)="onUnsubscribe()">
+                    ✗ Cancelar Presença
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-subscription" *ngIf="isLoadingSubscription">
+                <span>Carregando...</span>
+            </div>
+        </div>
+    </div>
+</div>

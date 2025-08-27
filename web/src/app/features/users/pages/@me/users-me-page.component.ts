@@ -54,8 +54,35 @@ export class UsersMePageComponent implements OnInit {
     loadUserData(): void {
         this.loading = true;
         this.error = null;
+        
+        // First try to get user from current state
         this.user = this.authService.getCurrentUser();
+        
+        if (this.user) {
+            this.populateForm();
+            this.loading = false;
+        } else {
+            // If no user in state, verify with API
+            this.authService.verifyAuthentication().subscribe({
+                next: (user) => {
+                    if (user) {
+                        this.user = user;
+                        this.populateForm();
+                    } else {
+                        this.error = 'Não foi possível carregar os dados do usuário.';
+                    }
+                    this.loading = false;
+                },
+                error: (error) => {
+                    console.error('Error loading user data:', error);
+                    this.error = 'Não foi possível carregar os dados do usuário.';
+                    this.loading = false;
+                }
+            });
+        }
+    }
 
+    private populateForm(): void {
         if (this.user) {
             this.profileForm.patchValue({
                 name: this.user.name || '',
@@ -63,12 +90,7 @@ export class UsersMePageComponent implements OnInit {
                 email: this.user.email || '',
                 bio: this.user.bio || ''
             });
-
             this.setupAvatar();
-            this.loading = false;
-        } else {
-            this.error = 'Não foi possível carregar os dados do usuário.';
-            this.loading = false;
         }
     }
 

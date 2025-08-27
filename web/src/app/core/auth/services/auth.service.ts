@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, throwError, of} from 'rxjs';
+import {catchError, map, tap, shareReplay} from 'rxjs/operators';
 import {User, UserResponse} from '../models/user.model';
 import {environment} from '../../../../environments/environment';
 
@@ -17,31 +17,55 @@ interface OAuthCallbackResponseType {
 })
 export class AuthService {
     private apiUrl = environment.apiUrl || '/api';
-    private loggedIn = false;
-    private user: User | null = null;
-    private userDataKey = 'makkakuh_user_data';
+    private userSubject = new BehaviorSubject<User | null>(null);
+    public user$ = this.userSubject.asObservable();
+    private currentUserRequest: Observable<User> | null = null;
 
     constructor(
         private http: HttpClient,
         private router: Router
-    ) {
-        const storedUser = localStorage.getItem(this.userDataKey);
-        if (storedUser) {
-            try {
-                this.user = JSON.parse(storedUser);
-                this.loggedIn = true;
-            } catch (e) {
-                localStorage.removeItem(this.userDataKey);
-            }
-        }
-    }
+    ) {}
 
     isAuthenticated(): boolean {
-        return this.loggedIn;
+        return this.userSubject.value !== null;
     }
 
     getCurrentUser(): User | null {
-        return this.user;
+        return this.userSubject.value;
+    }
+
+    /**
+     * Verifies authentication status by making API call to /api/auth/user
+     * This is the primary method to check authentication status
+     */
+    verifyAuthentication(): Observable<User | null> {
+        // Reuse existing request if one is in progress
+        if (this.currentUserRequest) {
+            return this.currentUserRequest.pipe(
+                map(user => user),
+                catchError(() => of(null))
+            );
+        }
+
+        this.currentUserRequest = this.http.get<User>(`${this.apiUrl}/auth/user`)
+            .pipe(
+                tap(user => {
+                    this.userSubject.next(user);
+                    this.currentUserRequest = null;
+                }),
+                catchError(error => {
+                    console.log('Not authenticated:', error.status);
+                    this.userSubject.next(null);
+                    this.currentUserRequest = null;
+                    return throwError(() => error);
+                }),
+                shareReplay(1)
+            );
+
+        return this.currentUserRequest.pipe(
+            map(user => user),
+            catchError(() => of(null))
+        );
     }
 
     initiateOAuth(provider: string): Observable<string> {
@@ -64,7 +88,7 @@ export class AuthService {
             .pipe(
                 tap((response: OAuthCallbackResponseType) => {
                     if (!response.isNewUser && response.user) {
-                        this.setAuthenticated(response.user);
+                        this.userSubject.next(response.user);
                     }
                 }),
                 catchError(error => {
@@ -75,10 +99,10 @@ export class AuthService {
     }
 
     completeSignUp(userData: Partial<User>): Observable<User> {
-        // @ts-ignore
         return this.http.post<UserResponse>(`${this.apiUrl}/auth/sign-in`, userData)
             .pipe(
-                tap(user => this.setAuthenticated(user.user)),
+                map(response => response.user),
+                tap(user => this.userSubject.next(user)),
                 catchError(error => {
                     console.error('Erro ao completar registro:', error);
                     return throwError(() => new Error('Falha ao completar registro'));
@@ -89,32 +113,30 @@ export class AuthService {
     logout(): void {
         this.http.post(`${this.apiUrl}/auth/sign-out`, {}).subscribe({
             next: () => {
-                this.clearUserData();
+                this.userSubject.next(null);
                 this.router.navigate(['/']);
             },
             error: (error) => {
                 console.error('Erro ao fazer logout:', error);
-
-                this.clearUserData();
+                // Even if server logout fails, clear client state
+                this.userSubject.next(null);
                 this.router.navigate(['/']);
             }
         })
     }
 
-    setAuthenticated(user: User): void {
-        this.user = user;
-        this.loggedIn = true;
-        localStorage.setItem(this.userDataKey, JSON.stringify(user));
-    }
-    
+    /**
+     * Updates the current user data
+     */
     updateCurrentUser(user: User): void {
-        this.user = user;
-        localStorage.setItem(this.userDataKey, JSON.stringify(user));
+        this.userSubject.next(user);
     }
 
-    clearUserData(): void {
-        this.user = null;
-        this.loggedIn = false;
-        localStorage.removeItem(this.userDataKey);
+    /**
+     * Forces a refresh of user data from the API
+     */
+    refreshUser(): Observable<User | null> {
+        this.currentUserRequest = null; // Reset any cached request
+        return this.verifyAuthentication();
     }
 }

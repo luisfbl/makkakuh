@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
+import {AuthService} from './core/auth/services/auth.service';
 
 interface NavItem {
     key: string;
@@ -90,7 +91,10 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     ];
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private authService: AuthService
+    ) {
         this.navItems.forEach(item => {
             this.dropdowns[item.key] = false;
         });
@@ -99,6 +103,20 @@ export class AppComponent implements OnInit, OnDestroy {
     ngOnInit() {
         document.addEventListener('click', this.boundDocumentClick);
         window.addEventListener('resize', this.boundWindowResize);
+        
+        // Initialize authentication status on app startup
+        this.authService.verifyAuthentication().subscribe({
+            next: (user) => {
+                if (user) {
+                    console.log('User authenticated on startup:', user.name);
+                } else {
+                    console.log('No authenticated user found on startup');
+                }
+            },
+            error: (error) => {
+                console.log('Authentication check failed on startup:', error.status);
+            }
+        });
     }
 
     ngOnDestroy() {

@@ -1,0 +1,46 @@
+<div class="events-page">
+    <div class="page-header">
+        <h1>Eventos</h1>
+        <div class="page-actions">
+            <button
+                    class="btn btn-secondary"
+                    (click)="toggleViewMode()">
+                {{ viewMode === 'calendar' ? 'Ver Lista' : 'Ver Calendário' }}
+            </button>
+            <button
+                    *ngIf="isAdmin"
+                    class="btn btn-primary"
+                    (click)="onCreateEvent()">
+                Criar Evento
+            </button>
+        </div>
+    </div>
+
+    <div class="events-content">
+        <div class="calendar-section" *ngIf="viewMode === 'calendar'">
+            <app-calendar
+                    [events]="events"
+                    [canEdit]="isAdmin"
+                    (eventClicked)="onEventClick($event)">
+            </app-calendar>
+        </div>
+
+        <div class="list-section" *ngIf="viewMode === 'list'">
+            <app-event-list
+                    [events]="events"
+                    [canEdit]="isAdmin"
+                    (eventClicked)="onEventClick($event)">
+            </app-event-list>
+        </div>
+    </div>
+
+    <app-event-modal
+            *ngIf="showEventModal"
+            [event]="selectedEvent"
+            [isEditing]="isEditing"
+            [canEdit]="isAdmin"
+            (eventSaved)="onEventSaved($event)"
+            (eventDeleted)="onEventDeleted($event)"
+            (modalClosed)="onModalClosed()">
+    </app-event-modal>
+</div>

@@ -1,0 +1,80 @@
+<div class="calendar-container">
+    <div class="calendar-header">
+        <button class="nav-btn" (click)="previousPeriod()">
+            <img src="assets/fi-sr-angle-left.png" alt="Anterior">
+        </button>
+
+        <h2 class="period-title">{{ getCurrentPeriodTitle() }}</h2>
+
+        <button class="nav-btn" (click)="nextPeriod()">
+            <img src="assets/fi-sr-angle-right.png" alt="Próximo">
+        </button>
+    </div>
+
+    <div class="calendar-grid" *ngIf="!isMobile">
+        <div class="calendar-header-days">
+            <div class="day-header" *ngFor="let day of dayNames">
+                {{ day }}
+            </div>
+        </div>
+
+        <div class="calendar-days">
+            <div
+                    class="calendar-day"
+                    *ngFor="let day of calendarDays"
+                    [class.other-month]="!day.isCurrentMonth"
+                    [class.today]="day.isToday"
+                    [class.has-events]="day.hasEvents"
+                    (click)="onDayClick(day)">
+
+                <div class="day-number">
+                    {{ day.date.getDate() }}
+                </div>
+
+                <div class="day-events" *ngIf="day.hasEvents">
+                    <div
+                            class="event-item"
+                            *ngFor="let event of day.events.slice(0, 2)"
+                            [title]="event.description"
+                            (click)="onEventClick(event, $event)">
+                        {{ event.title }}
+                    </div>
+                    <div class="more-events" *ngIf="day.events.length > 2">
+                        +{{ day.events.length - 2 }} mais
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista Semanal (Mobile) -->
+    <div class="week-view" *ngIf="isMobile">
+        <div class="week-day"
+             *ngFor="let day of weekDays"
+             [class.today]="day.isToday"
+             [class.has-events]="day.hasEvents">
+
+            <div class="week-day-header">
+                <div class="day-name">{{ dayNamesShort[day.date.getDay()] }}</div>
+                <div class="day-number" [class.today-number]="day.isToday">
+                    {{ day.date.getDate() }}
+                </div>
+            </div>
+
+            <div class="week-day-events">
+                <div
+                        class="week-event-item"
+                        *ngFor="let event of day.events"
+                        [title]="event.description"
+                        (click)="onEventClick(event)">
+                    <div class="event-title">{{ event.title }}</div>
+                    <div class="event-time">{{ event.place }}</div>
+                </div>
+
+                <div class="no-events-day" *ngIf="!day.hasEvents">
+                    <span>Sem eventos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

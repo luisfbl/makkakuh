@@ -1,0 +1,81 @@
+<div class="event-list-container">
+    <div class="events-section" *ngIf="getUpcomingEvents().length > 0">
+        <h3 class="section-title">Próximos Eventos</h3>
+        <div class="events-grid">
+            <div
+                    class="event-card upcoming"
+                    *ngFor="let event of getUpcomingEvents()"
+                    (click)="onEventClick(event)">
+
+                <div class="event-header">
+                    <h4>{{ event.title }}</h4>
+                    <div class="event-date">
+                        {{ formatDate(event.date) }}
+                    </div>
+                </div>
+
+                <div class="event-body">
+                    <p class="event-description">{{ event.description }}</p>
+
+                    <div class="event-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span>{{ event.place }}</span>
+                        </div>
+
+                        <div class="detail-item" *ngIf="event.maxParticipants">
+                            <span class="detail-icon">👥</span>
+                            <span>Máx: {{ event.maxParticipants }} pessoas</span>
+                        </div>
+
+                        <div class="detail-item" *ngIf="event.recurrence !== 'none'">
+                            <span class="detail-icon">🔄</span>
+                            <span>{{ getRecurrenceLabel(event.recurrence) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="events-section" *ngIf="getPastEvents().length > 0">
+        <h3 class="section-title">Eventos Anteriores</h3>
+        <div class="events-grid">
+            <div
+                    class="event-card past"
+                    *ngFor="let event of getPastEvents()"
+                    (click)="onEventClick(event)">
+
+                <div class="event-header">
+                    <h4>{{ event.title }}</h4>
+                    <div class="event-date">
+                        {{ formatDate(event.date) }}
+                    </div>
+                </div>
+
+                <div class="event-body">
+                    <p class="event-description">{{ event.description }}</p>
+
+                    <div class="event-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span>{{ event.place }}</span>
+                        </div>
+
+                        <div class="detail-item" *ngIf="event.maxParticipants">
+                            <span class="detail-icon">👥</span>
+                            <span>Máx: {{ event.maxParticipants }} pessoas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-events" *ngIf="events.length === 0">
+        <div class="no-events-content">
+            <h3>Nenhum evento encontrado</h3>
+            <p>Não há eventos cadastrados no momento.</p>
+        </div>
+    </div>
+</div>

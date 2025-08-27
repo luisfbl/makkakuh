@@ -41,9 +41,9 @@ public class AuthResource {
 
     @POST
     @Path("/sign-in")
-    public Response completeSignIn(UserProfile userProfile) {
+    public Response completeSignIn(@Context RoutingContext context, UserProfile userProfile) {
         LOG.info("Completing sign-in for user: " + userProfile.getEmail());
-        return oAuthService.completeSignIn(userProfile);
+        return oAuthService.completeSignIn(context, userProfile);
     }
 
     @POST
@@ -53,9 +53,4 @@ public class AuthResource {
         return oAuthService.signOut(context);
     }
 
-    @GET
-    @Path("/user")
-    public Response getCurrentUser(@Context RoutingContext context) {
-        return oAuthService.getCurrentUser(context);
-    }
 }

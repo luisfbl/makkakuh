@@ -162,7 +162,7 @@ public class OAuthService {
     }
 
     @Transactional
-    public Response completeSignIn(UserProfile userProfile) {
+    public Response completeSignIn(RoutingContext context, UserProfile userProfile) {
         try {
             User existingUser = User.findByEmail(userProfile.getEmail());
 
@@ -173,7 +173,7 @@ public class OAuthService {
             }
 
             User newUser = userProfile.toUser();
-            newUser.type = "USER";
+            newUser.role = "USER";
 
             newUser.persist();
 
@@ -189,6 +189,10 @@ public class OAuthService {
                     LOG.warn("Failed to rename avatar file for new user: " + e.getMessage());
                 }
             }
+
+            // Create session cookie for the new user
+            storeUserInSession(context, newUser);
+            LOG.info("Created session for new user: " + newUser.id);
 
             return Response.ok(Map.of("user", newUser)).build();
         } catch (Exception e) {

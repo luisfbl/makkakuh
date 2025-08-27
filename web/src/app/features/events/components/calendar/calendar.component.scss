@@ -1,0 +1,288 @@
+@import '../../../../../styles.scss';
+
+.calendar-container {
+  background: #363636;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba($accent-color, 0.2);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid $accent-color;
+
+  .period-title {
+    font-family: $secondary-font;
+    font-size: 2rem;
+    color: $accent-color;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+
+    @include mobile {
+      font-size: 1.5rem;
+    }
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: 1px solid rgba($accent-color, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba($accent-color, 0.1);
+      border-color: $accent-color;
+    }
+
+    img {
+      width: 16px;
+      height: 16px;
+      filter: brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(401%) hue-rotate(24deg) brightness(96%) contrast(91%);
+    }
+  }
+}
+
+.calendar-grid {
+  .calendar-header-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    margin-bottom: 1rem;
+
+    .day-header {
+      text-align: center;
+      font-weight: bold;
+      color: $accent-color;
+      padding: 0.75rem 0.5rem;
+      font-size: 0.9rem;
+      background: #2B2D31;
+      border-radius: 6px;
+
+      @include mobile {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+  }
+}
+
+.calendar-day {
+  background: #2B2D31;
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  min-height: 100px;
+
+  &:hover {
+    background: #3a3c40;
+    transform: scale(1.02);
+  }
+
+  &.other-month {
+    opacity: 0.3;
+
+    .day-number {
+      color: #666;
+    }
+  }
+
+  &.today {
+    background: rgba($accent-color, 0.2);
+    border: 2px solid $accent-color;
+
+    .day-number {
+      color: $accent-color;
+      font-weight: bold;
+    }
+  }
+
+  &.has-events {
+    border: 1px solid rgba($accent-color, 0.4);
+  }
+
+  .day-number {
+    color: $text-color;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+
+    @include mobile {
+      font-size: 0.8rem;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .day-events {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    flex: 1;
+  }
+
+  .event-item {
+    background: $accent-color;
+    color: #2B2D31;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1.2;
+
+    &:hover {
+      background: #FFD700;
+      transform: scale(1.02);
+    }
+
+    @include mobile {
+      font-size: 0.6rem;
+      padding: 1px 3px;
+    }
+  }
+
+  .more-events {
+    font-size: 0.6rem;
+    color: $accent-color;
+    font-weight: bold;
+    margin-top: 2px;
+    text-align: center;
+
+    @include mobile {
+      font-size: 0.5rem;
+    }
+  }
+
+  @include mobile {
+    min-height: 80px;
+    padding: 0.25rem;
+  }
+}
+
+.week-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.week-day {
+  background: #2B2D31;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba($accent-color, 0.2);
+  transition: all 0.3s ease;
+
+  &.today {
+    border-color: $accent-color;
+    background: rgba($accent-color, 0.1);
+  }
+
+  &.has-events {
+    border-left: 4px solid $accent-color;
+  }
+}
+
+.week-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba($accent-color, 0.2);
+
+  .day-name {
+    font-size: 0.9rem;
+    color: $accent-color;
+    font-weight: bold;
+  }
+
+  .day-number {
+    font-size: 1.2rem;
+    color: $text-color;
+    font-weight: bold;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba($accent-color, 0.1);
+
+    &.today-number {
+      background: $accent-color;
+      color: #2B2D31;
+    }
+  }
+}
+
+.week-day-events {
+  min-height: 40px;
+}
+
+.week-event-item {
+  background: rgba($accent-color, 0.1);
+  border: 1px solid rgba($accent-color, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba($accent-color, 0.2);
+    border-color: $accent-color;
+    transform: translateY(-1px);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .event-title {
+    font-weight: bold;
+    color: $accent-color;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+
+  .event-time {
+    font-size: 0.8rem;
+    color: #ccc;
+  }
+}
+
+.no-events-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  color: #666;
+  font-size: 0.85rem;
+  font-style: italic;
+}

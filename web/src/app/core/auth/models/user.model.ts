@@ -8,6 +8,7 @@ export interface User {
   provider: string;
   bio?: string;
   nickname?: string;
+  role?: 'USER' | 'ADMIN';
 }
 
 export interface UserResponse {
