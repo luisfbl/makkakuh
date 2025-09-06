@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {AuthService} from '../../../../core/auth/services/auth.service';
+import {AdminModeService} from '../../../../core/admin/admin-mode.service';
 import {EventsService, Event} from '../../services/events.service';
 import {CalendarComponent} from '../../components/calendar/calendar.component';
 import {EventModalComponent} from '../../components/event-modal/event-modal.component';
@@ -26,10 +27,12 @@ export class EventsPageComponent implements OnInit {
     selectedEvent: Event | null = null;
     isEditing = false;
     viewMode: 'calendar' | 'list' = 'calendar';
+    defaultEventDate: Date | null = null;
 
     constructor(
         private authService: AuthService,
-        private eventsService: EventsService
+        private eventsService: EventsService,
+        public adminModeService: AdminModeService
     ) {
     }
 
@@ -51,6 +54,16 @@ export class EventsPageComponent implements OnInit {
     onEventClick(event: Event) {
         this.selectedEvent = event;
         this.isEditing = true;
+        this.showEventModal = true;
+    }
+
+    onDayClick(date: Date) {
+        // Cria um novo evento com a data selecionada
+        this.selectedEvent = null;
+        this.isEditing = false;
+        this.defaultEventDate = date;
+        
+        // Abre o modal de criação de evento
         this.showEventModal = true;
     }
 
@@ -83,6 +96,7 @@ export class EventsPageComponent implements OnInit {
     onModalClosed() {
         this.showEventModal = false;
         this.selectedEvent = null;
+        this.defaultEventDate = null;
     }
 
     toggleViewMode() {

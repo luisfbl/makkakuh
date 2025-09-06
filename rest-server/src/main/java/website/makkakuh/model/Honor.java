@@ -1,5 +1,6 @@
 package website.makkakuh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,5 +23,6 @@ public class Honor extends PanacheEntity {
     public String iconFilename;
 
     @OneToMany(mappedBy = "honor")
+    @JsonIgnore
     public List<UserHonor> userHonors;
 }

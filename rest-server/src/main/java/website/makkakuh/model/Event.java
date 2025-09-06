@@ -1,9 +1,11 @@
 package website.makkakuh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -19,6 +21,9 @@ public class Event extends PanacheEntity {
     @Column(name = "date", nullable = false)
     public LocalDate date;
 
+    @Column(name = "time")
+    public LocalTime time;
+
     @Column(name = "place", nullable = false)
     public String place;
 
@@ -29,6 +34,7 @@ public class Event extends PanacheEntity {
     public String recurrence = "none"; // Default value
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @JsonIgnore
     public List<Subscription> subscriptions;
 
     // Custom queries

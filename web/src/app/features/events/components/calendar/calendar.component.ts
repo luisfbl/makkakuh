@@ -21,6 +21,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     @Input() events: Event[] = [];
     @Input() canEdit: boolean = false;
     @Output() eventClicked = new EventEmitter<Event>();
+    @Output() dayClicked = new EventEmitter<Date>();
 
     currentDate = new Date();
     calendarDays: CalendarDay[] = [];
@@ -118,7 +119,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
 
     onDayClick(day: CalendarDay) {
-        // Clique no dia não faz mais nada, apenas os eventos são clicáveis
+        if (this.canEdit && day.isCurrentMonth) {
+            this.dayClicked.emit(day.date);
+        }
     }
 
     onEventClick(event: Event, domEvent?: MouseEvent) {

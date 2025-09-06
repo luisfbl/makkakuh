@@ -86,7 +86,6 @@
   background: #2B2D31;
   border-radius: 8px;
   padding: 0.5rem;
-  cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -94,9 +93,19 @@
   position: relative;
   min-height: 100px;
 
-  &:hover {
+  &.clickable-day {
+    cursor: pointer;
+    
+    &:hover {
+      background: rgba($accent-color, 0.1);
+      border: 1px solid rgba($accent-color, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($accent-color, 0.2);
+    }
+  }
+
+  &:not(.clickable-day):hover {
     background: #3a3c40;
-    transform: scale(1.02);
   }
 
   &.other-month {

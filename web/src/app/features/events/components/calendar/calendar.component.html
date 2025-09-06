@@ -25,7 +25,9 @@
                     [class.other-month]="!day.isCurrentMonth"
                     [class.today]="day.isToday"
                     [class.has-events]="day.hasEvents"
-                    (click)="onDayClick(day)">
+                    [class.clickable-day]="canEdit && day.isCurrentMonth"
+                    (click)="onDayClick(day)"
+                    [title]="canEdit && day.isCurrentMonth ? 'Clique para criar evento' : ''">
 
                 <div class="day-number">
                     {{ day.date.getDate() }}

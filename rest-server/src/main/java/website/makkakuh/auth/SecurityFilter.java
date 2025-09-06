@@ -70,7 +70,8 @@ public class SecurityFilter implements ContainerRequestFilter {
         return routingContext.request().method().name().equals("GET") && (
                 path.startsWith("/api/mural") ||
                         path.startsWith("/api/users") ||
-                        path.startsWith("/api/cdn")
+                        path.startsWith("/api/cdn") ||
+                        path.startsWith("/api/events")
         );
     }
 

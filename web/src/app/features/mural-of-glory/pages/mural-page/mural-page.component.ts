@@ -3,7 +3,9 @@ import {MuralService} from '../../services/mural.service';
 import {MemberProfile} from '../../models/member-profile.model';
 import {LoadingComponent} from "../../../../shared/components/loading.component";
 import {MemberCardComponent} from "../../components/member-card/member-card.component";
+import {HonorManagementComponent} from '../../components/honor-management/honor-management.component';
 import {CommonModule} from '@angular/common';
+import {AuthService} from '../../../../core/auth/services/auth.service';
 
 @Component({
     selector: 'app-mural-page',
@@ -13,7 +15,8 @@ import {CommonModule} from '@angular/common';
     imports: [
         CommonModule,
         LoadingComponent,
-        MemberCardComponent
+        MemberCardComponent,
+        HonorManagementComponent
     ]
 })
 export class MuralPageComponent implements OnInit {
@@ -26,8 +29,10 @@ export class MuralPageComponent implements OnInit {
     totalPages = 0;
     totalItems = 0;
 
-    constructor(private muralService: MuralService) {
-    }
+    constructor(
+        private muralService: MuralService,
+        private authService: AuthService
+    ) {}
 
     ngOnInit(): void {
         this.loadMembers();
@@ -70,5 +75,14 @@ export class MuralPageComponent implements OnInit {
         const endPage = Math.min(startPage + maxVisiblePages, this.totalPages);
 
         return Array.from({length: endPage - startPage}, (_, i) => startPage + i);
+    }
+
+    get isAdmin(): boolean {
+        return this.authService.isAdmin();
+    }
+
+    onHonorChanged(): void {
+        // Reload members to reflect any changes in their honors
+        this.loadMembers(this.currentPage);
     }
 }

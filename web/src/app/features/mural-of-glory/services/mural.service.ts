@@ -30,4 +30,31 @@ export class MuralService {
     }> {
         return this.http.get<any>(`${this.apiUrl}/mural?page=${page}&size=${pageSize}`);
     }
+
+    // Honor/Badge management methods
+    getHonors(): Observable<Honor[]> {
+        return this.http.get<Honor[]>(`${this.apiUrl}/honors`);
+    }
+
+    getHonor(id: string): Observable<Honor> {
+        return this.http.get<Honor>(`${this.apiUrl}/honors/${id}`);
+    }
+
+    createHonor(honor: Partial<Honor>): Observable<Honor> {
+        return this.http.post<Honor>(`${this.apiUrl}/honors`, honor);
+    }
+
+    updateHonor(id: string, honor: Partial<Honor>): Observable<Honor> {
+        return this.http.put<Honor>(`${this.apiUrl}/honors/${id}`, honor);
+    }
+
+    deleteHonor(id: string): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/honors/${id}`);
+    }
+
+    uploadHonorIcon(honorId: string, file: File): Observable<any> {
+        const formData = new FormData();
+        formData.append('file', file);
+        return this.http.post<any>(`${this.apiUrl}/honors/${honorId}/icon`, formData);
+    }
 }

@@ -1,0 +1,48 @@
+<div class="modal-backdrop" *ngIf="isVisible" (click)="onBackdropClick($event)">
+    <div class="modal-content" [class]="modalSizeClass">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <ng-container *ngIf="modalHeaderTemplate; else defaultHeader">
+                <ng-container *ngTemplateOutlet="modalHeaderTemplate"></ng-container>
+            </ng-container>
+            
+            <ng-template #defaultHeader>
+                <h2 *ngIf="title">{{ title }}</h2>
+                <button 
+                    *ngIf="showCloseButton" 
+                    class="close-btn" 
+                    (click)="onClose()"
+                    aria-label="Fechar modal">
+                    ×
+                </button>
+            </ng-template>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <ng-container *ngIf="modalBodyTemplate">
+                <ng-container *ngTemplateOutlet="modalBodyTemplate"></ng-container>
+            </ng-container>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer" *ngIf="modalFooterTemplate || buttons.length > 0">
+            <ng-container *ngIf="modalFooterTemplate; else defaultFooter">
+                <ng-container *ngTemplateOutlet="modalFooterTemplate"></ng-container>
+            </ng-container>
+            
+            <ng-template #defaultFooter>
+                <div class="modal-buttons">
+                    <button
+                        *ngFor="let button of buttons"
+                        [class]="'btn ' + (button.classes || 'btn-secondary')"
+                        [disabled]="button.disabled"
+                        (click)="executeButtonAction(button)">
+                        <span *ngIf="button.icon" [innerHTML]="button.icon"></span>
+                        {{ button.label }}
+                    </button>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

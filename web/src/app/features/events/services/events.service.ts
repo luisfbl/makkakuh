@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, BehaviorSubject} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable, BehaviorSubject, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 import {environment} from '../../../../environments/environment';
 
 export interface Event {
@@ -8,6 +9,7 @@ export interface Event {
     title: string;
     description: string;
     date: string;
+    time?: string;
     place: string;
     maxParticipants: number | null;
     recurrence: string;
@@ -69,5 +71,33 @@ export class EventsService {
 
     getMySubscriptions(): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/events/my-subscriptions`);
+    }
+
+    getEventParticipants(eventId: number, page: number = 0, size: number = 10, search?: string): Observable<any> {
+        let params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        
+        if (search && search.trim()) {
+            params = params.set('search', search.trim());
+        }
+
+        return this.http.get<any>(`${this.apiUrl}/events/${eventId}/subscriptions`, { params })
+            .pipe(
+                catchError(error => {
+                    console.error('Error fetching participants:', error);
+                    return throwError(() => error);
+                })
+            );
+    }
+
+    removeParticipant(eventId: number, subscriptionId: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/events/${eventId}/subscriptions/${subscriptionId}`)
+            .pipe(
+                catchError(error => {
+                    console.error('Error removing participant:', error);
+                    return throwError(() => error);
+                })
+            );
     }
 }

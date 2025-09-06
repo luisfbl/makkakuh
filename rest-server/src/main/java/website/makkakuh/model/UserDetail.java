@@ -1,5 +1,6 @@
 package website.makkakuh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
@@ -9,6 +10,7 @@ public class UserDetail extends PanacheEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JsonIgnore
     public User user;
 
     @Column(name = "patent")

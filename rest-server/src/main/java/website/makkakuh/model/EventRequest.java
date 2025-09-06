@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class EventRequest {
     @NotBlank(message = "Title is required")
@@ -15,6 +16,8 @@ public class EventRequest {
     @NotNull(message = "Date is required")
     public LocalDate date;
 
+    public LocalTime time;
+
     @NotBlank(message = "Place is required")
     public String place;
 
@@ -25,10 +28,11 @@ public class EventRequest {
     public EventRequest() {
     }
 
-    public EventRequest(String title, String description, LocalDate date, String place, Integer maxParticipants, String recurrence) {
+    public EventRequest(String title, String description, LocalDate date, LocalTime time, String place, Integer maxParticipants, String recurrence) {
         this.title = title;
         this.description = description;
         this.date = date;
+        this.time = time;
         this.place = place;
         this.maxParticipants = maxParticipants;
         this.recurrence = recurrence != null ? recurrence : "none";
@@ -39,6 +43,7 @@ public class EventRequest {
         event.title = this.title;
         event.description = this.description;
         event.date = this.date;
+        event.time = this.time;
         event.place = this.place;
         event.maxParticipants = this.maxParticipants;
         event.recurrence = this.recurrence;

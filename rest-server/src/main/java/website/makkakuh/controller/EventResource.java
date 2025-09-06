@@ -8,6 +8,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import website.makkakuh.auth.UserContext;
+import website.makkakuh.controller.dto.PaginatedParticipantsDTO;
+import website.makkakuh.controller.dto.ParticipantDTO;
 import website.makkakuh.model.Event;
 import website.makkakuh.model.EventRequest;
 import website.makkakuh.model.Subscription;
@@ -17,6 +19,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Path("/api/events")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,16 +32,10 @@ public class EventResource {
     UserContext userContext;
 
     /**
-     * Get all events (accessible to all authenticated users)
+     * Get all events (public access)
      */
     @GET
     public Response getAllEvents() {
-        if (!userContext.isAuthenticated()) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Map.of("error", "Authentication required"))
-                    .build();
-        }
-
         try {
             List<Event> events = Event.findAllOrdered();
             LOG.info("Retrieved " + events.size() + " events");
@@ -52,17 +49,11 @@ public class EventResource {
     }
 
     /**
-     * Get event by ID (accessible to all authenticated users)
+     * Get event by ID (public access)
      */
     @GET
     @Path("/{id}")
     public Response getEventById(@PathParam("id") Long id) {
-        if (!userContext.isAuthenticated()) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Map.of("error", "Authentication required"))
-                    .build();
-        }
-
         Event event = Event.findById(id);
         if (event == null) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -124,6 +115,7 @@ public class EventResource {
             event.title = eventRequest.title;
             event.description = eventRequest.description;
             event.date = eventRequest.date;
+            event.time = eventRequest.time;
             event.place = eventRequest.place;
             event.maxParticipants = eventRequest.maxParticipants;
             event.recurrence = eventRequest.recurrence;
@@ -173,17 +165,11 @@ public class EventResource {
     }
 
     /**
-     * Get upcoming events (accessible to all authenticated users)
+     * Get upcoming events (public access)
      */
     @GET
     @Path("/upcoming")
     public Response getUpcomingEvents() {
-        if (!userContext.isAuthenticated()) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Map.of("error", "Authentication required"))
-                    .build();
-        }
-
         try {
             List<Event> events = Event.findUpcoming();
             return Response.ok(events).build();
@@ -196,7 +182,7 @@ public class EventResource {
     }
 
     /**
-     * Get events by date range (accessible to all authenticated users)
+     * Get events by date range (public access)
      */
     @GET
     @Path("/date-range")
@@ -204,12 +190,6 @@ public class EventResource {
             @QueryParam("startDate") String startDateStr,
             @QueryParam("endDate") String endDateStr) {
         
-        if (!userContext.isAuthenticated()) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Map.of("error", "Authentication required"))
-                    .build();
-        }
-
         try {
             LocalDate startDate = LocalDate.parse(startDateStr);
             LocalDate endDate = LocalDate.parse(endDateStr);
@@ -325,17 +305,11 @@ public class EventResource {
     }
 
     /**
-     * Get current user's subscription status for an event
+     * Get subscription status for an event (public access)
      */
     @GET
     @Path("/{id}/subscription-status")
     public Response getSubscriptionStatus(@PathParam("id") Long eventId) {
-        if (!userContext.isAuthenticated()) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Map.of("error", "Authentication required"))
-                    .build();
-        }
-
         Event event = Event.findById(eventId);
         if (event == null) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -343,11 +317,17 @@ public class EventResource {
                     .build();
         }
 
-        User currentUser = userContext.getCurrentUser();
-        boolean isSubscribed = Subscription.isUserSubscribed(currentUser, event);
         long totalSubscriptions = Subscription.countByEvent(event);
+        boolean isSubscribed = false;
+        
+        // Check if user is authenticated and subscribed
+        if (userContext.isAuthenticated()) {
+            User currentUser = userContext.getCurrentUser();
+            isSubscribed = Subscription.isUserSubscribed(currentUser, event);
+        }
         
         Map<String, Object> response = new HashMap<>();
+        response.put("isAuthenticated", userContext.isAuthenticated());
         response.put("isSubscribed", isSubscribed);
         response.put("totalSubscriptions", totalSubscriptions);
         response.put("maxParticipants", event.maxParticipants);
@@ -357,11 +337,60 @@ public class EventResource {
     }
 
     /**
-     * Get all subscriptions for an event (admin only)
+     * Get all subscriptions for an event with pagination and search (public access for viewing, admin for removing)
      */
     @GET
     @Path("/{id}/subscriptions")
-    public Response getEventSubscriptions(@PathParam("id") Long eventId) {
+    public Response getEventSubscriptions(
+            @PathParam("id") Long eventId,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("size") @DefaultValue("10") int size,
+            @QueryParam("search") String searchTerm) {
+
+        Event event = Event.findById(eventId);
+        if (event == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("error", "Event not found"))
+                    .build();
+        }
+
+        try {
+            List<Subscription> subscriptions;
+            long totalCount;
+
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                subscriptions = Subscription.findByEventWithSearch(event, searchTerm, page, size);
+                totalCount = Subscription.countByEventWithSearch(event, searchTerm);
+            } else {
+                subscriptions = Subscription.findByEventPaginated(event, page, size);
+                totalCount = Subscription.countByEvent(event);
+            }
+
+            // Convert to DTOs to avoid circular references
+            List<ParticipantDTO> participantDTOs = subscriptions.stream()
+                    .map(ParticipantDTO::new)
+                    .collect(Collectors.toList());
+
+            PaginatedParticipantsDTO response = new PaginatedParticipantsDTO(participantDTOs, totalCount, page, size);
+            return Response.ok(response).build();
+        } catch (Exception e) {
+            LOG.error("Error retrieving event subscriptions", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(Map.of("error", "Failed to retrieve subscriptions"))
+                    .build();
+        }
+    }
+
+    /**
+     * Remove a participant from an event (admin only)
+     */
+    @DELETE
+    @Path("/{eventId}/subscriptions/{subscriptionId}")
+    @Transactional
+    public Response removeParticipant(
+            @PathParam("eventId") Long eventId,
+            @PathParam("subscriptionId") Long subscriptionId) {
+        
         if (!isAdmin()) {
             return Response.status(Response.Status.FORBIDDEN)
                     .entity(Map.of("error", "Admin privileges required"))
@@ -375,13 +404,33 @@ public class EventResource {
                     .build();
         }
 
+        Subscription subscription = Subscription.findById(subscriptionId);
+        if (subscription == null || !subscription.event.id.equals(eventId)) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("error", "Subscription not found"))
+                    .build();
+        }
+
         try {
-            List<Subscription> subscriptions = Subscription.findByEvent(event);
-            return Response.ok(subscriptions).build();
+            User participantUser = subscription.user;
+            subscription.delete();
+            
+            LOG.info("Admin " + userContext.getCurrentUser().id + 
+                    " removed user " + participantUser.id + 
+                    " from event " + eventId);
+            
+            return Response.ok(Map.of(
+                "message", "Participant removed successfully",
+                "removedUser", Map.of(
+                    "id", participantUser.id,
+                    "name", participantUser.name,
+                    "nickname", participantUser.nickname
+                )
+            )).build();
         } catch (Exception e) {
-            LOG.error("Error retrieving event subscriptions", e);
+            LOG.error("Error removing participant from event", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(Map.of("error", "Failed to retrieve subscriptions"))
+                    .entity(Map.of("error", "Failed to remove participant"))
                     .build();
         }
     }

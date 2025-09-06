@@ -1,11 +1,12 @@
-<div class="modal-backdrop" (click)="onBackdropClick($event)">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>{{ modalTitle }}</h2>
-            <button class="close-btn" (click)="onClose()">×</button>
-        </div>
+<app-generic-modal 
+    [title]="modalTitle"
+    [buttons]="modalButtons"
+    [size]="event?.id && !canEdit ? 'large' : 'medium'"
+    [isVisible]="true"
+    (modalClosed)="onClose()">
 
-        <div class="modal-body">
+    <ng-template #modalBody>
+        <div class="event-modal-content">
             <form *ngIf="canEdit; else readOnlyView">
                 <div class="form-group">
                     <label for="title">Título *</label>
@@ -38,6 +39,16 @@
                                 [(ngModel)]="formData.date"
                                 name="date"
                                 required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Horário</label>
+                        <input
+                                type="time"
+                                id="time"
+                                [(ngModel)]="formData.time"
+                                name="time"
+                                placeholder="HH:MM">
                     </div>
 
                     <div class="form-group">
@@ -94,6 +105,11 @@
                             <span>{{ event?.date | date:'dd/MM/yyyy' }}</span>
                         </div>
 
+                        <div class="detail-item" *ngIf="event?.time">
+                            <strong>Horário:</strong>
+                            <span>{{ event?.time }}</span>
+                        </div>
+
                         <div class="detail-item" *ngIf="event?.maxParticipants">
                             <strong>Máx. Participantes:</strong>
                             <span>{{ event?.maxParticipants }}</span>
@@ -110,80 +126,27 @@
                         <span>{{ getRecurrenceLabel(event?.recurrence) }}</span>
                     </div>
 
-                    <!-- Subscription Status -->
-                    <div class="subscription-section" *ngIf="subscriptionStatus">
-                        <div class="detail-item">
-                            <strong>Participantes:</strong>
-                            <span>
-                                {{ subscriptionStatus.totalSubscriptions }}
-                                <span *ngIf="subscriptionStatus.maxParticipants">
-                                    / {{ subscriptionStatus.maxParticipants }}
-                                </span>
-                                <span *ngIf="!subscriptionStatus.maxParticipants">
-                                    participantes
-                                </span>
-                            </span>
-                        </div>
-                        
-                        <div class="subscription-status" *ngIf="subscriptionStatus.isSubscribed">
-                            <div class="status-badge subscribed">
-                                ✓ Você está inscrito neste evento
-                            </div>
-                        </div>
-                        
-                        <div class="subscription-status" *ngIf="subscriptionStatus.isFull && !subscriptionStatus.isSubscribed">
-                            <div class="status-badge full">
-                                🚫 Evento lotado
-                            </div>
+                    <div class="subscription-status" *ngIf="subscriptionStatus.isFull && !subscriptionStatus.isSubscribed">
+                        <div class="status-badge full">
+                            🚫 Evento lotado
                         </div>
                     </div>
+
+                    <app-participants-list
+                        *ngIf="event?.id"
+                        [event]="event"
+                        [canEdit]="canEdit"
+                        (participantRemoved)="onParticipantRemoved()">
+                    </app-participants-list>
                 </div>
             </ng-template>
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn btn-secondary" (click)="onClose()">
-                {{ canEdit ? 'Cancelar' : 'Fechar' }}
-            </button>
-
-            <!-- Admin Actions -->
-            <div class="action-buttons" *ngIf="canEdit">
-                <button
-                        *ngIf="isEditing && event?.id"
-                        class="btn btn-danger"
-                        (click)="onDelete()">
-                    Excluir
-                </button>
-
-                <button
-                        class="btn btn-primary"
-                        (click)="onSave()"
-                        [disabled]="!isFormValid()">
-                    {{ isEditing ? 'Salvar' : 'Criar' }}
-                </button>
-            </div>
-
-            <!-- Subscription Actions (for regular users) -->
-            <div class="subscription-actions" *ngIf="!canEdit && subscriptionStatus && !isLoadingSubscription">
-                <button
-                        *ngIf="!subscriptionStatus.isSubscribed && !subscriptionStatus.isFull"
-                        class="btn btn-success"
-                        (click)="onSubscribe()">
-                    ✓ Confirmar Presença
-                </button>
-
-                <button
-                        *ngIf="subscriptionStatus.isSubscribed"
-                        class="btn btn-warning"
-                        (click)="onUnsubscribe()">
-                    ✗ Cancelar Presença
-                </button>
-            </div>
 
             <!-- Loading State -->
             <div class="loading-subscription" *ngIf="isLoadingSubscription">
-                <span>Carregando...</span>
+                <div class="loading-spinner">
+                    <span>Carregando...</span>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </ng-template>
+</app-generic-modal>

@@ -34,6 +34,11 @@ export class AuthService {
         return this.userSubject.value;
     }
 
+    isAdmin(): boolean {
+        const user = this.userSubject.value;
+        return user?.role === 'ADMIN';
+    }
+
     /**
      * Verifies authentication status by making API call to /api/auth/user
      * This is the primary method to check authentication status

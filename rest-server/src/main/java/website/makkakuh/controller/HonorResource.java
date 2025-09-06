@@ -9,6 +9,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 import website.makkakuh.auth.UserContext;
 import website.makkakuh.model.Honor;
+import website.makkakuh.model.User;
 import website.makkakuh.service.CDNService;
 
 import java.io.IOException;
@@ -57,9 +58,15 @@ public class HonorResource {
     @POST
     @Transactional
     public Response createHonor(Honor honor) {
+        if (!isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(Map.of("error", "Admin privileges required"))
+                    .build();
+        }
+        
         if (honor.name == null || honor.name.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Honor name is required").build();
+                    .entity(Map.of("error", "Honor name is required")).build();
         }
         
         honor.persist();
@@ -70,9 +77,17 @@ public class HonorResource {
     @Path("/{id}")
     @Transactional
     public Response updateHonor(@PathParam("id") Long id, Honor updatedHonor) {
+        if (!isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(Map.of("error", "Admin privileges required"))
+                    .build();
+        }
+        
         Honor honor = Honor.findById(id);
         if (honor == null) {
-            throw new WebApplicationException("Honor not found", Response.Status.NOT_FOUND);
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("error", "Honor not found"))
+                    .build();
         }
         
         honor.name = updatedHonor.name;
@@ -93,9 +108,17 @@ public class HonorResource {
     @Path("/{id}")
     @Transactional
     public Response deleteHonor(@PathParam("id") Long id) {
+        if (!isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(Map.of("error", "Admin privileges required"))
+                    .build();
+        }
+        
         Honor honor = Honor.findById(id);
         if (honor == null) {
-            throw new WebApplicationException("Honor not found", Response.Status.NOT_FOUND);
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("error", "Honor not found"))
+                    .build();
         }
 
         if (honor.iconFilename != null && !honor.iconFilename.isEmpty()) {
@@ -113,21 +136,25 @@ public class HonorResource {
     @POST
     @Path("/{id}/icon")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Transactional
     public Response uploadHonorIcon(
             @PathParam("id") Long id,
             FileUpload file) {
         
+        if (!isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(Map.of("error", "Admin privileges required"))
+                    .build();
+        }
+        
         Honor honor = Honor.findById(id);
         if (honor == null) {
-            throw new WebApplicationException("Honor not found", Response.Status.NOT_FOUND);
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("error", "Honor not found"))
+                    .build();
         }
         
         try {
-            if (userContext.getCurrentUser() == null) {
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(Map.of("error", "Usuário não autenticado"))
-                        .build();
-            }
 
             if (honor.iconFilename != null && !honor.iconFilename.isEmpty()) {
                 try {
@@ -160,5 +187,17 @@ public class HonorResource {
                     .entity(Map.of("error", "Falha ao fazer upload do ícone: " + e.getMessage()))
                     .build();
         }
+    }
+    
+    /**
+     * Check if current user is admin
+     */
+    private boolean isAdmin() {
+        if (!userContext.isAuthenticated()) {
+            return false;
+        }
+        
+        User currentUser = userContext.getCurrentUser();
+        return currentUser != null && "ADMIN".equals(currentUser.role);
     }
 }

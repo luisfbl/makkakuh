@@ -15,41 +15,11 @@
 
         <div class="main-content">
             <div class="container">
-                <div class="achievements-section">
-                    <div class="achievements-grid">
-                        <div class="achievement-card">
-                            <div class="achievement-header">
-                                <h2 class="section-title">Legiões</h2>
-                            </div>
-                            <div class="achievement-content">
-                                <div class="achievement-items">
-                                    <div class="achievement-item" *ngFor="let i of [1,2,3,4]">
-                                        <div class="achievement-icon legion-icon">
-                                            <span class="icon-symbol">L{{ i }}</span>
-                                        </div>
-                                        <h4>Legião {{ i }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="achievement-card">
-                            <div class="achievement-header">
-                                <h2 class="section-title">Feitos Gloriosos</h2>
-                            </div>
-                            <div class="achievement-content">
-                                <div class="achievement-items">
-                                    <div class="achievement-item" *ngFor="let i of [1,2,3,4,5]">
-                                        <div class="achievement-icon glory-icon">
-                                            <span class="icon-symbol">★</span>
-                                        </div>
-                                        <h4>Feito Heroico {{ i }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Honor/Badge Management Section -->
+                <app-honor-management 
+                    [isAdmin]="isAdmin"
+                    (honorChanged)="onHonorChanged()">
+                </app-honor-management>
 
                 <div *ngIf="error" class="error-section">
                     <h3>Ops! Algo deu errado</h3>

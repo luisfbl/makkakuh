@@ -48,6 +48,14 @@
                         <a class="action-icon" routerLink="/eventos" title="Eventos" (click)="closeMobileMenu()">
                             <img src="assets/dashboard_icon.png" alt="Eventos">
                         </a>
+                        <button 
+                            *ngIf="adminModeService.canAccessAdminMode$ | async" 
+                            class="action-icon admin-mode-toggle"
+                            [class.active]="adminModeService.isAdminModeEnabled$ | async"
+                            (click)="adminModeService.toggleAdminMode()"
+                            title="Modo Admin">
+                            <span class="admin-icon">⚙️</span>
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -59,6 +67,14 @@
                 <a class="action-icon" routerLink="/eventos" title="Eventos">
                     <img src="assets/dashboard_icon.png" alt="Eventos">
                 </a>
+                <button 
+                    *ngIf="adminModeService.canAccessAdminMode$ | async" 
+                    class="action-icon admin-mode-toggle"
+                    [class.active]="adminModeService.isAdminModeEnabled$ | async"
+                    (click)="adminModeService.toggleAdminMode()"
+                    title="Modo Admin">
+                    <span class="admin-icon">⚙️</span>
+                </button>
             </div>
         </div>
     </header>
