@@ -1,8 +1,0 @@
-<div class="honor-badge" [title]="honor?.name || 'Honória'">
-  <div class="badge-icon" *ngIf="honorIconUrl" [style.backgroundImage]="'url(' + honorIconUrl + ')'">
-  </div>
-  <div class="badge-icon default-icon" *ngIf="!honorIconUrl">
-    <div class="badge-symbol"></div>
-  </div>
-  <div class="badge-name">{{ honor?.name || 'Honória' }}</div>
-</div>

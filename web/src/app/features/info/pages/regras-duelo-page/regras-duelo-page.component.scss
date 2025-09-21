@@ -1,0 +1,346 @@
+@import "../../../../../styles.scss";
+@import "../../../../../styles/page_header";
+
+.regras-duelo-page {
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    .decoration-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            $accent-color,
+            transparent
+        );
+    }
+
+    .swords-icon {
+        font-size: 2rem;
+        color: $accent-color;
+    }
+
+    @include mobile {
+        .decoration-line {
+            width: 50px;
+        }
+    }
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-family: $secondary-font;
+    font-size: 2.2rem;
+    color: $accent-color;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+    @include mobile {
+        font-size: 1.8rem;
+    }
+}
+
+.sistema-pontos-section {
+    margin-bottom: 4rem;
+}
+
+.pontos-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    border: 1px solid rgba($accent-color, 0.3);
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+}
+
+.body-diagram {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    min-height: 200px;
+
+    .pontos-image {
+        max-width: 100%;
+        max-height: 350px;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    @include mobile {
+        min-height: 300px;
+        padding: 1.5rem;
+    }
+}
+
+.pontos-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba($accent-color, 0.1);
+        transform: translateX(5px);
+    }
+
+    .color-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .legend-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        strong {
+            color: $accent-color;
+            font-size: 1rem;
+        }
+
+        .points {
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .description {
+            color: #ccc;
+            font-size: 0.85rem;
+        }
+    }
+}
+
+.regras-section {
+    margin-bottom: 4rem;
+}
+
+.regras-list {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.regra-item {
+    display: flex;
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid $accent-color;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.05),
+            transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateX(8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+    .regra-number {
+        background: linear-gradient(
+            135deg,
+            $accent-color,
+            darken($accent-color, 10%)
+        );
+        color: #000;
+        font-weight: bold;
+        font-size: 1.2rem;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        font-family: $secondary-font;
+        position: relative;
+        z-index: 2;
+    }
+
+    .regra-content {
+        padding: 1.5rem 2rem;
+        flex: 1;
+        position: relative;
+        z-index: 2;
+
+        p {
+            margin: 0;
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1rem;
+
+            ::ng-deep strong {
+                color: $accent-color;
+                font-weight: bold;
+            }
+        }
+    }
+
+    @include mobile {
+        flex-direction: column;
+
+        .regra-number {
+            min-width: auto;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .regra-content {
+            padding: 1rem 1.5rem 1.5rem 1.5rem;
+
+            p {
+                font-size: 0.95rem;
+            }
+        }
+
+        &:hover {
+            transform: translateX(5px);
+        }
+    }
+}
+
+.importante-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.importante-card {
+    background: linear-gradient(
+        135deg,
+        rgba($accent-color, 0.2),
+        rgba($accent-color, 0.1)
+    );
+    border: 2px solid rgba($accent-color, 0.5);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        border-color: $accent-color;
+    }
+
+    h3 {
+        color: $accent-color;
+        font-size: 1.3rem;
+        margin: 0 0 1rem 0;
+        font-family: $secondary-font;
+    }
+
+    p {
+        color: #e0e0e0;
+        line-height: 1.6;
+        margin: 0;
+        font-size: 1rem;
+
+        strong {
+            color: $accent-color;
+            font-weight: bold;
+        }
+    }
+
+    @include mobile {
+        padding: 1.5rem;
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        p {
+            font-size: 0.95rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 2rem 0;
+    }
+
+    .intro-section {
+        margin-bottom: 3rem;
+    }
+
+    .sistema-pontos-section,
+    .regras-section {
+        margin-bottom: 3rem;
+    }
+}

@@ -1,0 +1,21 @@
+<div class="avatar-container" [class]="sizeClass">
+  <!-- Rank frames (patentes) -->
+  <div class="rank-frames" *ngIf="rankAchievements.length > 0">
+    <div class="rank-frame"
+         *ngFor="let rankAchievement of rankAchievements; let i = index"
+         [style.transform]="'rotate(' + (i * 45) + 'deg)'"
+         [style.z-index]="rankAchievements.length - i">
+      <img [src]="getRankFrameUrl(rankAchievement)"
+           [alt]="rankAchievement.achievement?.name"
+           [title]="rankAchievement.achievement?.name" />
+    </div>
+  </div>
+
+  <!-- Avatar -->
+  <div class="avatar"
+       [style.background-image]="avatarUrl ? 'url(' + avatarUrl + ')' : null">
+    <div class="avatar-placeholder" *ngIf="!avatarUrl">
+      {{ initials }}
+    </div>
+  </div>
+</div>

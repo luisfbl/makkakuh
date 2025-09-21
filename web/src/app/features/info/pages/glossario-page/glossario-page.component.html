@@ -1,0 +1,57 @@
+<div class="glossario-page">
+  <div class="page-header">
+    <div class="header-background"></div>
+    <div class="container">
+      <h1 class="page-title">Glossário do Swordplay</h1>
+      <div class="title-decoration">
+        <div class="decoration-line"></div>
+        <div class="sword-icon">⚔️</div>
+        <div class="decoration-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <div class="intro-section">
+        <p class="intro-text">
+          Nosso esporte é cheio de expressões únicas, que às vezes são difíceis de entender,
+          principalmente para os novatos. O esforço de criar esse glossário é para auxiliar novos
+          colegas a se ambientarem nesse mundo de espadinhas.
+        </p>
+      </div>
+
+      <div class="search-section">
+        <div class="search-container">
+          <input
+            type="text"
+            placeholder="Buscar termo ou definição..."
+            class="search-input"
+            [(ngModel)]="searchTerm"
+            (input)="filterTerms()"
+          >
+          <div class="search-icon">🔍</div>
+        </div>
+      </div>
+
+      <div class="glossary-section">
+        <div class="terms-grid">
+          <div class="term-card" *ngFor="let term of filteredTerms; trackBy: trackByTerm">
+            <div class="term-header">
+              <h3 class="term-name">{{term.term}}</h3>
+            </div>
+            <div class="term-definition">
+              <p [innerHTML]="term.definition"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="no-results" *ngIf="filteredTerms.length === 0">
+          <div class="no-results-icon">🤷‍♂️</div>
+          <h3>Nenhum termo encontrado</h3>
+          <p>Tente buscar por outras palavras-chave ou verifique a ortografia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

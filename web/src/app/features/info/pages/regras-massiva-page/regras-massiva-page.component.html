@@ -1,0 +1,93 @@
+<div class="regras-massiva-page">
+    <div class="page-header">
+        <div class="header-background"></div>
+        <div class="container">
+            <h1 class="page-title">Regras de Massiva</h1>
+            <div class="title-decoration">
+                <div class="decoration-line"></div>
+                <div class="swords-icon">⚔️</div>
+                <div class="decoration-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="intro-section">
+                <p class="intro-text">
+                    Massivas são lutas coletivas, uma forma de jogo para
+                    praticar o trabalho de equipe, treinar o conhecimento tático
+                    e, claro, se divertir. A massiva pode ter diversos tipos de
+                    objetivos e permitir o uso de vários tipos de armas,
+                    incluindo as de ataque a distância ou arremesso.
+                </p>
+            </div>
+
+            <div class="regras-section">
+                <h2 class="section-title">Regras Gerais</h2>
+
+                <div class="regras-list">
+                    <div class="regra-item" *ngFor="let regra of regrasGerais">
+                        <div class="regra-number">{{ regra.number }}</div>
+                        <div class="regra-content">
+                            <p [innerHTML]="regra.text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tipos-jogo-section">
+                <h3 class="subsection-title">Tipos de Sistema de Dano</h3>
+
+                <div class="tipos-grid">
+                    <div class="tipo-card hit-kill">
+                        <h4>Hit Kill</h4>
+                        <p>
+                            Um único golpe válido elimina o jogador
+                            imediatamente.
+                        </p>
+                    </div>
+
+                    <div class="tipo-card dano-simples">
+                        <h4>Dano Simples</h4>
+                        <p>
+                            Sistema de pontos por área atingida, com
+                            possibilidade de acumular danos.
+                        </p>
+                    </div>
+
+                    <div class="tipo-card desmembramento">
+                        <h4>Desmembramento</h4>
+                        <p>
+                            Membro atingido fica inutilizado, mas o jogador
+                            continua no combate.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modalidades-section">
+                <h2 class="section-title">Modalidades Específicas</h2>
+
+                <div class="modalidades-grid">
+                    <div
+                        class="modalidade-card"
+                        *ngFor="let modalidade of modalidadesEspecificas"
+                    >
+                        <h3 class="modalidade-title">{{ modalidade.title }}</h3>
+                        <div class="modalidade-content">
+                            <p class="modalidade-description">
+                                {{ modalidade.description }}
+                            </p>
+                            <ul class="modalidade-rules">
+                                <li *ngFor="let rule of modalidade.rules">
+                                    {{ rule }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

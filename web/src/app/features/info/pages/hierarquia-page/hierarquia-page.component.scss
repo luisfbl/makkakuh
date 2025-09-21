@@ -1,0 +1,293 @@
+@import "../../../../../styles.scss";
+@import "../../../../../styles/page_header";
+
+.hierarquia-page {
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 0;
+}
+
+.patentes-section {
+    margin-bottom: 4rem;
+}
+
+.patente-card {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    border-left: 5px solid;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.patente-header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 1.5rem;
+
+    .patente-symbol {
+        font-size: 3rem;
+        flex-shrink: 0;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .rank-symbol {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .patente-title {
+        flex: 1;
+
+        h3 {
+            margin: 0 0 0.5rem 0;
+            color: $accent-color;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: $secondary-font;
+        }
+
+        .patente-level {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .patente-time {
+            color: #999;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+    }
+
+    .rank-badge,
+    .no-rank-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-align: center;
+        color: #000;
+        line-height: 1.2;
+    }
+
+    .rank-badge {
+        background-color: $accent-color;
+    }
+
+    .no-rank-badge {
+        background: #666;
+        color: #ccc;
+    }
+
+    @include mobile {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+
+        .patente-symbol {
+            font-size: 2.5rem;
+        }
+
+        .patente-title h3 {
+            font-size: 1.3rem;
+        }
+    }
+}
+
+.patente-content {
+    padding: 2rem;
+
+    .patente-section {
+        margin-bottom: 1.5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        h4 {
+            color: $accent-color;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 0 0 0.75rem 0;
+            letter-spacing: 0.5px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                background: rgba(0, 0, 0, 0.3);
+                padding: 0.5rem 1rem;
+                margin-bottom: 0.5rem;
+                border-radius: 6px;
+                border-left: 3px solid $accent-color;
+                color: #e0e0e0;
+                line-height: 1.4;
+                transition: background 0.3s ease;
+
+                &:hover {
+                    background: rgba($accent-color, 0.1);
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    @include mobile {
+        padding: 1.5rem;
+    }
+}
+
+.additional-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.info-card {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba($accent-color, 0.3);
+
+    h3 {
+        color: $accent-color;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin: 0 0 1rem 0;
+        text-align: center;
+        font-family: $secondary-font;
+    }
+
+    h4 {
+        color: $accent-color;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 1.5rem 0 1rem 0;
+    }
+
+    p {
+        color: #e0e0e0;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &.exception-rule {
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.1),
+            rgba($accent-color, 0.05)
+        );
+        border-color: rgba($accent-color, 0.5);
+        text-align: center;
+
+        p {
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+    }
+
+    @include mobile {
+        padding: 1.5rem;
+    }
+}
+
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.equipment-item {
+    background: rgba($accent-color, 0.1);
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: $accent-color;
+    border: 1px solid rgba($accent-color, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba($accent-color, 0.2);
+        transform: scale(1.02);
+    }
+}
+
+.equipment-notes {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    p {
+        font-size: 0.85rem;
+        color: #ccc;
+    }
+}
+
+.advancement-notes {
+    p {
+        font-size: 0.9rem;
+        color: #ddd;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 2rem 0;
+    }
+
+    .intro-section {
+        margin-bottom: 2rem;
+    }
+
+    .patentes-section {
+        margin-bottom: 3rem;
+    }
+
+    .equipment-grid {
+        grid-template-columns: 1fr;
+    }
+}

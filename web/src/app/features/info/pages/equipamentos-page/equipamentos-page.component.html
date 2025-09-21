@@ -1,0 +1,250 @@
+<div class="equipamentos-page">
+    <div class="page-header">
+        <div class="header-background"></div>
+        <div class="container">
+            <h1 class="page-title">Equipamentos</h1>
+            <div class="title-decoration">
+                <div class="decoration-line"></div>
+                <div class="weapons-icon">⚔️</div>
+                <div class="decoration-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- Introdução -->
+            <div class="intro-section">
+                <p class="intro-text">
+                    Os equipamentos são uma parte essencial do swordplay.
+                    Dividimos esses objetos em armas, escudos e armaduras. Eis
+                    aqui o que você precisa saber para garantir a sua segurança
+                    e diversão de todos:
+                </p>
+            </div>
+
+            <!-- Limites de Equipamentos -->
+            <div class="limits-section">
+                <div class="limits-card">
+                    <h2 class="limits-title">Limites de Equipamentos:</h2>
+
+                    <p class="limits-intro">
+                        Afinal, quantos equipamentos eu posso carregar? Para
+                        evitar que alguém fique mais carregado do que uma árvore
+                        de natal ou utilize combinações abusivas ou irreais,
+                        siga essas orientações abaixo e tudo dará certo.
+                    </p>
+
+                    <div class="limits-table">
+                        <div class="table-header">
+                            <div class="header-col equipment">Equipamentos</div>
+                            <div class="header-col values">Valores</div>
+                        </div>
+
+                        <div
+                            class="table-row"
+                            *ngFor="let limit of equipmentLimits"
+                        >
+                            <div class="equipment-name">{{ limit.name }}</div>
+                            <div class="equipment-points">
+                                {{ limit.points }} ponto{{
+                                    limit.points > 1 ? "s" : ""
+                                }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rules-section">
+                        <h3>Regras</h3>
+                        <ul class="rules-list">
+                            <li *ngFor="let rule of limitRules">{{ rule }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="prohibited-section">
+                        <h3>
+                            O que <span class="not-text">não</span> é permitido
+                            durante a massiva
+                        </h3>
+                        <ul class="prohibited-list">
+                            <li *ngFor="let item of prohibitedMassiva">
+                                {{ item }}
+                            </li>
+                        </ul>
+
+                        <div class="special-rules">
+                            <div class="special-rule">
+                                <strong>Regra das Flechas:</strong> Carregar até
+                                10 flechas não custa pontos de equipamento. Cada
+                                conjunto de até 5 flechas acima disso custa 1
+                                ponto.
+                            </div>
+
+                            <div class="special-rule">
+                                <strong>Regra do Arqueiro:</strong> Caso um
+                                arqueiro consiga pegar a flecha de outro
+                                arqueiro NO AR, ele poderá utilizar essa flecha
+                                uma única vez, em seu próximo tiro.
+                            </div>
+
+                            <div class="special-rule">
+                                <strong>Regra do Escudo:</strong> Aquele que
+                                carrega um escudo pode carregar uma arma longa e
+                                uma arma curta embainhada, que totalizariam 6
+                                pontos, desde que nenhuma delas seja de
+                                arremesso.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regras de Segurança -->
+            <div class="security-section">
+                <h2 class="section-title">
+                    Regras de Segurança dos Equipamentos:
+                </h2>
+
+                <div class="security-subsection">
+                    <h3>Regras Gerais:</h3>
+
+                    <div class="security-rules">
+                        <div
+                            class="security-rule"
+                            *ngFor="let rule of securityRules"
+                        >
+                            <h4>{{ rule.title }}</h4>
+                            <p>{{ rule.content }}</p>
+                        </div>
+                    </div>
+
+                    <div class="maintenance-warning">
+                        <p>
+                            <strong
+                                >Faça sempre a manutenção de sua arma.</strong
+                            >
+                            Apalpe-a espuma, repare cortes com fita e verifique
+                            se o material está bem colado no cano. Caso perceba
+                            que o cano esteja trincado ou quebrado, descarte-o
+                            imediatamente!
+                        </p>
+                    </div>
+
+                    <div class="prohibited-weapons">
+                        <p>
+                            Não são permitidas armas que utilizem movimento de
+                            soco, tais como katar ou tonfas.
+                        </p>
+                    </div>
+
+                    <div class="arsenal-contact">
+                        <p>
+                            Caso sua arma não se encaixe em nenhum padrão,
+                            verifique com o
+                            <a href="/info/organizacao" class="arsenal-link"
+                                >Mestre do Arsenal</a
+                            >. Ele é a autoridade competente sobre seguranças
+                            das armas e pode permitir ou banir armas sempre que
+                            preciso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regras Específicas -->
+            <div class="specific-rules-section">
+                <h2 class="section-title">Regras Específicas:</h2>
+
+                <div class="weapons-grid">
+                    <div class="weapon-card" *ngFor="let weapon of weaponTypes">
+                        <div class="weapon-header">
+                            <h3>{{ weapon.title }}</h3>
+                        </div>
+                        <div class="weapon-content">
+                            <div class="weapon-description">
+                                <p>{{ weapon.description }}</p>
+                                <div
+                                    class="weapon-details"
+                                    *ngIf="weapon.details"
+                                >
+                                    <p *ngFor="let detail of weapon.details">
+                                        {{ detail }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regras de Armadura -->
+            <div class="armor-section">
+                <h2 class="section-title">Regras de Armadura</h2>
+
+                <div class="armor-intro">
+                    <p>
+                        As peças de proteção (armaduras e escudos) são criadas
+                        para garantir a sobrevivência de um lutador em combate.
+                        Seu uso torna aquela região imune a dano e podem ser
+                        usadas para bloquear, mas seu designer pode,
+                        ocasionalmente, tornar o combatente mais lento ou
+                        desajeitado. Lembre-se de garantir que sua peça esteja
+                        dentro dos limites de equipamento (início da página).
+                    </p>
+                </div>
+
+                <div class="armor-diagram-section">
+                    <div class="armor-grid">
+                        <div class="armor-pieces-list">
+                            <div
+                                class="armor-piece"
+                                *ngFor="let piece of armorPieces"
+                                [style.border-left-color]="piece.color"
+                            >
+                                <div
+                                    class="piece-header"
+                                    [style.background]="
+                                        'linear-gradient(135deg, ' +
+                                        piece.color +
+                                        '20, ' +
+                                        piece.color +
+                                        '10)'
+                                    "
+                                >
+                                    <h4>{{ piece.name }}</h4>
+                                </div>
+                                <div class="piece-content">
+                                    <p>{{ piece.description }}</p>
+                                    <div
+                                        class="piece-special"
+                                        *ngIf="piece.special"
+                                    >
+                                        <strong>ESPECIAL:</strong>
+                                        {{ piece.special }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="armor-diagram">
+                            <div class="armor-image-container">
+                                <img
+                                    src="assets/armadura.png"
+                                    alt="Diagrama de Armaduras"
+                                    class="armor-diagram-image"
+                                />
+                                <div class="armor-image-caption">
+                                    <p>Diagrama de Armaduras</p>
+                                    <small
+                                        >Imagem ilustrativa das peças de
+                                        armadura no corpo</small
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

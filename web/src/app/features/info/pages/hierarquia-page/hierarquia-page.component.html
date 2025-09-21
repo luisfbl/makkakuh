@@ -1,0 +1,170 @@
+<div class="hierarquia-page">
+    <div class="page-header">
+        <div class="header-background"></div>
+        <div class="container">
+            <h1 class="page-title">Hierarquia e Patentes</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="intro-section">
+                <p class="intro-text">
+                    Aos membros do Makka-Kuh, são dadas responsabilidades
+                    proporcionais ao seu avanço e entendimento do clã e do
+                    swordplay. Nossas patentes têm origem na hierarquia dos
+                    samurais e têm o objetivo de orientar a evolução pessoal dos
+                    membros durante os treinamentos. Lembre-se: Você vale mais
+                    do que a sua patente.
+                </p>
+            </div>
+
+            <div class="patentes-section">
+                <div
+                    class="patente-card"
+                    *ngFor="let patente of patentes"
+                    [style.border-left-color]="patente.color"
+                >
+                    <div
+                        class="patente-header"
+                        [style.background]="
+                            'linear-gradient(135deg, ' +
+                            patente.color +
+                            '20, ' +
+                            patente.color +
+                            '10)'
+                        "
+                    >
+                        <div class="patente-symbol" *ngIf="patente.symbol">
+                            <img
+                                *ngIf="!patente.symbol.includes('<')"
+                                [src]="patente.symbol"
+                                [alt]="patente.name + ' symbol'"
+                                class="rank-symbol"
+                            />
+                            <span
+                                *ngIf="patente.symbol.includes('<')"
+                                [innerHTML]="patente.symbol"
+                            ></span>
+                        </div>
+                        <div class="patente-title">
+                            <h3>{{ patente.name }}</h3>
+                            <div
+                                class="patente-level"
+                                *ngIf="patente.hasRank !== false"
+                            >
+                                NÍVEL {{ patente.level }}
+                            </div>
+                            <div class="patente-time">
+                                {{ patente.timeRequired }}
+                            </div>
+                        </div>
+                        <div
+                            class="rank-badge"
+                            *ngIf="patente.hasRank !== false"
+                            [style.background-color]="patente.color"
+                        >
+                            Marca de patente
+                        </div>
+                        <div
+                            class="no-rank-badge"
+                            *ngIf="patente.hasRank === false"
+                        >
+                            NÃO POSSUI<br />Marca de patente
+                        </div>
+                    </div>
+
+                    <div class="patente-content">
+                        <div class="patente-section">
+                            <h4>REQUISITOS:</h4>
+                            <ul>
+                                <li *ngFor="let req of patente.requirements">
+                                    {{ req }}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="patente-section">
+                            <h4>OBJETIVOS:</h4>
+                            <ul>
+                                <li *ngFor="let obj of patente.objectives">
+                                    {{ obj }}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="patente-section">
+                            <h4>DEVERES:</h4>
+                            <ul>
+                                <li *ngFor="let duty of patente.duties">
+                                    {{ duty }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="additional-info">
+                <div class="info-card">
+                    <h3>DIREITO DE EQUIPAMENTOS</h3>
+                    <p>
+                        Aquele que conseguir efetuar trocas de qualquer tipo de
+                        equipamento do clã ou adquirir equipamentos básicos e
+                        obrigatórios também poderá ter a formação completa do
+                        clã mediante valor específico de orientações médicas e
+                        falta de segurança da assembleia para que o membro torne
+                        específico de seu clã pode através de aviso que possuirá
+                        acesso, bem quanto que cada equipamento deve ainda bem
+                        dentro do código da cachoeira.
+                    </p>
+
+                    <h4>CONJUNTO DE EQUIPAMENTOS</h4>
+                    <div class="equipment-grid">
+                        <div
+                            class="equipment-item"
+                            *ngFor="let equipment of equipmentRequirements"
+                        >
+                            {{ equipment }}
+                        </div>
+                    </div>
+
+                    <div class="equipment-notes">
+                        <p *ngFor="let note of equipmentNotes">{{ note }}</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>ADESÃO E AVANÇO</h3>
+                    <p>
+                        • Não esqueça de conferir com os que responsável pelo
+                        novo grupo ou não estiver em reunião com eles com
+                        treinos.
+                    </p>
+                    <p>
+                        • Para proposto do avanço do clã você deveria ter
+                        interesse ou participação básica que quer dizer que cada
+                        membro será responsável em fazer conhecimento adequado e
+                        desenvolvimento de técnicas.
+                    </p>
+                    <p>
+                        • Participação de reuniões ou treinos com outros membros
+                        relacionados com instruções.
+                    </p>
+
+                    <h4>AVANCONISMO DE PATENTE</h4>
+                    <div class="advancement-notes">
+                        <p *ngFor="let note of advancementNotes">
+                            • {{ note }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-card exception-rule">
+                    <h3>REGRA DA EXCEPCIONALIDADE</h3>
+                    <p>{{ exceptionRule }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

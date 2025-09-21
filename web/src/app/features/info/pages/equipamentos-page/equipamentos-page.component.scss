@@ -1,0 +1,567 @@
+@import "../../../../../styles.scss";
+@import "../../../../../styles/page_header";
+
+.equipamentos-page {
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    .decoration-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            $accent-color,
+            transparent
+        );
+    }
+
+    .weapons-icon {
+        font-size: 2rem;
+        color: $accent-color;
+    }
+
+    @include mobile {
+        .decoration-line {
+            width: 50px;
+        }
+    }
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-family: $secondary-font;
+    font-size: 2.2rem;
+    color: $accent-color;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+    @include mobile {
+        font-size: 1.8rem;
+    }
+}
+
+// Seção de Limites
+.limits-section {
+    margin-bottom: 5rem;
+}
+
+.limits-card {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    border: 2px solid rgba($accent-color, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    max-width: 1000px;
+    margin: 0 auto;
+
+    .limits-title {
+        font-family: $secondary-font;
+        font-size: 2rem;
+        color: $accent-color;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .limits-intro {
+        color: #e0e0e0;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    @include mobile {
+        padding: 2rem;
+    }
+}
+
+.limits-table {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+
+    .table-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        background: linear-gradient(
+            135deg,
+            $accent-color,
+            darken($accent-color, 10%)
+        );
+        color: #000;
+        font-weight: bold;
+        padding: 1rem;
+
+        .header-col {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+    }
+
+    .table-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: background 0.3s ease;
+
+        &:hover {
+            background: rgba($accent-color, 0.1);
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .equipment-name {
+            color: #e0e0e0;
+            padding-left: 1rem;
+        }
+
+        .equipment-points {
+            text-align: center;
+            color: $accent-color;
+            font-weight: bold;
+        }
+    }
+
+    @include mobile {
+        .table-header,
+        .table-row {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .equipment-name {
+            padding-left: 0;
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+.rules-section,
+.prohibited-section {
+    margin-bottom: 2rem;
+
+    h3 {
+        color: $accent-color;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    .not-text {
+        color: #ff4444;
+        font-weight: bold;
+    }
+}
+
+.rules-list,
+.prohibited-list {
+    list-style: none;
+    padding: 0;
+
+    li {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        border-left: 3px solid $accent-color;
+        color: #e0e0e0;
+        line-height: 1.5;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: rgba($accent-color, 0.1);
+            transform: translateX(5px);
+        }
+    }
+}
+
+.prohibited-list li {
+    border-left-color: #ff4444;
+
+    &:hover {
+        background: rgba(255, 68, 68, 0.1);
+    }
+}
+
+.special-rules {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    .special-rule {
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.2),
+            rgba($accent-color, 0.1)
+        );
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        border: 1px solid rgba($accent-color, 0.3);
+        color: #e0e0e0;
+        line-height: 1.5;
+
+        strong {
+            color: $accent-color;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// Seção de Segurança
+.security-section {
+    margin-bottom: 5rem;
+}
+
+.security-subsection h3 {
+    color: $accent-color;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.security-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.security-rule {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 10px;
+    padding: 1.5rem;
+    border-left: 4px solid $accent-color;
+
+    h4 {
+        color: $accent-color;
+        margin: 0 0 0.75rem 0;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    p {
+        color: #e0e0e0;
+        line-height: 1.6;
+        margin: 0;
+    }
+}
+
+.maintenance-warning,
+.prohibited-weapons,
+.arsenal-contact {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+
+    p {
+        margin: 0;
+        color: #e0e0e0;
+        line-height: 1.6;
+
+        strong {
+            color: #ff6b6b;
+        }
+    }
+
+    .arsenal-link {
+        color: $accent-color;
+        text-decoration: underline;
+
+        &:hover {
+            color: lighten($accent-color, 10%);
+        }
+    }
+}
+
+// Seção de Regras Específicas
+.specific-rules-section {
+    margin-bottom: 5rem;
+}
+
+.weapons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.weapon-card {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba($accent-color, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        border-color: rgba($accent-color, 0.5);
+    }
+
+    .weapon-header {
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.3),
+            rgba($accent-color, 0.2)
+        );
+        padding: 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid rgba($accent-color, 0.3);
+
+        h3 {
+            margin: 0;
+            color: $accent-color;
+            font-size: 1.3rem;
+            font-family: $secondary-font;
+        }
+    }
+
+    .weapon-content {
+        padding: 1.5rem;
+
+        .weapon-description {
+            p {
+                color: #e0e0e0;
+                line-height: 1.6;
+                margin-bottom: 1rem;
+                font-size: 0.95rem;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// Seção de Armadura
+.armor-section {
+    margin-bottom: 3rem;
+}
+
+.armor-intro {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+
+    p {
+        color: #e0e0e0;
+        line-height: 1.7;
+        font-size: 1.1rem;
+    }
+}
+
+.armor-diagram-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.armor-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 2rem;
+    align-items: start;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 2rem;
+    }
+}
+
+.armor-pieces-list {
+    display: contents;
+}
+
+.armor-piece {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    border-left: 4px solid;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    // Grid positioning for armor pieces around the diagram
+    &:nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+    } // Top-left
+    &:nth-child(2) {
+        grid-column: 1;
+        grid-row: 2;
+    } // Middle-left
+    &:nth-child(3) {
+        grid-column: 1;
+        grid-row: 3;
+    } // Bottom-left
+    &:nth-child(4) {
+        grid-column: 3;
+        grid-row: 1;
+    } // Top-right
+    &:nth-child(5) {
+        grid-column: 3;
+        grid-row: 2;
+    } // Middle-right
+    &:nth-child(6) {
+        grid-column: 3;
+        grid-row: 3;
+    } // Bottom-right
+
+    @include mobile {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+
+    .piece-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        h4 {
+            margin: 0;
+            color: $accent-color;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+    }
+
+    .piece-content {
+        padding: 1.5rem;
+
+        p {
+            margin: 0 0 1rem 0;
+            color: #e0e0e0;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .piece-special {
+            background: rgba($accent-color, 0.2);
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #e0e0e0;
+
+            strong {
+                color: $accent-color;
+            }
+        }
+    }
+}
+
+.armor-diagram {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include mobile {
+        grid-column: 1;
+        grid-row: 1;
+        order: -1;
+    }
+
+    .armor-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 500px;
+
+        .armor-diagram-image {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba($accent-color, 0.3);
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+                border-color: $accent-color;
+            }
+        }
+
+        .armor-image-caption {
+            text-align: center;
+            margin-top: 1rem;
+
+            p {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.1rem;
+                color: $accent-color;
+            }
+
+            small {
+                font-size: 0.85rem;
+                color: #ccc;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 2rem 0;
+    }
+
+    .intro-section {
+        margin-bottom: 3rem;
+    }
+
+    .limits-section,
+    .security-section,
+    .specific-rules-section {
+        margin-bottom: 4rem;
+    }
+}

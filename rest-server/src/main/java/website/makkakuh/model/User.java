@@ -3,12 +3,12 @@ package website.makkakuh.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User extends PanacheEntity {
+
     @Column(name = "name", nullable = false)
     public String name;
 
@@ -23,7 +23,7 @@ public class User extends PanacheEntity {
 
     @Column(name = "oauth_id")
     public String oauthId;
-    
+
     @Column(name = "oauth_method")
     public String oauthMethod;
 
@@ -35,7 +35,7 @@ public class User extends PanacheEntity {
 
     @Column(name = "type")
     public String type;
-    
+
     @Column(name = "locale")
     public String locale;
 
@@ -50,7 +50,15 @@ public class User extends PanacheEntity {
     @JsonIgnore
     public List<UserHonor> honors;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    public List<UserAchievement> achievements;
+
+    @OneToOne(
+        mappedBy = "user",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY
+    )
     @JsonIgnore
     public UserDetail detail;
 
@@ -59,6 +67,10 @@ public class User extends PanacheEntity {
     }
 
     public static User findByOauthId(String oauthId, String oauthMethod) {
-        return find("oauthId = ?1 and oauthMethod = ?2", oauthId, oauthMethod).firstResult();
+        return find(
+            "oauthId = ?1 and oauthMethod = ?2",
+            oauthId,
+            oauthMethod
+        ).firstResult();
     }
 }

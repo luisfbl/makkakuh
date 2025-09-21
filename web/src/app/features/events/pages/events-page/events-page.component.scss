@@ -1,112 +1,116 @@
-@import '../../../../../styles.scss';
+@import "../../../../../styles.scss";
 
 .events-page {
-  background-color: #2B2D31;
-  min-height: 100vh;
-  color: $text-color;
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
 
-  @include mobile {
-    padding: 0 1rem;
-  }
+    @include mobile {
+        padding: 0 1rem;
+    }
 }
 
 .page-header {
-  background: linear-gradient(135deg, #363636 0%, #2B2D31 100%);
-  padding: 3rem 0;
-  text-align: center;
-  border-bottom: 2px solid $accent-color;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @include mobile {
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-  }
-
-  h1 {
-    font-family: $secondary-font;
-    font-size: 3.5rem;
-    color: $accent-color;
-    margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #363636 0%, #2b2d31 100%);
+    padding: 3rem 0;
+    border-bottom: 2px solid $accent-color;
+    position: relative;
 
     @include mobile {
-      font-size: 2.5rem;
+        text-align: center;
     }
-  }
 
-  .page-actions {
-    display: flex;
-    gap: 1rem;
+    h1 {
+        font-family: $secondary-font;
+        font-size: 3.5rem;
+        color: $accent-color;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-align: center;
 
-    @include mobile {
-      flex-direction: column;
-      width: 100%;
+        @include mobile {
+            font-size: 2.5rem;
+        }
     }
-  }
+
+    .page-actions {
+        position: absolute;
+        top: 50%;
+        right: 2rem;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 1rem;
+
+        @include mobile {
+            position: static;
+            transform: none;
+            margin-top: 1.5rem;
+            flex-direction: column;
+            width: 100%;
+            padding: 0 1rem;
+        }
+    }
 }
 
 .events-content {
-  padding: 2rem 0;
+    padding: 2rem 0;
 
-  @include mobile {
-    padding: 1rem 0;
-  }
+    @include mobile {
+        padding: 1rem 0;
+    }
 }
 
 .calendar-section,
 .list-section {
-  width: 100%;
+    width: 100%;
 }
 
 .btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-  transition: all 0.3s ease;
-  font-family: $primary-font;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-family: $primary-font;
 
-  &.btn-primary {
-    background: $accent-color;
-    color: #2B2D31;
+    &.btn-primary {
+        background: $accent-color;
+        color: #2b2d31;
 
-    &:hover {
-      background: #FFD700;
-      transform: translateY(-1px);
+        &:hover {
+            background: #ffd700;
+            transform: translateY(-1px);
+        }
     }
-  }
 
-  &.btn-secondary {
-    background: #363636;
-    color: $text-color;
-    border: 1px solid rgba($accent-color, 0.3);
+    &.btn-secondary {
+        background: #363636;
+        color: $text-color;
+        border: 1px solid rgba($accent-color, 0.3);
 
-    &:hover {
-      background: #3a3c40;
-      border-color: $accent-color;
+        &:hover {
+            background: #3a3c40;
+            border-color: $accent-color;
+        }
     }
-  }
 
-  &.btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
+    &.btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
 
-  @include mobile {
-    width: 100%;
-    padding: 1rem;
-  }
+    @include mobile {
+        width: 100%;
+        padding: 1rem;
+    }
 }

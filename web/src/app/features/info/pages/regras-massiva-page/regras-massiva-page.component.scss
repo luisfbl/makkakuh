@@ -1,0 +1,413 @@
+@import "../../../../../styles.scss";
+@import "../../../../../styles/page_header";
+
+.regras-massiva-page {
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    .decoration-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            $accent-color,
+            transparent
+        );
+    }
+
+    .swords-icon {
+        font-size: 2rem;
+        color: $accent-color;
+    }
+
+    @include mobile {
+        .decoration-line {
+            width: 50px;
+        }
+    }
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-family: $secondary-font;
+    font-size: 2.2rem;
+    color: $accent-color;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+    @include mobile {
+        font-size: 1.8rem;
+    }
+}
+
+.regras-section {
+    margin-bottom: 4rem;
+}
+
+.regras-list {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.regra-item {
+    display: flex;
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid $accent-color;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.05),
+            transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateX(8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+    .regra-number {
+        background: linear-gradient(
+            135deg,
+            $accent-color,
+            darken($accent-color, 10%)
+        );
+        color: #000;
+        font-weight: bold;
+        font-size: 1.2rem;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        font-family: $secondary-font;
+        position: relative;
+        z-index: 2;
+    }
+
+    .regra-content {
+        padding: 1.5rem 2rem;
+        flex: 1;
+        position: relative;
+        z-index: 2;
+
+        p {
+            margin: 0;
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 1rem;
+
+            ::ng-deep strong {
+                color: $accent-color;
+                font-weight: bold;
+
+                &.hit-kill {
+                    color: #ff4444;
+                }
+
+                &.dano-simples {
+                    color: #44ff44;
+                }
+
+                &.desmembramento {
+                    color: #4444ff;
+                }
+            }
+        }
+    }
+
+    @include mobile {
+        flex-direction: column;
+
+        .regra-number {
+            min-width: auto;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .regra-content {
+            padding: 1rem 1.5rem 1.5rem 1.5rem;
+
+            p {
+                font-size: 0.95rem;
+            }
+        }
+
+        &:hover {
+            transform: translateX(5px);
+        }
+    }
+}
+
+.tipos-jogo-section {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    border: 1px solid rgba($accent-color, 0.3);
+    max-width: 800px;
+    margin: 0 auto;
+
+    .subsection-title {
+        font-family: $secondary-font;
+        font-size: 1.8rem;
+        color: $accent-color;
+        text-align: center;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    @include mobile {
+        padding: 2rem 1.5rem;
+
+        .subsection-title {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+.tipos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+.tipo-card {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, currentColor, transparent);
+        opacity: 0.1;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+
+        &::before {
+            opacity: 0.2;
+        }
+    }
+
+    h4 {
+        margin: 0 0 1rem 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        font-family: $secondary-font;
+        position: relative;
+        z-index: 2;
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.5;
+        font-size: 0.9rem;
+        color: #ddd;
+        position: relative;
+        z-index: 2;
+    }
+
+    &.hit-kill {
+        border-color: #ff4444;
+        color: #ff4444;
+    }
+
+    &.dano-simples {
+        border-color: #44ff44;
+        color: #44ff44;
+    }
+
+    &.desmembramento {
+        border-color: #4444ff;
+        color: #4444ff;
+    }
+
+    @include mobile {
+        padding: 1.25rem;
+    }
+}
+
+// Modalidades Específicas Section
+.modalidades-section {
+    margin-top: 4rem;
+}
+
+.modalidades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.modalidade-card {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    border-left: 4px solid $accent-color;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, $accent-color, transparent);
+        opacity: 0.1;
+        border-radius: 0 15px 0 100px;
+    }
+}
+
+.modalidade-title {
+    color: $accent-color;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+    font-family: $secondary-font;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modalidade-content {
+    position: relative;
+    z-index: 2;
+}
+
+.modalidade-description {
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    border-bottom: 1px solid rgba($accent-color, 0.3);
+    padding-bottom: 1rem;
+}
+
+.modalidade-rules {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        color: #e0e0e0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 0.8rem;
+        padding-left: 1.5rem;
+        position: relative;
+
+        &:before {
+            content: "⚔";
+            position: absolute;
+            left: 0;
+            color: $accent-color;
+            font-weight: bold;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 2rem 0;
+    }
+
+    .intro-section {
+        margin-bottom: 3rem;
+    }
+
+    .regras-section {
+        margin-bottom: 3rem;
+    }
+
+    .modalidades-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modalidade-card {
+        padding: 1.5rem;
+    }
+
+    .modalidade-title {
+        font-size: 1.1rem;
+    }
+}

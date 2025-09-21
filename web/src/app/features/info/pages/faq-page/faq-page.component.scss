@@ -1,0 +1,206 @@
+@import "../../../../../styles.scss";
+@import "../../../../../styles/page_header";
+
+.faq-page {
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    .decoration-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            $accent-color,
+            transparent
+        );
+    }
+
+    .smiley-icon {
+        font-size: 2rem;
+        color: $accent-color;
+    }
+
+    @include mobile {
+        .decoration-line {
+            width: 50px;
+        }
+    }
+}
+
+.faq-section {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba($accent-color, 0.2);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.05),
+            transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        border-color: rgba($accent-color, 0.4);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+    &.expanded {
+        border-color: $accent-color;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+        &::before {
+            opacity: 1;
+        }
+
+        .faq-question {
+            background: linear-gradient(
+                135deg,
+                rgba($accent-color, 0.3),
+                rgba($accent-color, 0.2)
+            );
+            border-bottom: 1px solid rgba($accent-color, 0.4);
+        }
+    }
+}
+
+.faq-question {
+    padding: 2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+
+    h3 {
+        margin: 0;
+        color: $accent-color;
+        font-size: 1.2rem;
+        font-weight: bold;
+        line-height: 1.4;
+        flex: 1;
+        padding-right: 1rem;
+    }
+
+    .toggle-icon {
+        font-size: 1.5rem;
+        color: $accent-color;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+
+        &.rotated {
+            transform: rotate(180deg);
+        }
+    }
+
+    &:hover {
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.2),
+            rgba($accent-color, 0.1)
+        );
+    }
+
+    @include mobile {
+        padding: 1.5rem;
+
+        h3 {
+            font-size: 1.1rem;
+        }
+
+        .toggle-icon {
+            font-size: 1.3rem;
+        }
+    }
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    position: relative;
+    z-index: 2;
+
+    &.show {
+        max-height: 500px;
+        transition: max-height 0.4s ease-in;
+    }
+
+    .answer-content {
+        padding: 1rem 2rem 2rem 2rem;
+
+        p {
+            margin: 0;
+            color: #e0e0e0;
+            line-height: 1.7;
+            font-size: 1rem;
+
+            ::ng-deep .faq-link {
+                color: $accent-color;
+                text-decoration: underline;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: lighten($accent-color, 10%);
+                    text-decoration: none;
+                }
+            }
+        }
+
+        @include mobile {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+
+            p {
+                font-size: 0.95rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 2rem 0;
+    }
+
+    .faq-section {
+        margin-bottom: 2rem;
+    }
+
+    .faq-item {
+        margin-bottom: 1rem;
+    }
+}

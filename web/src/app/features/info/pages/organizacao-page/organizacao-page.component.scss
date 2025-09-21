@@ -1,0 +1,277 @@
+@import '../../../../../styles.scss';
+@import "../../../../../styles/page_header";
+
+.organizacao-page {
+  background-color: #2B2D31;
+  min-height: 100vh;
+  color: $text-color;
+}
+
+.intro-section {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #e0e0e0;
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-family: $secondary-font;
+  font-size: 2.5rem;
+  color: $accent-color;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+.conselho-section {
+  margin-bottom: 5rem;
+}
+
+.conselho-description {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+  }
+}
+
+.cargos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.cargo-card {
+  background: linear-gradient(135deg, #363636 0%, #404040 100%);
+  border-radius: 15px;
+  padding: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba($accent-color, 0.2);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($accent-color, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    border-color: rgba($accent-color, 0.5);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  .cargo-header {
+    background: linear-gradient(135deg, rgba($accent-color, 0.2), rgba($accent-color, 0.1));
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba($accent-color, 0.3);
+    position: relative;
+    z-index: 2;
+
+    .cargo-title {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
+    .cargo-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: $accent-color;
+      font-family: $secondary-font;
+    }
+  }
+
+  .cargo-content {
+    padding: 1.5rem;
+    position: relative;
+    z-index: 2;
+
+    .cargo-description {
+      margin-bottom: 1.5rem;
+
+      p {
+        color: #e0e0e0;
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+    }
+
+    .cargo-responsibilities {
+      margin-bottom: 1.5rem;
+
+      h4 {
+        color: $accent-color;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      p {
+        color: #d0d0d0;
+        line-height: 1.5;
+        font-size: 0.9rem;
+      }
+    }
+
+    .current-occupant {
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      border-left: 3px solid $accent-color;
+
+      strong {
+        color: $accent-color;
+        margin-right: 0.5rem;
+      }
+
+      .occupant-name {
+        color: #fff;
+        font-weight: 500;
+      }
+    }
+  }
+
+  @include mobile {
+    .cargo-header {
+      padding: 1.25rem;
+
+      .cargo-name {
+        font-size: 1.2rem;
+      }
+    }
+
+    .cargo-content {
+      padding: 1.25rem;
+    }
+  }
+}
+
+.conselho-guerra-section {
+  margin-bottom: 3rem;
+}
+
+.guerra-description {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+  }
+}
+
+.funcoes-guerra {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border-radius: 15px;
+  padding: 2.5rem;
+  border: 1px solid rgba($accent-color, 0.3);
+  max-width: 800px;
+  margin: 0 auto;
+
+  h3 {
+    color: $accent-color;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .funcoes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .funcao-item {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 1rem 1.5rem;
+      margin-bottom: 0.75rem;
+      border-radius: 8px;
+      border-left: 3px solid $accent-color;
+      color: #e0e0e0;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &::before {
+        content: '●';
+        color: $accent-color;
+        font-weight: bold;
+        margin-right: 0.75rem;
+      }
+
+      &:hover {
+        background: rgba($accent-color, 0.1);
+        transform: translateX(5px);
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  @include mobile {
+    padding: 2rem 1.5rem;
+
+    .funcoes-list {
+      .funcao-item {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 2rem 0;
+  }
+
+  .intro-section,
+  .conselho-section {
+    margin-bottom: 3rem;
+  }
+
+  .cargos-grid {
+    grid-template-columns: 1fr;
+  }
+}

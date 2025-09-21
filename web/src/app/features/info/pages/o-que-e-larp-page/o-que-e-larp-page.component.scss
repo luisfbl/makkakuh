@@ -1,0 +1,383 @@
+@import "../../../../../styles.scss";
+@import "../../../../../styles/page_header";
+
+.o-que-e-larp-page {
+    background-color: #2b2d31;
+    min-height: 100vh;
+    color: $text-color;
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    .decoration-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            $accent-color,
+            transparent
+        );
+    }
+
+    .larp-icon {
+        font-size: 2rem;
+        color: $accent-color;
+    }
+
+    @include mobile {
+        .decoration-line {
+            width: 50px;
+        }
+    }
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-title,
+.section-title > a {
+    font-family: $secondary-font;
+    font-size: 2.5rem;
+    color: $accent-color;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+    .manual-inline-link {
+        color: $accent-color;
+        text-decoration: underline;
+        text-decoration-color: rgba($accent-color, 0.6);
+        text-underline-offset: 4px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: #ffd700;
+            text-decoration-color: #ffd700;
+            text-shadow: 0 0 8px rgba(#ffd700, 0.4);
+        }
+    }
+
+    @include mobile {
+        font-size: 2rem;
+    }
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    margin-bottom: 0;
+
+    strong {
+        color: $accent-color;
+        font-weight: bold;
+    }
+}
+
+.caracteristicas-section {
+    margin-bottom: 4rem;
+}
+
+.caracteristica-item {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid $accent-color;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.05),
+            transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+    .caracteristica-content {
+        position: relative;
+        z-index: 2;
+
+        h3 {
+            color: $accent-color;
+            font-size: 1.3rem;
+            margin: 0 0 1rem 0;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin: 0;
+
+            strong {
+                color: $accent-color;
+                font-weight: bold;
+            }
+        }
+    }
+
+    @include mobile {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+
+        &:hover {
+            transform: translateX(5px);
+        }
+    }
+}
+
+.decorative-icons-top,
+.decorative-icons-bottom {
+    margin-bottom: 1.6rem;
+    overflow: hidden;
+
+    .icon-row {
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+
+        .larp-icon {
+            border-radius: 50%;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+            opacity: 0.9;
+
+            &:hover {
+                transform: scale(1.1) rotate(5deg);
+                opacity: 1;
+                filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+            }
+
+            &.small {
+                width: 50px;
+                height: 50px;
+                animation: float 4s ease-in-out infinite;
+            }
+
+            &.medium {
+                width: 70px;
+                height: 70px;
+                animation: float 4s ease-in-out infinite 1s;
+            }
+
+            &.large {
+                width: 90px;
+                height: 90px;
+                animation: float 4s ease-in-out infinite 2s;
+            }
+        }
+    }
+
+    @include mobile {
+        .icon-row {
+            gap: 1rem;
+
+            .larp-icon {
+                &.small {
+                    width: 35px;
+                    height: 35px;
+                }
+
+                &.medium {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                &.large {
+                    width: 65px;
+                    height: 65px;
+                }
+            }
+        }
+    }
+}
+
+// Ícones decorativos laterais
+.decorative-icons-sides {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    pointer-events: none;
+    z-index: 1;
+
+    .left-side {
+        position: absolute;
+        left: -30px;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        .side-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+            opacity: 0.6;
+            animation: float 5s ease-in-out infinite;
+
+            &:nth-child(2) {
+                animation-delay: 1.5s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 3s;
+            }
+        }
+    }
+
+    .right-side {
+        position: absolute;
+        right: -30px;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        .side-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+            opacity: 0.6;
+            animation: float 5s ease-in-out infinite;
+
+            &:nth-child(2) {
+                animation-delay: 2s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 4s;
+            }
+        }
+    }
+
+    @include mobile {
+        display: none; // Esconder ícones laterais no mobile para evitar poluição
+    }
+}
+
+// Animação de flutuação
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.manual-section {
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.manual-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.manual-container {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba($accent-color, 0.3);
+    max-width: 800px;
+    width: 100%;
+
+    .manual-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        object-fit: cover;
+        margin-bottom: 1.5rem;
+    }
+
+    .manual-link-container {
+        text-align: center;
+    }
+
+    .manual-link {
+        display: inline-block;
+        background: linear-gradient(135deg, $accent-color, #ffd700);
+        color: #2b2d31;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba($accent-color, 0.4);
+            text-decoration: none;
+            color: #2b2d31;
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    @include mobile {
+        padding: 1.5rem;
+
+        .manual-link {
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 2rem 0;
+    }
+
+    .intro-section,
+    .caracteristicas-section,
+    .manual-section {
+        margin-bottom: 3rem;
+    }
+}

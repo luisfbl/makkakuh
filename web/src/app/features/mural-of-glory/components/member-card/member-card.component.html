@@ -1,17 +1,23 @@
 <div class="member-card" [class.expanded]="expanded">
     <div class="card-header" (click)="toggleExpand()">
-        <div class="profile-image"
-             [style.background-image]="avatarUrl ? 'url(' + avatarUrl + ')' : null">
-            <div class="profile-placeholder" *ngIf="!avatarUrl">
-                {{ member.user.name?.charAt(0) || 'U' }}
-            </div>
-        </div>
+        <app-avatar-with-rank
+            [avatarFilename]="member.user.avatarFilename"
+            [pictureUrl]="member.user.pictureUrl"
+            [name]="member.user.name || member.user.username || ''"
+            [achievements]="member.achievements || []"
+            size="medium"
+        >
+        </app-avatar-with-rank>
 
         <div class="member-info">
-            <h3 class="member-name">{{ member.user.name || member.user.username }}</h3>
+            <h3 class="member-name">
+                {{ member.user.name || member.user.username }}
+            </h3>
             <div class="member-rank">
                 <span class="patent">{{ member.userDetail.patent }}</span>
-                <span class="dan" *ngIf="member.userDetail.dan > 0">Dan {{ getDanLevel(member.userDetail.dan) }}</span>
+                <span class="dan" *ngIf="member.userDetail.dan > 0"
+                    >Dan {{ getDanLevel(member.userDetail.dan) }}</span
+                >
             </div>
         </div>
 
@@ -26,36 +32,127 @@
                 <div class="stars-row">
                     <span class="stars-label">Estrelas de Batalha:</span>
                     <div class="stars">
-                        <div class="star battle-star"
-                             *ngFor="let star of getStars(member.userDetail.battleStarAmount)"></div>
+                        <div
+                            class="star battle-star"
+                            *ngFor="
+                                let star of getStars(
+                                    member.userDetail.battleStarAmount
+                                )
+                            "
+                        ></div>
                     </div>
                 </div>
                 <div class="stars-row">
                     <span class="stars-label">Estrelas de Status:</span>
                     <div class="stars">
-                        <div class="star status-star"
-                             *ngFor="let star of getStars(member.userDetail.statusStarAmount)"></div>
+                        <div
+                            class="star status-star"
+                            *ngFor="
+                                let star of getStars(
+                                    member.userDetail.statusStarAmount
+                                )
+                            "
+                        ></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="honors-section" *ngIf="member.honors && member.honors.length > 0">
-            <h4>Honórias</h4>
-            <div class="honors-list">
-                <app-honor-badge
-                        *ngFor="let honor of member.honors"
-                        [honor]="honor.honor">
-                </app-honor-badge>
+        <div
+            class="achievements-section"
+            *ngIf="member.achievements && member.achievements.length > 0"
+        >
+            <h4><i class="trophy-icon">🏆</i> Conquistas</h4>
+
+            <!-- Legiões -->
+            <div
+                class="achievement-category legion-category"
+                *ngIf="getLegionAchievements().length > 0"
+            >
+                <div class="category-header">
+                    <span class="category-icon">⚔️</span>
+                    <span class="category-title">Legiões</span>
+                    <span class="category-count">{{
+                        getLegionAchievements().length
+                    }}</span>
+                </div>
+                <div class="category-achievements">
+                    <app-achievement-badge
+                        *ngFor="let achievement of getLegionAchievements()"
+                        [achievement]="achievement.achievement!"
+                        [userAchievement]="achievement"
+                        size="small"
+                        [showName]="false"
+                    >
+                    </app-achievement-badge>
+                </div>
+            </div>
+
+            <!-- Feitos e Honrarias -->
+            <div
+                class="achievement-category honors-category"
+                *ngIf="getFeatsAndHonorsAchievements().length > 0"
+            >
+                <div class="category-header">
+                    <span class="category-icon">🏅</span>
+                    <span class="category-title">Feitos e Honrarias</span>
+                    <span class="category-count">{{
+                        getFeatsAndHonorsAchievements().length
+                    }}</span>
+                </div>
+                <div class="category-achievements">
+                    <app-achievement-badge
+                        *ngFor="
+                            let achievement of getFeatsAndHonorsAchievements()
+                        "
+                        [achievement]="achievement.achievement!"
+                        [userAchievement]="achievement"
+                        size="small"
+                        [showName]="false"
+                    >
+                    </app-achievement-badge>
+                </div>
+            </div>
+
+            <!-- Patentes -->
+            <div
+                class="achievement-category ranks-category"
+                *ngIf="getRankAchievements().length > 0"
+            >
+                <div class="category-header">
+                    <span class="category-icon">🎖️</span>
+                    <span class="category-title">Patentes</span>
+                    <span class="category-count">{{
+                        getRankAchievements().length
+                    }}</span>
+                </div>
+                <div class="category-achievements">
+                    <app-achievement-badge
+                        *ngFor="let achievement of getRankAchievements()"
+                        [achievement]="achievement.achievement!"
+                        [userAchievement]="achievement"
+                        size="small"
+                        [showName]="false"
+                    >
+                    </app-achievement-badge>
+                </div>
             </div>
         </div>
 
-        <div class="bio-section" *ngIf="member.user.bio || member.user.bio === ''">
+        <div
+            class="bio-section"
+            *ngIf="member.user.bio || member.user.bio === ''"
+        >
             <h4>Biografia</h4>
             <p [class]="getBioSizeClass(member.user.bio)">
-        <span *ngIf="member.user.bio && member.user.bio.trim().length > 0; else emptyBio">
-            {{ member.user.bio }}
-        </span>
+                <span
+                    *ngIf="
+                        member.user.bio && member.user.bio.trim().length > 0;
+                        else emptyBio
+                    "
+                >
+                    {{ member.user.bio }}
+                </span>
                 <ng-template #emptyBio>
                     Nenhuma biografia informada
                 </ng-template>

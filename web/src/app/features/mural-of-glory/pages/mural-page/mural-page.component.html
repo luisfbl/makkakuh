@@ -1,7 +1,12 @@
 <div class="mural-page">
     <div *ngIf="loading" class="loading-overlay">
         <div class="loading-content">
-            <app-loading type="spinner" size="large" text="Carregando membros..." [showText]="true"></app-loading>
+            <app-loading
+                type="spinner"
+                size="large"
+                text="Carregando membros..."
+                [showText]="true"
+            ></app-loading>
         </div>
     </div>
 
@@ -9,62 +14,79 @@
         <div class="page-header">
             <div class="container">
                 <h1 class="page-title">Mural da Glória</h1>
-                <p class="page-subtitle">Conquistas e honórias dos guerreiros Makka-Kuh</p>
+                <p class="page-subtitle">
+                    Conquistas e honórias dos guerreiros Makka-Kuh
+                </p>
             </div>
         </div>
 
         <div class="main-content">
             <div class="container">
-                <!-- Honor/Badge Management Section -->
-                <app-honor-management 
-                    [isAdmin]="isAdmin"
-                    (honorChanged)="onHonorChanged()">
-                </app-honor-management>
+                <!-- Achievement Management Section -->
+                <app-achievement-management
+                    (achievementChanged)="onAchievementChanged()"
+                >
+                </app-achievement-management>
 
                 <div *ngIf="error" class="error-section">
                     <h3>Ops! Algo deu errado</h3>
-                    <p>Ocorreu um erro ao carregar os perfis. Por favor, tente novamente.</p>
-                    <button (click)="loadMembers()" class="retry-button">Tentar Novamente</button>
+                    <p>
+                        Ocorreu um erro ao carregar os perfis. Por favor, tente
+                        novamente.
+                    </p>
+                    <button (click)="loadMembers()" class="retry-button">
+                        Tentar Novamente
+                    </button>
                 </div>
 
-                <div *ngIf="!error && members.length === 0" class="empty-section">
+                <div
+                    *ngIf="!error && members.length === 0"
+                    class="empty-section"
+                >
                     <div class="empty-icon">👥</div>
                     <h3>Nenhum membro encontrado</h3>
                     <p>Não há membros para mostrar no mural no momento.</p>
                 </div>
 
-                <div *ngIf="!error && members.length > 0" class="members-section">
+                <div
+                    *ngIf="!error && members.length > 0"
+                    class="members-section"
+                >
                     <h2 class="section-title">Nossos Guerreiros</h2>
 
                     <div class="members-grid">
                         <app-member-card
-                                *ngFor="let member of members"
-                                [member]="member">
+                            *ngFor="let member of members"
+                            [member]="member"
+                        >
                         </app-member-card>
                     </div>
 
                     <div *ngIf="totalPages > 1" class="pagination">
                         <button
-                                [disabled]="currentPage === 0"
-                                (click)="goToPage(currentPage - 1)"
-                                class="pagination-button prev">
+                            [disabled]="currentPage === 0"
+                            (click)="goToPage(currentPage - 1)"
+                            class="pagination-button prev"
+                        >
                             ← Anterior
                         </button>
 
                         <div class="pagination-numbers">
                             <button
-                                    *ngFor="let pageNum of pages"
-                                    [class.active]="pageNum === currentPage"
-                                    (click)="goToPage(pageNum)"
-                                    class="pagination-button page-number">
+                                *ngFor="let pageNum of pages"
+                                [class.active]="pageNum === currentPage"
+                                (click)="goToPage(pageNum)"
+                                class="pagination-button page-number"
+                            >
                                 {{ pageNum + 1 }}
                             </button>
                         </div>
 
                         <button
-                                [disabled]="currentPage === totalPages - 1"
-                                (click)="goToPage(currentPage + 1)"
-                                class="pagination-button next">
+                            [disabled]="currentPage === totalPages - 1"
+                            (click)="goToPage(currentPage + 1)"
+                            class="pagination-button next"
+                        >
                             Próxima →
                         </button>
                     </div>

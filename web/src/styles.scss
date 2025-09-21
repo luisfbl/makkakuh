@@ -1,30 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
-@import 'styles/global.scss';
+@import "styles/global.scss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
 
 @font-face {
-  font-family: 'EnchantedLand';
-  src: url('assets/fonts/EnchantedLand.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: "EnchantedLand";
+    src: url("assets/fonts/EnchantedLand.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: "Inter", sans-serif;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+    max-width: 1200px;
 
-  @include mobile {
-    padding: 0 1rem;
-  }
+    margin: 0 auto;
+
+    padding: 0 2rem;
+
+    @include mobile {
+        padding: 0 1rem;
+    }
 }
 
 .main-content {
-  padding: 4rem 0;
+    padding: 4rem 0;
 }

@@ -1,0 +1,269 @@
+@import '../../../../../styles.scss';
+@import "../../../../../styles/page_header";
+
+.leis-regras-page {
+  background-color: #2B2D31;
+  min-height: 100vh;
+  color: $text-color;
+}
+
+.title-decoration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 1rem;
+
+  .decoration-line {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $accent-color, transparent);
+  }
+
+  .scale-icon {
+    font-size: 2rem;
+    color: $accent-color;
+  }
+
+  @include mobile {
+    .decoration-line {
+      width: 50px;
+    }
+  }
+}
+
+.intro-section {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-title {
+  font-family: $secondary-font;
+  font-size: 2.5rem;
+  color: $accent-color;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #e0e0e0;
+  margin-bottom: 0;
+}
+
+.laws-section {
+  margin-bottom: 4rem;
+}
+
+.law-item {
+  background: linear-gradient(135deg, #363636 0%, #404040 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid $accent-color;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($accent-color, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  .law-number {
+    font-weight: bold;
+    color: $accent-color;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .law-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+    position: relative;
+    z-index: 2;
+
+    ::ng-deep strong {
+      color: $accent-color;
+      font-weight: bold;
+    }
+  }
+
+  @include mobile {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+
+    &:hover {
+      transform: translateX(5px);
+    }
+  }
+}
+
+.infracoes-section {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.infracoes-content {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+  border-radius: 15px;
+  padding: 2.5rem;
+  border: 1px solid rgba($accent-color, 0.3);
+  max-width: 600px;
+  margin: 0 auto;
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin-bottom: 1.5rem;
+  }
+
+  .infracoes-link {
+    display: inline-block;
+    background: linear-gradient(135deg, $accent-color, #FFD700);
+    color: #2b2d31;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba($accent-color, 0.4);
+      text-decoration: none;
+    }
+  }
+
+  @include mobile {
+    padding: 2rem 1.5rem;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+.simbolos-section {
+  margin-bottom: 2rem;
+}
+
+.simbolos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.simbolo-item {
+  .simbolo-content {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba($accent-color, 0.2);
+
+    h3 {
+      color: $accent-color;
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.5rem 0;
+      font-weight: bold;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    p {
+      color: #e0e0e0;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+  }
+
+  .bandeira-section {
+    background: linear-gradient(135deg, #363636 0%, #404040 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba($accent-color, 0.2);
+    text-align: center;
+
+    h3 {
+      color: $accent-color;
+      font-size: 1.2rem;
+      margin: 0 0 1.5rem 0;
+      font-weight: bold;
+    }
+
+    .bandeira-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 1.5rem;
+      min-height: 200px;
+
+      .bandeira-image {
+        max-width: 100%;
+        max-height: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      }
+    }
+  }
+
+  @include mobile {
+    .simbolo-content,
+    .bandeira-section {
+      padding: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 2rem 0;
+  }
+
+  .intro-section,
+  .laws-section,
+  .infracoes-section {
+    margin-bottom: 3rem;
+  }
+}

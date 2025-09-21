@@ -1,0 +1,85 @@
+<div class="leis-regras-page">
+    <div class="page-header">
+        <div class="header-background"></div>
+        <div class="container">
+            <h1 class="page-title">Leis e Regras do Clã</h1>
+            <div class="title-decoration">
+                <div class="decoration-line"></div>
+                <div class="scale-icon">⚖️</div>
+                <div class="decoration-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="intro-section">
+                <h2 class="section-title">O Código da Cachoeira</h2>
+                <p class="intro-text">
+                    O Makka-Kuh possui um conjunto de leis e normas que orienta
+                    o seu funcionamento. As 13 leis são a base de tudo, as mais
+                    importantes. As infrações do clã estão descritas em um
+                    código à parte. As tradições são regras menores,
+                    desenvolvidas com o tempo e mais específicas e flexíveis,
+                    embora também devam ser seguidas.
+                </p>
+            </div>
+
+            <div class="laws-section">
+                <div class="law-item" *ngFor="let law of laws; let i = index">
+                    <div class="law-number">{{ i + 1 }}ª LEI:</div>
+                    <div class="law-content" [innerHTML]="law"></div>
+                </div>
+            </div>
+
+            <div class="infracoes-section">
+                <h2 class="section-title">Infrações e punições</h2>
+                <div class="infracoes-content">
+                    <p>
+                        O que é proibido? Quais as infrações, onde e como elas
+                        se aplicam? Tudo está listado no apêndice de infrações
+                        do Código da Cachoeira.
+                    </p>
+                    <a href="#" class="infracoes-link"
+                        >Link para o Código de Infrações</a
+                    >
+                </div>
+            </div>
+
+            <div class="simbolos-section">
+                <h2 class="section-title">Símbolos do clã</h2>
+
+                <div class="simbolos-grid">
+                    <div class="simbolo-item">
+                        <div class="simbolo-content">
+                            <h3>Nome completo:</h3>
+                            <p>Protetores da Cachoeira do Makka-Kuh</p>
+
+                            <h3>Grito de Guerra:</h3>
+                            <p>1ª voz: Makka! | Outras vozes: Kuh! (gritado)</p>
+
+                            <h3>Cores:</h3>
+                            <p>Preto (fundo), branco e dourado (detalhes)</p>
+
+                            <h3>Lema:</h3>
+                            <p>Honra, Respeito e Zoeira</p>
+                        </div>
+                    </div>
+
+                    <div class="simbolo-item">
+                        <div class="bandeira-section">
+                            <h3>Bandeira:</h3>
+                            <div class="bandeira-container">
+                                <img
+                                    src="/assets/makkakuh_logo_large.png"
+                                    alt="Bandeira dos Protetores da Cachoeira do Makka-Kuh"
+                                    class="bandeira-image"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

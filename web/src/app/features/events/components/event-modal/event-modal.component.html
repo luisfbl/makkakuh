@@ -1,86 +1,96 @@
-<app-generic-modal 
+<app-generic-modal
     [title]="modalTitle"
     [buttons]="modalButtons"
     [size]="event?.id && !canEdit ? 'large' : 'medium'"
     [isVisible]="true"
-    (modalClosed)="onClose()">
-
+    (modalClosed)="onClose()"
+>
     <ng-template #modalBody>
         <div class="event-modal-content">
             <form *ngIf="canEdit; else readOnlyView">
                 <div class="form-group">
                     <label for="title">Título *</label>
                     <input
-                            type="text"
-                            id="title"
-                            [(ngModel)]="formData.title"
-                            name="title"
-                            required
-                            placeholder="Digite o título do evento">
+                        type="text"
+                        id="title"
+                        [(ngModel)]="formData.title"
+                        name="title"
+                        required
+                        placeholder="Digite o título do evento"
+                    />
                 </div>
 
                 <div class="form-group">
                     <label for="description">Descrição *</label>
                     <textarea
-                            id="description"
-                            [(ngModel)]="formData.description"
-                            name="description"
-                            required
-                            rows="4"
-                            placeholder="Descreva o evento..."></textarea>
+                        id="description"
+                        [(ngModel)]="formData.description"
+                        name="description"
+                        required
+                        rows="4"
+                        placeholder="Descreva o evento..."
+                    ></textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="date">Data *</label>
                         <input
-                                type="date"
-                                id="date"
-                                [(ngModel)]="formData.date"
-                                name="date"
-                                required>
+                            type="date"
+                            id="date"
+                            [(ngModel)]="formData.date"
+                            name="date"
+                            required
+                        />
                     </div>
 
                     <div class="form-group">
                         <label for="time">Horário</label>
                         <input
-                                type="time"
-                                id="time"
-                                [(ngModel)]="formData.time"
-                                name="time"
-                                placeholder="HH:MM">
+                            type="time"
+                            id="time"
+                            [(ngModel)]="formData.time"
+                            name="time"
+                            placeholder="HH:MM"
+                        />
                     </div>
 
                     <div class="form-group">
                         <label for="maxParticipants">Máx. Participantes</label>
                         <input
-                                type="number"
-                                id="maxParticipants"
-                                [(ngModel)]="formData.maxParticipants"
-                                name="maxParticipants"
-                                min="1"
-                                placeholder="Sem limite">
+                            type="number"
+                            id="maxParticipants"
+                            [(ngModel)]="formData.maxParticipants"
+                            name="maxParticipants"
+                            min="1"
+                            placeholder="Sem limite"
+                        />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="place">Local *</label>
                     <input
-                            type="text"
-                            id="place"
-                            [(ngModel)]="formData.place"
-                            name="place"
-                            required
-                            placeholder="Local do evento">
+                        type="text"
+                        id="place"
+                        [(ngModel)]="formData.place"
+                        name="place"
+                        required
+                        placeholder="Local do evento"
+                    />
                 </div>
 
                 <div class="form-group">
                     <label for="recurrence">Repetição</label>
                     <select
-                            id="recurrence"
-                            [(ngModel)]="formData.recurrence"
-                            name="recurrence">
-                        <option *ngFor="let option of recurrenceOptions" [value]="option.value">
+                        id="recurrence"
+                        [(ngModel)]="formData.recurrence"
+                        name="recurrence"
+                    >
+                        <option
+                            *ngFor="let option of recurrenceOptions"
+                            [value]="option.value"
+                        >
                             {{ option.label }}
                         </option>
                     </select>
@@ -102,7 +112,7 @@
                     <div class="detail-row">
                         <div class="detail-item">
                             <strong>Data:</strong>
-                            <span>{{ event?.date | date:'dd/MM/yyyy' }}</span>
+                            <span>{{ event?.date | date: "dd/MM/yyyy" }}</span>
                         </div>
 
                         <div class="detail-item" *ngIf="event?.time">
@@ -121,22 +131,31 @@
                         <span>{{ event?.place }}</span>
                     </div>
 
-                    <div class="detail-item" *ngIf="event?.recurrence !== 'none'">
+                    <div
+                        class="detail-item"
+                        *ngIf="event?.recurrence !== 'none'"
+                    >
                         <strong>Repetição:</strong>
                         <span>{{ getRecurrenceLabel(event?.recurrence) }}</span>
                     </div>
 
-                    <div class="subscription-status" *ngIf="subscriptionStatus.isFull && !subscriptionStatus.isSubscribed">
-                        <div class="status-badge full">
-                            🚫 Evento lotado
-                        </div>
+                    <div
+                        class="subscription-status"
+                        *ngIf="
+                            subscriptionStatus &&
+                            subscriptionStatus.isFull &&
+                            !subscriptionStatus.isSubscribed
+                        "
+                    >
+                        <div class="status-badge full">🚫 Evento lotado</div>
                     </div>
 
                     <app-participants-list
                         *ngIf="event?.id"
                         [event]="event"
                         [canEdit]="canEdit"
-                        (participantRemoved)="onParticipantRemoved()">
+                        (participantRemoved)="onParticipantRemoved()"
+                    >
                     </app-participants-list>
                 </div>
             </ng-template>

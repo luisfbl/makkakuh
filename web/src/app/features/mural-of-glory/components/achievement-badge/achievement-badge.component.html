@@ -1,0 +1,28 @@
+<div
+    class="achievement-badge"
+    [class]="categoryClass"
+    [class.size-small]="size === 'small'"
+    [class.size-medium]="size === 'medium'"
+    [class.size-large]="size === 'large'"
+    [class.frame-for-avatar]="isFrameForAvatar"
+    [title]="achievement.description || achievement.name"
+>
+    <div class="achievement-icon">
+        <img [src]="iconUrl" [alt]="achievement.name" />
+    </div>
+
+    <div class="achievement-info" *ngIf="showName || showDescription">
+        <div class="achievement-name" *ngIf="showName">
+            {{ achievement.name }}
+        </div>
+        <div
+            class="achievement-description"
+            *ngIf="showDescription && achievement.description"
+        >
+            {{ achievement.description }}
+        </div>
+        <div class="awarded-date" *ngIf="userAchievement?.awardedAt">
+            Conquistado em {{ userAchievement!.awardedAt | date: "dd/MM/yyyy" }}
+        </div>
+    </div>
+</div>

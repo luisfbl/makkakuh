@@ -1,0 +1,96 @@
+<div class="regras-duelo-page">
+    <div class="page-header">
+        <div class="header-background"></div>
+        <div class="container">
+            <h1 class="page-title">Regras de Duelo</h1>
+            <div class="title-decoration">
+                <div class="decoration-line"></div>
+                <div class="swords-icon">⚔️</div>
+                <div class="decoration-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="intro-section">
+                <p class="intro-text">
+                    O duelo é a forma de combate com que dois oponentes se
+                    enfrentam em um combate singular justo e, preferencialmente,
+                    equilibrado. Essas são as regras que usamos nos duelos do
+                    Clã. O ideal é que estas lutas não sejam feitas sem um juiz,
+                    mas isto nem sempre é obrigatório.
+                </p>
+            </div>
+
+            <div class="sistema-pontos-section">
+                <h2 class="section-title">Sistema de Pontos</h2>
+
+                <div class="pontos-diagram">
+                    <div class="body-diagram">
+                        <img
+                            src="/assets/regras-pontos.jpg"
+                            alt="Sistema de Pontos do Duelo"
+                            class="pontos-image"
+                        />
+                    </div>
+
+                    <div class="pontos-legend">
+                        <div
+                            class="legend-item"
+                            *ngFor="let area of sistemaPontos.areas"
+                        >
+                            <div
+                                class="color-indicator"
+                                [style.background-color]="area.color"
+                            ></div>
+                            <div class="legend-content">
+                                <strong>{{ area.name }}</strong>
+                                <span class="points" *ngIf="area.points > 0"
+                                    >{{ area.points }} ponto(s)</span
+                                >
+                                <span class="description">{{
+                                    area.description
+                                }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="regras-section">
+                <h2 class="section-title">Regras Gerais</h2>
+
+                <div class="regras-list">
+                    <div class="regra-item" *ngFor="let regra of regrasGerais">
+                        <div class="regra-number">{{ regra.number }}</div>
+                        <div class="regra-content">
+                            <p [innerHTML]="regra.text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="importante-section">
+                <div class="importante-card">
+                    <h3>🏆 Objetivo do Duelo</h3>
+                    <p>
+                        O primeiro combatente a atingir
+                        <strong>5 pontos</strong> vence o duelo. Cada acerto
+                        válido interrompe o combate temporariamente para
+                        contagem de pontos.
+                    </p>
+                </div>
+
+                <div class="importante-card">
+                    <h3>⚠️ Importante</h3>
+                    <p>
+                        Em caso de empate, vence quem teve
+                        <strong>menos infrações</strong> durante o combate. A
+                        honra e o respeito são fundamentais no duelo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
