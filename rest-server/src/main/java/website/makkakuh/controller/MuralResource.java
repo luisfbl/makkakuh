@@ -139,7 +139,6 @@ public class MuralResource {
             userMap.put("id", user.id);
             userMap.put("name", user.name);
             userMap.put("nickname", user.nickname);
-            userMap.put("pictureUrl", user.pictureUrl);
             userMap.put("avatarFilename", user.avatarFilename);
             userMap.put("bio", user.bio);
 

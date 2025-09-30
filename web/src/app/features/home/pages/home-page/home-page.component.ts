@@ -1,56 +1,58 @@
-import {Component} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
-import {Event} from "../../../../model/event.model";
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
+import { EventsService, Event } from "../../../events/services/events.service";
+import { EventModalComponent } from "../../../events/components/event-modal/event-modal.component";
 
 @Component({
-    selector: 'app-home-page',
-    templateUrl: './home-page.component.html',
-    styleUrls: ['./home-page.component.scss'],
-    standalone: true,
-    imports: [CommonModule, RouterModule]
+  selector: "app-home-page",
+  templateUrl: "./home-page.component.html",
+  styleUrls: ["./home-page.component.scss"],
+  standalone: true,
+  imports: [CommonModule, RouterModule, EventModalComponent],
 })
-export class HomePageComponent {
-    eventsDeMentira: Event[] = [
-        {
-            "id": 1,
-            "title": "Treino de Páscoa",
-            "description": "Treinamento especial em comemoração à Páscoa.",
-            "date": "2025-04-26T16:00:00",
-            "place": "Local a definir",
-            "maxParticipants": null,
-            "recurrence": "Anual",
-            "subscriptions": []
-        },
-        {
-            "id": 2,
-            "title": "Treino Externo Unitins",
-            "description": "Treinamento externo na Universidade Estadual do Tocantins (UNITINS).",
-            "date": "2025-04-30T20:00:00",
-            "place": "UNITINS - Universidade Estadual do Tocantins polo Graciosa",
-            "maxParticipants": null,
-            "recurrence": "Unico",
-            "subscriptions": []
-        },
-        {
-            "id": 3,
-            "title": "LARP",
-            "description": "Live Action Role-Playing com dinâmicas e encenações.",
-            "date": "2025-05-18T14:00:00",
-            "place": "UFT - Universidade Federal do Tocantins",
-            "maxParticipants": 30,
-            "recurrence": "Semestral",
-            "subscriptions": []
-        },
-        {
-            "id": 4,
-            "title": "GeekCon SESC",
-            "description": "Participação do Makka-kuh na Convenção Geek organizada pelo SESC.",
-            "date": "2025-05-24T08:00:00",
-            "place": "SESC-TO",
-            "maxParticipants": 15,
-            "recurrence": "Unico",
-            "subscriptions": []
-        }
-    ];
+export class HomePageComponent implements OnInit {
+  upcomingEvents: Event[] = [];
+  isLoading = false;
+  showEventModal = false;
+  selectedEvent: Event | null = null;
+
+  constructor(private eventsService: EventsService) {}
+
+  ngOnInit() {
+    this.loadUpcomingEvents();
+  }
+
+  loadUpcomingEvents() {
+    this.isLoading = true;
+    this.eventsService.getEvents().subscribe({
+      next: (events) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        this.upcomingEvents = events
+          .filter((event) => new Date(event.date) >= today)
+          .sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          )
+          .slice(0, 4);
+
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error loading events:", error);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  onEventClick(event: Event) {
+    this.selectedEvent = event;
+    this.showEventModal = true;
+  }
+
+  onModalClosed() {
+    this.showEventModal = false;
+    this.selectedEvent = null;
+  }
 }

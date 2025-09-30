@@ -81,6 +81,11 @@ export class EventsPageComponent implements OnInit {
   }
 
   onEventSaved(event: Event) {
+    console.log("onEventSaved received:", {
+      event,
+      isEditing: this.isEditing,
+      selectedEvent: this.selectedEvent,
+    });
     if (this.isEditing && this.selectedEvent?.id) {
       this.eventsService
         .updateEvent(this.selectedEvent.id, event)
@@ -88,8 +93,10 @@ export class EventsPageComponent implements OnInit {
           this.loadEvents();
         });
     } else {
+      console.log("Creating new event...");
       this.eventsService.createEvent(event).subscribe({
         next: (createdEvent) => {
+          console.log("Event created successfully:", createdEvent);
           this.loadEvents();
         },
         error: (error) => {

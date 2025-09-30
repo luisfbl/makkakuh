@@ -27,9 +27,6 @@ public class User extends PanacheEntity {
     @Column(name = "oauth_method")
     public String oauthMethod;
 
-    @Column(name = "picture_url", length = 1024)
-    public String pictureUrl;
-
     @Column(name = "avatar_filename")
     public String avatarFilename;
 

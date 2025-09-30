@@ -58,7 +58,6 @@ export class GenericModalComponent {
 
   executeButtonAction(button: ModalButton) {
     if (!button.disabled) {
-      this.cdr.detectChanges();
       button.action();
     }
   }

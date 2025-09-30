@@ -6,7 +6,7 @@
             <h1 class="page-title">Protetores da Cachoeira do Makka-Kuh</h1>
             <p class="page-subtitle">Swordplay boffering em Palmas - TO</p>
             <button class="cta-button" routerLink="/QuemSomos">
-                <img src="/assets/treineConosco.png" alt="Treine Conosco">
+                <img src="/assets/treineConosco.png" alt="Treine Conosco" />
             </button>
         </div>
     </div>
@@ -17,7 +17,13 @@
                 <div class="about-content">
                     <div class="about-text">
                         <h2 class="section-title">Tudo começou assim...</h2>
-                        <p>O grupo Protetores da Cachoeira do Makka-Kuh foi organizado em <span class="highlight">2016</span>, por um grupo de jovens que buscavam uma alternativa divertida e saudável de esporte em Palmas - TO, através do swordplay boffering.</p>
+                        <p>
+                            O grupo Protetores da Cachoeira do Makka-Kuh foi
+                            organizado em <span class="highlight">2016</span>,
+                            por um grupo de jovens que buscavam uma alternativa
+                            divertida e saudável de esporte em Palmas - TO,
+                            através do swordplay boffering.
+                        </p>
 
                         <div class="features-list">
                             <div class="feature-item">
@@ -34,11 +40,22 @@
                             </div>
                         </div>
 
-                        <p>Com o tempo, nos tornamos uma pequena comunidade, acolhendo qualquer pessoa que compartilhe da vontade de aprender, o desejo de ajudar e dar boas risadas no dia-a-dia. Nossa família passou por muitas mudanças, aprendemos muito e vamos estar sempre aqui para acolher uns aos outros, principalmente os desajustados da sociedade, no nosso esporte.</p>
+                        <p>
+                            Com o tempo, nos tornamos uma pequena comunidade,
+                            acolhendo qualquer pessoa que compartilhe da vontade
+                            de aprender, o desejo de ajudar e dar boas risadas
+                            no dia-a-dia. Nossa família passou por muitas
+                            mudanças, aprendemos muito e vamos estar sempre aqui
+                            para acolher uns aos outros, principalmente os
+                            desajustados da sociedade, no nosso esporte.
+                        </p>
                     </div>
 
                     <div class="about-image">
-                        <img src="/assets/cardImg01.png" alt="Grupo Makka-Kuh" />
+                        <img
+                            src="/assets/cardImg01.png"
+                            alt="Grupo Makka-Kuh"
+                        />
                     </div>
                 </div>
             </div>
@@ -56,22 +73,40 @@
                             <div class="schedule-item">
                                 <div class="schedule-day">Sábados</div>
                                 <div class="schedule-time">16h</div>
-                                <div class="schedule-place">Espaço Cultural de Palmas</div>
+                                <div class="schedule-place">
+                                    Espaço Cultural de Palmas
+                                </div>
                             </div>
                             <div class="schedule-separator">e</div>
                             <div class="schedule-item">
                                 <div class="schedule-day">Quartas</div>
                                 <div class="schedule-time">19h</div>
-                                <div class="schedule-place">UFT - Campus Palmas</div>
+                                <div class="schedule-place">
+                                    UFT - Campus Palmas
+                                </div>
                             </div>
                         </div>
 
-                        <p class="join-description">Nosso grupo pratica um esporte chamado <span class="highlight">swordplay boffering</span>, que é uma versão segura, lúdica, divertida e saudável dos combates medievais.</p>
+                        <p class="join-description">
+                            Nosso grupo pratica um esporte chamado
+                            <span class="highlight">swordplay boffering</span>,
+                            que é uma versão segura, lúdica, divertida e
+                            saudável dos combates medievais.
+                        </p>
 
                         <div class="join-cta">
-                            <p>Estamos sempre de braços abertos para receber novos membros em nossa família. Convidamos você a explorar nosso clã através do nosso site ou das nossas redes sociais, e ficar à vontade para nos visitar e participar dos nossos treinos.</p>
+                            <p>
+                                Estamos sempre de braços abertos para receber
+                                novos membros em nossa família. Convidamos você
+                                a explorar nosso clã através do nosso site ou
+                                das nossas redes sociais, e ficar à vontade para
+                                nos visitar e participar dos nossos treinos.
+                            </p>
                             <div class="cta-highlight">
-                                <span>Esperamos ansiosamente por sua presença!</span>
+                                <span
+                                    >Esperamos ansiosamente por sua
+                                    presença!</span
+                                >
                                 <span class="cta-arrow">→</span>
                             </div>
                         </div>
@@ -82,38 +117,81 @@
             <div class="events-section">
                 <h2 class="section-title">Eventos da semana</h2>
 
-                <div class="events-grid">
-                    <div class="event-card" *ngFor="let event of eventsDeMentira">
+                <div class="loading" *ngIf="isLoading">
+                    <p>Carregando eventos...</p>
+                </div>
+
+                <div
+                    class="events-grid"
+                    *ngIf="!isLoading && upcomingEvents.length > 0"
+                >
+                    <div
+                        class="event-card"
+                        *ngFor="let event of upcomingEvents"
+                        (click)="onEventClick(event)"
+                    >
                         <div class="event-header">
-                            <h3>{{event.title}}</h3>
+                            <h3>{{ event.title }}</h3>
                         </div>
                         <div class="event-body">
-                            <p class="event-description">{{event.description}}</p>
+                            <p class="event-description">
+                                {{ event.description }}
+                            </p>
                             <div class="event-detail">
                                 <span class="event-label">Data:</span>
-                                <span class="event-value">{{event.date | date:'dd/MM/yyyy HH:mm'}}</span>
+                                <span class="event-value">{{
+                                    event.date | date: "dd/MM/yyyy HH:mm"
+                                }}</span>
                             </div>
                             <div class="event-detail">
                                 <span class="event-label">Local:</span>
-                                <span class="event-value">{{event.place}}</span>
+                                <span class="event-value">{{
+                                    event.place
+                                }}</span>
                             </div>
                             <div class="event-detail">
                                 <span class="event-label">Inscritos:</span>
                                 <span class="event-value">
-                  {{event.maxParticipants == null ? event.subscriptions.length : event.subscriptions.length + ' de ' + event.maxParticipants}}
-                </span>
+                                    {{
+                                        event.maxParticipants == null
+                                            ? event.subscriptions?.length || 0
+                                            : (event.subscriptions?.length ||
+                                                  0) +
+                                              " de " +
+                                              event.maxParticipants
+                                    }}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <div
+                    class="no-events"
+                    *ngIf="!isLoading && upcomingEvents.length === 0"
+                >
+                    <p>Não há eventos próximos no momento.</p>
+                </div>
+
                 <div class="events-link">
                     <a routerLink="/eventos">
                         Veja a agenda completa de eventos
-                        <img src="/assets/dashboard_icon_color.png" alt="Agenda">
+                        <img
+                            src="/assets/dashboard_icon_color.png"
+                            alt="Agenda"
+                        />
                     </a>
                 </div>
             </div>
         </div>
     </div>
+
+    <app-event-modal
+        *ngIf="showEventModal"
+        [event]="selectedEvent"
+        [isEditing]="false"
+        [canEdit]="false"
+        (modalClosed)="onModalClosed()"
+    >
+    </app-event-modal>
 </div>

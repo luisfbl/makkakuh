@@ -2,7 +2,6 @@
     <div class="card-header" (click)="toggleExpand()">
         <app-avatar-with-rank
             [avatarFilename]="member.user.avatarFilename"
-            [pictureUrl]="member.user.pictureUrl"
             [name]="member.user.name || member.user.username || ''"
             [achievements]="member.achievements || []"
             size="medium"

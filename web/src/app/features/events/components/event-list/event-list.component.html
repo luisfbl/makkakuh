@@ -3,10 +3,10 @@
         <h3 class="section-title">Próximos Eventos</h3>
         <div class="events-grid">
             <div
-                    class="event-card upcoming"
-                    *ngFor="let event of getUpcomingEvents()"
-                    (click)="onEventClick(event)">
-
+                class="event-card upcoming"
+                *ngFor="let event of getPaginatedUpcomingEvents()"
+                (click)="onEventClick(event)"
+            >
                 <div class="event-header">
                     <h4>{{ event.title }}</h4>
                     <div class="event-date">
@@ -25,16 +25,50 @@
 
                         <div class="detail-item" *ngIf="event.maxParticipants">
                             <span class="detail-icon">👥</span>
-                            <span>Máx: {{ event.maxParticipants }} pessoas</span>
+                            <span
+                                >Máx: {{ event.maxParticipants }} pessoas</span
+                            >
                         </div>
 
-                        <div class="detail-item" *ngIf="event.recurrence !== 'none'">
+                        <div
+                            class="detail-item"
+                            *ngIf="event.recurrence !== 'none'"
+                        >
                             <span class="detail-icon">🔄</span>
-                            <span>{{ getRecurrenceLabel(event.recurrence) }}</span>
+                            <span>{{
+                                getRecurrenceLabel(event.recurrence)
+                            }}</span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="pagination" *ngIf="getTotalPagesUpcoming() > 1">
+            <button
+                class="pagination-btn"
+                [disabled]="currentPageUpcoming === 0"
+                (click)="previousPageUpcoming()"
+            >
+                Anterior
+            </button>
+            <div class="pagination-numbers">
+                <button
+                    *ngFor="let page of getPageNumbers(getTotalPagesUpcoming())"
+                    class="pagination-number"
+                    [class.active]="page === currentPageUpcoming"
+                    (click)="goToPageUpcoming(page)"
+                >
+                    {{ page + 1 }}
+                </button>
+            </div>
+            <button
+                class="pagination-btn"
+                [disabled]="currentPageUpcoming === getTotalPagesUpcoming() - 1"
+                (click)="nextPageUpcoming()"
+            >
+                Próxima
+            </button>
         </div>
     </div>
 
@@ -42,10 +76,10 @@
         <h3 class="section-title">Eventos Anteriores</h3>
         <div class="events-grid">
             <div
-                    class="event-card past"
-                    *ngFor="let event of getPastEvents()"
-                    (click)="onEventClick(event)">
-
+                class="event-card past"
+                *ngFor="let event of getPaginatedPastEvents()"
+                (click)="onEventClick(event)"
+            >
                 <div class="event-header">
                     <h4>{{ event.title }}</h4>
                     <div class="event-date">
@@ -64,11 +98,40 @@
 
                         <div class="detail-item" *ngIf="event.maxParticipants">
                             <span class="detail-icon">👥</span>
-                            <span>Máx: {{ event.maxParticipants }} pessoas</span>
+                            <span
+                                >Máx: {{ event.maxParticipants }} pessoas</span
+                            >
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="pagination" *ngIf="getTotalPagesPast() > 1">
+            <button
+                class="pagination-btn"
+                [disabled]="currentPagePast === 0"
+                (click)="previousPagePast()"
+            >
+                Anterior
+            </button>
+            <div class="pagination-numbers">
+                <button
+                    *ngFor="let page of getPageNumbers(getTotalPagesPast())"
+                    class="pagination-number"
+                    [class.active]="page === currentPagePast"
+                    (click)="goToPagePast(page)"
+                >
+                    {{ page + 1 }}
+                </button>
+            </div>
+            <button
+                class="pagination-btn"
+                [disabled]="currentPagePast === getTotalPagesPast() - 1"
+                (click)="nextPagePast()"
+            >
+                Próxima
+            </button>
         </div>
     </div>
 

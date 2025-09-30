@@ -7,13 +7,17 @@
 >
     <ng-template #modalBody>
         <div class="event-modal-content">
-            <form *ngIf="canEdit; else readOnlyView">
+            <form
+                *ngIf="canEdit; else readOnlyView"
+                (ngSubmit)="$event.preventDefault()"
+            >
                 <div class="form-group">
                     <label for="title">Título *</label>
                     <input
                         type="text"
                         id="title"
                         [(ngModel)]="formData.title"
+                        (ngModelChange)="updateModalButtons()"
                         name="title"
                         required
                         placeholder="Digite o título do evento"
@@ -25,6 +29,7 @@
                     <textarea
                         id="description"
                         [(ngModel)]="formData.description"
+                        (ngModelChange)="updateModalButtons()"
                         name="description"
                         required
                         rows="4"
@@ -39,6 +44,7 @@
                             type="date"
                             id="date"
                             [(ngModel)]="formData.date"
+                            (ngModelChange)="updateModalButtons()"
                             name="date"
                             required
                         />
@@ -74,6 +80,7 @@
                         type="text"
                         id="place"
                         [(ngModel)]="formData.place"
+                        (ngModelChange)="updateModalButtons()"
                         name="place"
                         required
                         placeholder="Local do evento"

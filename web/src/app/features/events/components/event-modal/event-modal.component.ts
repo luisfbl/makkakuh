@@ -59,8 +59,8 @@ export class EventModalComponent implements OnInit {
   subscriptionStatus: any = null;
   isLoadingSubscription = false;
 
-  // Modal buttons cache
-  _modalButtons: ModalButton[] = [];
+  // Modal buttons
+  modalButtons: ModalButton[] = [];
 
   constructor(private eventsService: EventsService) {}
 
@@ -71,6 +71,7 @@ export class EventModalComponent implements OnInit {
     } else if (this.defaultDate) {
       this.formData.date = this.defaultDate.toISOString().split("T")[0];
     }
+    this.updateModalButtons();
   }
 
   loadSubscriptionStatus() {
@@ -80,9 +81,11 @@ export class EventModalComponent implements OnInit {
         next: (status) => {
           this.subscriptionStatus = status;
           this.isLoadingSubscription = false;
+          this.updateModalButtons();
         },
         error: (error) => {
           this.isLoadingSubscription = false;
+          this.updateModalButtons();
         },
       });
     }
@@ -126,10 +129,15 @@ export class EventModalComponent implements OnInit {
   }
 
   onSave() {
+    console.log("onSave called", {
+      canEdit: this.canEdit,
+      isEditing: this.isEditing,
+    });
     if (!this.canEdit) {
       return;
     }
 
+    console.log("Emitting event:", this.formData);
     this.eventSaved.emit(this.formData);
   }
 
@@ -165,7 +173,7 @@ export class EventModalComponent implements OnInit {
     return this.isEditing ? "Editar Evento" : "Novo Evento";
   }
 
-  get modalButtons(): ModalButton[] {
+  updateModalButtons() {
     const buttons: ModalButton[] = [];
 
     // Botão fechar/cancelar sempre presente
@@ -237,7 +245,7 @@ export class EventModalComponent implements OnInit {
       }
     }
 
-    return buttons;
+    this.modalButtons = buttons;
   }
 
   getRecurrenceLabel(recurrence: string | undefined): string {

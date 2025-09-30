@@ -1,14 +1,23 @@
 <div class="register-container">
     <div class="register-card">
         <div class="register-header">
-            <img src="assets/makkakuh_logo_large.png" alt="Makka-kuh Logo" class="register-logo">
+            <img
+                src="assets/makkakuh_logo_large.png"
+                alt="Makka-kuh Logo"
+                class="register-logo"
+            />
             <h1 class="register-title">Junte-se ao Clã</h1>
-            <p class="register-subtitle">Crie sua conta para participar da comunidade Makka-kuh</p>
+            <p class="register-subtitle">
+                Crie sua conta para participar da comunidade Makka-kuh
+            </p>
         </div>
 
         <div *ngIf="!showForm && !showBioForm" class="register-options">
-            <button class="register-btn google-btn" (click)="registerWithGoogle()">
-                <img src="assets/google_icon.png" alt="Google">
+            <button
+                class="register-btn google-btn"
+                (click)="registerWithGoogle()"
+            >
+                <img src="assets/google_icon.png" alt="Google" />
                 <span>Cadastrar com Google</span>
             </button>
 
@@ -24,24 +33,41 @@
 
             <div class="user-preview">
                 <div class="avatar-container">
-                    <img [src]="userImageUrl || 'assets/default-avatar.png'" alt="Imagem de perfil" class="user-avatar">
-                    <div class="avatar-edit" *ngIf="oAuthData?.pictureUrl">
-                        <span class="avatar-info">Imagem importada do <strong>{{ oAuthData?.provider }}</strong></span>
+                    <img
+                        [src]="userImageUrl || 'assets/default-avatar.png'"
+                        alt="Imagem de perfil"
+                        class="user-avatar"
+                    />
+                    <div class="avatar-edit" *ngIf="oAuthData?.avatarFilename">
+                        <span class="avatar-info"
+                            >Imagem importada do
+                            <strong>{{ oAuthData?.provider }}</strong></span
+                        >
                     </div>
                 </div>
             </div>
 
-            <form [formGroup]="userForm" (ngSubmit)="proceedToBio()" class="register-form">
+            <form
+                [formGroup]="userForm"
+                (ngSubmit)="proceedToBio()"
+                class="register-form"
+            >
                 <div class="form-group">
                     <label for="name">Nome completo</label>
                     <input
-                            type="text"
-                            id="name"
-                            formControlName="name"
-                            placeholder="Digite seu nome completo"
-                            class="form-input"
+                        type="text"
+                        id="name"
+                        formControlName="name"
+                        placeholder="Digite seu nome completo"
+                        class="form-input"
+                    />
+                    <div
+                        *ngIf="
+                            userForm.get('name')?.errors?.['required'] &&
+                            userForm.get('name')?.touched
+                        "
+                        class="error-message"
                     >
-                    <div *ngIf="userForm.get('name')?.errors?.['required'] && userForm.get('name')?.touched" class="error-message">
                         Nome completo é obrigatório
                     </div>
                 </div>
@@ -49,27 +75,39 @@
                 <div class="form-group">
                     <label for="username">Seu apelido no clã</label>
                     <input
-                            type="text"
-                            id="username"
-                            formControlName="username"
-                            placeholder="Escolha um nome de usuário"
-                            class="form-input"
+                        type="text"
+                        id="username"
+                        formControlName="username"
+                        placeholder="Escolha um nome de usuário"
+                        class="form-input"
+                    />
+                    <div
+                        *ngIf="
+                            userForm.get('username')?.errors?.['required'] &&
+                            userForm.get('username')?.touched
+                        "
+                        class="error-message"
                     >
-                    <div *ngIf="userForm.get('username')?.errors?.['required'] && userForm.get('username')?.touched" class="error-message">
                         Nome de usuário é obrigatório
                     </div>
                 </div>
 
                 <div class="form-group">
                     <button
-                            type="submit"
-                            [disabled]="userForm.get('username')?.invalid || isLoading"
-                            class="submit-btn"
+                        type="submit"
+                        [disabled]="
+                            userForm.get('username')?.invalid || isLoading
+                        "
+                        class="submit-btn"
                     >
                         <span>Próximo</span>
                     </button>
 
-                    <button type="button" class="cancel-btn" (click)="cancelRegistration()">
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        (click)="cancelRegistration()"
+                    >
                         Cancelar
                     </button>
                 </div>
@@ -83,44 +121,75 @@
 
             <div class="user-preview">
                 <div class="avatar-container">
-                    <img [src]="userImageUrl || 'assets/default-avatar.png'" alt="Imagem de perfil" class="user-avatar">
-                    <div class="username-display">{{ userForm.get('username')?.value }}</div>
+                    <img
+                        [src]="userImageUrl || 'assets/default-avatar.png'"
+                        alt="Imagem de perfil"
+                        class="user-avatar"
+                    />
+                    <div class="username-display">
+                        {{ userForm.get("username")?.value }}
+                    </div>
                 </div>
             </div>
 
-            <form [formGroup]="bioForm" (ngSubmit)="completeRegistration()" class="register-form">
+            <form
+                [formGroup]="bioForm"
+                (ngSubmit)="completeRegistration()"
+                class="register-form"
+            >
                 <div class="form-group">
                     <label for="bio">Sua bio</label>
                     <textarea
-                            id="bio"
-                            formControlName="bio"
-                            placeholder="Conte um pouco sobre você, seus interesses, experiência com o esporte..."
-                            class="form-input bio-textarea"
-                            rows="5"
+                        id="bio"
+                        formControlName="bio"
+                        placeholder="Conte um pouco sobre você, seus interesses, experiência com o esporte..."
+                        class="form-input bio-textarea"
+                        rows="5"
                     ></textarea>
                     <div class="bio-hint">
-                        Esta informação ajudará outros membros a conhecê-lo melhor (opcional)
+                        Esta informação ajudará outros membros a conhecê-lo
+                        melhor (opcional)
                     </div>
                 </div>
 
                 <div class="form-group">
                     <button
-                            type="submit"
-                            [disabled]="isLoading"
-                            class="submit-btn"
+                        type="submit"
+                        [disabled]="isLoading"
+                        class="submit-btn"
                     >
                         <span *ngIf="isLoading" class="spinner"></span>
-                        <span>{{ isLoading ? 'Processando...' : 'Completar Cadastro' }}</span>
+                        <span>{{
+                            isLoading ? "Processando..." : "Completar Cadastro"
+                        }}</span>
                     </button>
 
-                    <button type="button" class="back-btn" (click)="backToProfile()">
+                    <button
+                        type="button"
+                        class="back-btn"
+                        (click)="backToProfile()"
+                    >
                         Voltar
                     </button>
                 </div>
             </form>
 
             <div *ngIf="errorMessage" class="error-alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
                 {{ errorMessage }}
             </div>
         </div>
