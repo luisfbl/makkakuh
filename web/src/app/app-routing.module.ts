@@ -27,9 +27,7 @@ export const routes: Routes = [
   {
     path: "mural-da-gloria",
     loadChildren: () =>
-      import("./features/mural-of-glory/mural.module").then(
-        (m) => m.MuralModule,
-      ),
+      import("./features/mural/mural.routes").then((m) => m.MURAL_ROUTES),
   },
   {
     path: "eventos",

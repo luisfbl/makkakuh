@@ -7,6 +7,7 @@ import { EventsService, Event } from "../../services/events.service";
 import { CalendarComponent } from "../../components/calendar/calendar.component";
 import { EventModalComponent } from "../../components/event-modal/event-modal.component";
 import { EventListComponent } from "../../components/event-list/event-list.component";
+import { PageHeaderComponent } from "../../../../shared/components/page-header/page-header.component";
 
 @Component({
   selector: "app-events-page",
@@ -17,6 +18,7 @@ import { EventListComponent } from "../../components/event-list/event-list.compo
     CalendarComponent,
     EventModalComponent,
     EventListComponent,
+    PageHeaderComponent,
   ],
   templateUrl: "./events-page.component.html",
   styleUrls: ["./events-page.component.scss"],

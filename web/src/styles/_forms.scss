@@ -1,0 +1,220 @@
+@import "variables";
+@import "mixins";
+
+// Form group container
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: $text-color;
+    font-weight: 600;
+    font-size: 0.95rem;
+
+    .required {
+      color: #dc3545;
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+// Input fields
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba($accent-color, 0.3);
+  border-radius: 8px;
+  background: #2B2D31;
+  color: $text-color;
+  font-size: 1rem;
+  font-family: $primary-font;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $accent-color;
+    box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+
+  &:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &.error {
+    border-color: #dc3545;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+    }
+  }
+
+  &.success {
+    border-color: #28a745;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+  }
+}
+
+// Textarea specific
+textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: $primary-font;
+}
+
+// Select specific
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%23E9C01A" d="M6 8L0 0h12z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px 8px;
+  padding-right: 2.5rem;
+}
+
+// Checkbox and radio
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+// Error message
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+// Success message
+.success-message {
+  color: #28a745;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+// Helper text
+.help-text {
+  color: #999;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+// Character counter
+.character-counter {
+  text-align: right;
+  color: #999;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+
+  &.warning {
+    color: #ffc107;
+  }
+
+  &.error {
+    color: #dc3545;
+  }
+}
+
+// Form row (for inline fields)
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .form-group {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 0;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+// Form actions
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba($accent-color, 0.2);
+
+  @include mobile {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Search input with icon
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+
+  .search-input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+  }
+
+  .clear-search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #999;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+}

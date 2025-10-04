@@ -1,0 +1,556 @@
+<div class="mural-page">
+    <app-page-header
+        title="Mural da Glória"
+        subtitle="Conquistas e honrarias dos guerreiros Makka-Kuh"
+        icon="🏆"
+        [showDecoration]="true"
+    ></app-page-header>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- Legenda -->
+            <div class="legend-section" *ngIf="badgeTypes.length > 0">
+                <div class="legend-header">
+                    <h2>Legenda</h2>
+                    <button
+                        *ngIf="isAdminMode"
+                        class="btn-add-type"
+                        (click)="createNewType()"
+                        title="Criar novo tipo"
+                    >
+                        + Novo Tipo
+                    </button>
+                </div>
+                <div class="legend-grid">
+                    <div
+                        *ngFor="let type of badgeTypes"
+                        class="legend-item"
+                        [class.admin-mode]="isAdminMode"
+                    >
+                        <div class="legend-item-header">
+                            <h3 (click)="isAdminMode && editType(type)">
+                                {{ type.name }}
+                            </h3>
+                            <button
+                                *ngIf="isAdminMode"
+                                class="btn-delete-type"
+                                (click)="deleteType(type)"
+                                title="Excluir tipo"
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <p
+                            *ngIf="type.description"
+                            (click)="isAdminMode && editType(type)"
+                        >
+                            {{ type.description }}
+                        </p>
+                        <div class="badges-preview">
+                            <div
+                                *ngFor="
+                                    let badge of getBadgesForLegend(type.id)
+                                "
+                                class="badge-icon-small"
+                                [class.admin-mode]="isAdminMode"
+                                [style.background-color]="badge.color"
+                                [title]="badge.name"
+                                (click)="isAdminMode && editBadge(badge)"
+                            >
+                                <img
+                                    *ngIf="badge.iconFilename"
+                                    [src]="getBadgeIconUrl(badge)"
+                                    [alt]="badge.name"
+                                />
+                                <span *ngIf="!badge.iconFilename">🏆</span>
+                                <button
+                                    *ngIf="isAdminMode"
+                                    class="btn-delete-badge"
+                                    (click)="deleteBadge(badge, $event)"
+                                    title="Excluir badge"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                            <div
+                                *ngIf="isAdminMode"
+                                class="badge-icon-small add-badge"
+                                (click)="createNewBadge(type)"
+                                title="Criar nova badge"
+                            >
+                                <span>+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guerreiros -->
+            <div class="warriors-section">
+                <div class="warriors-header">
+                    <h2>Nossos Guerreiros ({{ totalFilteredUsers }})</h2>
+                    <app-search-bar
+                        placeholder="Buscar por nome..."
+                        (searchChanged)="onSearchChanged($event)"
+                    ></app-search-bar>
+                </div>
+
+                <app-empty-state
+                    *ngIf="filteredUsers.length === 0"
+                    icon="⚔️"
+                    message="Nenhum guerreiro encontrado"
+                    description="Não há guerreiros cadastrados no momento."
+                ></app-empty-state>
+
+                <div class="warriors-grid" *ngIf="filteredUsers.length > 0">
+                    <div
+                        *ngFor="let item of paginatedUsers"
+                        class="warrior-card"
+                    >
+                        <div class="warrior-header">
+                            <div
+                                class="warrior-avatar"
+                                [style.border-color]="getAvatarFrameColor(item)"
+                                [style.box-shadow]="
+                                    '0 0 15px ' +
+                                    getAvatarFrameColor(item) +
+                                    '50'
+                                "
+                            >
+                                <img
+                                    [src]="getUserAvatarUrl(item.user)"
+                                    [alt]="item.user.username"
+                                />
+                            </div>
+                            <div class="warrior-info">
+                                <h3>
+                                    {{
+                                        item.user.nickname || item.user.username
+                                    }}
+                                </h3>
+                                <p class="warrior-name">
+                                    {{ item.user.name || item.user.username }}
+                                </p>
+                                <p class="warrior-bio" *ngIf="item.user.bio">
+                                    {{ item.user.bio }}
+                                </p>
+                            </div>
+                            <button
+                                *ngIf="isAdminMode"
+                                class="btn-user-settings"
+                                (click)="openUserSettings(item.user)"
+                                title="Configurações do usuário"
+                            >
+                                ⚙️
+                            </button>
+                        </div>
+
+                        <div
+                            class="warrior-badges"
+                            *ngIf="item.badges.length > 0 || isAdminMode"
+                        >
+                            <div class="badges-grid">
+                                <div
+                                    *ngFor="let badge of item.badges"
+                                    class="badge-item"
+                                    [class.admin-mode]="isAdminMode"
+                                    [title]="
+                                        badge.badgeType.name +
+                                        ': ' +
+                                        badge.name +
+                                        (badge.description
+                                            ? ' - ' + badge.description
+                                            : '')
+                                    "
+                                >
+                                    <div
+                                        class="badge-icon"
+                                        [style.background-color]="badge.color"
+                                    >
+                                        <img
+                                            *ngIf="badge.iconFilename"
+                                            [src]="getBadgeIconUrl(badge)"
+                                            [alt]="badge.name"
+                                        />
+                                        <span *ngIf="!badge.iconFilename"
+                                            >🏆</span
+                                        >
+                                    </div>
+                                    <div class="badge-info">
+                                        <span class="badge-name">{{
+                                            badge.name
+                                        }}</span>
+                                        <span class="badge-type">{{
+                                            badge.badgeType.name
+                                        }}</span>
+                                    </div>
+                                    <button
+                                        *ngIf="isAdminMode"
+                                        class="btn-remove-user-badge"
+                                        (click)="
+                                            removeUserBadge(item.user, badge)
+                                        "
+                                        title="Remover badge do usuário"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                                <div
+                                    *ngIf="isAdminMode"
+                                    class="badge-item add-user-badge"
+                                    (click)="assignBadgeToUser(item.user)"
+                                    title="Atribuir badge ao usuário"
+                                >
+                                    <div class="badge-icon">
+                                        <span>+</span>
+                                    </div>
+                                    <div class="badge-info">
+                                        <span class="badge-name"
+                                            >Adicionar Badge</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="no-badges"
+                            *ngIf="item.badges.length === 0 && !isAdminMode"
+                        >
+                            <p>Nenhuma badge ainda</p>
+                        </div>
+                    </div>
+                </div>
+
+                <app-pagination
+                    *ngIf="totalPages > 1"
+                    [currentPage]="currentPage"
+                    [totalPages]="totalPages"
+                    [totalItems]="totalFilteredUsers"
+                    [pageSize]="pageSize"
+                    (pageChanged)="onPageChanged($event)"
+                ></app-pagination>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Badge Type -->
+    <div class="modal-overlay" *ngIf="showTypeModal" (click)="closeTypeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ editingType ? "Editar Tipo" : "Novo Tipo" }}</h3>
+                <button class="close-btn" (click)="closeTypeModal()">×</button>
+            </div>
+
+            <form (ngSubmit)="saveType()">
+                <div class="form-group">
+                    <label for="typeName">Nome *</label>
+                    <input
+                        type="text"
+                        id="typeName"
+                        [(ngModel)]="typeFormData.name"
+                        name="name"
+                        required
+                        placeholder="Ex: Legião, Feitos e Honrarias"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="typeDescription">Descrição</label>
+                    <textarea
+                        id="typeDescription"
+                        [(ngModel)]="typeFormData.description"
+                        name="description"
+                        rows="3"
+                        placeholder="Descrição opcional do tipo"
+                    ></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="typeFormData.isAvatarFrame"
+                            name="isAvatarFrame"
+                        />
+                        <span>Moldura de Avatar</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="typeDisplayOrder">Ordem de Exibição</label>
+                    <input
+                        type="number"
+                        id="typeDisplayOrder"
+                        [(ngModel)]="typeFormData.displayOrder"
+                        name="displayOrder"
+                        min="0"
+                    />
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        (click)="closeTypeModal()"
+                    >
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-save">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Badge -->
+    <div
+        class="modal-overlay"
+        *ngIf="showBadgeModal"
+        (click)="closeBadgeModal()"
+    >
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ editingBadge ? "Editar Badge" : "Nova Badge" }}</h3>
+                <button class="close-btn" (click)="closeBadgeModal()">×</button>
+            </div>
+
+            <form (ngSubmit)="saveBadge()">
+                <div class="form-group">
+                    <label for="badgeName">Nome *</label>
+                    <input
+                        type="text"
+                        id="badgeName"
+                        [(ngModel)]="badgeFormData.name"
+                        name="name"
+                        required
+                        placeholder="Nome da badge"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="badgeDescription">Descrição</label>
+                    <textarea
+                        id="badgeDescription"
+                        [(ngModel)]="badgeFormData.description"
+                        name="description"
+                        rows="3"
+                        placeholder="Descrição da badge"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="badgeType">Tipo *</label>
+                    <select
+                        id="badgeType"
+                        [(ngModel)]="badgeFormData.badgeTypeId"
+                        name="badgeTypeId"
+                        required
+                    >
+                        <option
+                            *ngFor="let type of badgeTypes"
+                            [value]="type.id"
+                        >
+                            {{ type.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="badgeColor">Cor</label>
+                    <input
+                        type="color"
+                        id="badgeColor"
+                        [(ngModel)]="badgeFormData.color"
+                        name="color"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="badgeIcon">Ícone</label>
+                    <input
+                        type="file"
+                        id="badgeIcon"
+                        (change)="onBadgeFileSelected($event)"
+                        accept="image/*"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="badgeDisplayOrder">Ordem de Exibição</label>
+                    <input
+                        type="number"
+                        id="badgeDisplayOrder"
+                        [(ngModel)]="badgeFormData.displayOrder"
+                        name="displayOrder"
+                        min="0"
+                    />
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        (click)="closeBadgeModal()"
+                    >
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-save">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Assign Badge -->
+    <div
+        class="modal-overlay"
+        *ngIf="showAssignModal"
+        (click)="closeAssignModal()"
+    >
+        <div
+            class="modal-content modal-wide"
+            (click)="$event.stopPropagation()"
+        >
+            <div class="modal-header">
+                <h3>
+                    Atribuir Badge -
+                    {{
+                        assignUser
+                            ? assignUser.nickname || assignUser.username
+                            : ""
+                    }}
+                </h3>
+                <button class="close-btn" (click)="closeAssignModal()">
+                    ×
+                </button>
+            </div>
+
+            <div class="assign-content">
+                <div class="badge-selection">
+                    <h4>Selecione uma Badge</h4>
+                    <div
+                        *ngFor="let type of badgeTypes"
+                        class="badge-type-section"
+                    >
+                        <h5>{{ type.name }}</h5>
+                        <div class="badges-select-grid">
+                            <div
+                                *ngFor="
+                                    let badge of getBadgesForLegend(type.id)
+                                "
+                                class="badge-select-item"
+                                [class.selected]="
+                                    selectedBadgeForAssign?.id === badge.id
+                                "
+                                [class.disabled]="
+                                    userHasBadgeInAssign(badge.id)
+                                "
+                                (click)="selectBadgeForAssign(badge)"
+                            >
+                                <div
+                                    class="badge-icon"
+                                    [style.background-color]="badge.color"
+                                >
+                                    <img
+                                        *ngIf="badge.iconFilename"
+                                        [src]="getBadgeIconUrl(badge)"
+                                        [alt]="badge.name"
+                                    />
+                                    <span *ngIf="!badge.iconFilename">🏆</span>
+                                </div>
+                                <span class="badge-name">{{ badge.name }}</span>
+                                <span
+                                    *ngIf="userHasBadgeInAssign(badge.id)"
+                                    class="badge-owned"
+                                    >✓</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="assignNotes">Notas (opcional)</label>
+                    <textarea
+                        id="assignNotes"
+                        [(ngModel)]="assignNotes"
+                        rows="3"
+                        placeholder="Notas sobre a atribuição"
+                    ></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        (click)="closeAssignModal()"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="button"
+                        class="btn-save"
+                        (click)="saveAssignBadge()"
+                        [disabled]="!selectedBadgeForAssign"
+                    >
+                        Atribuir Badge
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal User Settings -->
+    <div
+        class="modal-overlay"
+        *ngIf="showUserSettingsModal"
+        (click)="closeUserSettingsModal()"
+    >
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>
+                    Configurações -
+                    {{
+                        settingsUser
+                            ? settingsUser.nickname || settingsUser.name
+                            : ""
+                    }}
+                </h3>
+                <button class="close-btn" (click)="closeUserSettingsModal()">
+                    ×
+                </button>
+            </div>
+
+            <div class="settings-content">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Administrador</h4>
+                        <p>
+                            Conceder privilégios administrativos a este usuário
+                        </p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input
+                            type="checkbox"
+                            [checked]="settingsUser?.role === 'ADMIN'"
+                            (change)="toggleUserAdmin($event)"
+                        />
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item danger-zone">
+                    <div class="setting-info">
+                        <h4>Excluir Membro</h4>
+                        <p>Remover permanentemente este usuário do sistema</p>
+                    </div>
+                    <button
+                        class="btn-delete-user"
+                        (click)="deleteUser(settingsUser)"
+                    >
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

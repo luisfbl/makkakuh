@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
+import { SharedModule } from "../../shared/shared.module";
 
 import { LeisRegrasPageComponent } from "./pages/leis-regras-page/leis-regras-page.component";
 import { OrganizacaoPageComponent } from "./pages/organizacao-page/organizacao-page.component";
@@ -43,6 +44,11 @@ const routes = [
     OQueELarpPageComponent,
     OQueESwordplayPageComponent,
   ],
-  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SharedModule,
+    RouterModule.forChild(routes),
+  ],
 })
 export class InfoModule {}

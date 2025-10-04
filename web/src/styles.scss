@@ -1,5 +1,12 @@
-@import "styles/global.scss";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+// Import global variables and mixins (needed everywhere)
+@import "styles/global";
+
+// Import global utilities and animations (lightweight, used frequently)
+@import "styles/animations";
+@import "styles/utilities";
+
+// Import fonts
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 @font-face {
     font-family: "EnchantedLand";

@@ -117,9 +117,13 @@
             <div class="events-section">
                 <h2 class="section-title">Eventos da semana</h2>
 
-                <div class="loading" *ngIf="isLoading">
-                    <p>Carregando eventos...</p>
-                </div>
+                <app-loading
+                    *ngIf="isLoading"
+                    type="spinner"
+                    size="medium"
+                    text="Carregando eventos..."
+                    [showText]="true"
+                ></app-loading>
 
                 <div
                     class="events-grid"
@@ -166,12 +170,13 @@
                     </div>
                 </div>
 
-                <div
-                    class="no-events"
+                <app-empty-state
                     *ngIf="!isLoading && upcomingEvents.length === 0"
-                >
-                    <p>Não há eventos próximos no momento.</p>
-                </div>
+                    icon="📅"
+                    message="Não há eventos próximos no momento"
+                    actionText="Ver agenda completa"
+                    actionRoute="/eventos"
+                ></app-empty-state>
 
                 <div class="events-link">
                     <a routerLink="/eventos">

@@ -3,13 +3,21 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { EventsService, Event } from "../../../events/services/events.service";
 import { EventModalComponent } from "../../../events/components/event-modal/event-modal.component";
+import { EmptyStateComponent } from "../../../../shared/components/empty-state/empty-state.component";
+import { LoadingComponent } from "../../../../shared/components/loading.component";
 
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
   styleUrls: ["./home-page.component.scss"],
   standalone: true,
-  imports: [CommonModule, RouterModule, EventModalComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    EventModalComponent,
+    EmptyStateComponent,
+    LoadingComponent,
+  ],
 })
 export class HomePageComponent implements OnInit {
   upcomingEvents: Event[] = [];
@@ -25,18 +33,9 @@ export class HomePageComponent implements OnInit {
 
   loadUpcomingEvents() {
     this.isLoading = true;
-    this.eventsService.getEvents().subscribe({
+    this.eventsService.getUpcomingEvents().subscribe({
       next: (events) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        this.upcomingEvents = events
-          .filter((event) => new Date(event.date) >= today)
-          .sort(
-            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-          )
-          .slice(0, 4);
-
+        this.upcomingEvents = events.slice(0, 4);
         this.isLoading = false;
       },
       error: (error) => {

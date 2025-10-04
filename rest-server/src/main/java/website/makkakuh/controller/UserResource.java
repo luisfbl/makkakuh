@@ -1,5 +1,7 @@
 package website.makkakuh.controller;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -8,11 +10,12 @@ import jakarta.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.jboss.logging.Logger;
 import website.makkakuh.auth.UserContext;
+import website.makkakuh.dto.UserWithBadgesDTO;
 import website.makkakuh.model.User;
 import website.makkakuh.model.UserDetail;
-import website.makkakuh.model.UserHonor;
 
 @Path("/api/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,7 +28,37 @@ public class UserResource {
     UserContext userContext;
 
     @GET
+    @PermitAll
+    public Response getAllUsers(@QueryParam("search") String search) {
+        List<User> users;
+
+        if (search == null || search.trim().isEmpty()) {
+            users = User.listAll();
+        } else {
+            String searchTerm = "%" + search.toLowerCase() + "%";
+            users = User.list(
+                "LOWER(name) LIKE ?1 OR LOWER(nickname) LIKE ?1 OR LOWER(email) LIKE ?1",
+                searchTerm
+            );
+        }
+
+        // Carregar badges para cada usuário e converter para DTO
+        List<UserWithBadgesDTO> usersWithBadges = users
+            .stream()
+            .map(user -> {
+                if (user.badges != null) {
+                    user.badges.size(); // Force lazy loading
+                }
+                return UserWithBadgesDTO.fromUser(user);
+            })
+            .collect(Collectors.toList());
+
+        return Response.ok(usersWithBadges).build();
+    }
+
+    @GET
     @Path("/{id}")
+    @PermitAll
     public User getUserById(@PathParam("id") Long id) {
         User user = User.findById(id);
         if (user == null) {
@@ -40,13 +73,8 @@ public class UserResource {
     @PUT
     @Path("/@me")
     @Transactional
+    @RolesAllowed({ "USER", "ADMIN" })
     public Response updateUser(Map<String, Object> updates) {
-        if (!userContext.isAuthenticated()) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                .entity(Map.of("error", "Authentication required"))
-                .build();
-        }
-
         User contextUser = userContext.getCurrentUser();
 
         if (contextUser == null) {
@@ -93,6 +121,7 @@ public class UserResource {
 
     @GET
     @Path("/{id}/profile")
+    @PermitAll
     public Response getUserProfile(@PathParam("id") Long id) {
         User user = User.findById(id);
         if (user == null) {
@@ -107,13 +136,103 @@ public class UserResource {
             ? null
             : userDetails.get(0);
 
-        List<UserHonor> userHonors = UserHonor.list("user", user);
-
         Map<String, Object> profile = new HashMap<>();
         profile.put("user", user);
         profile.put("userDetail", userDetail);
-        profile.put("honors", userHonors);
 
         return Response.ok(profile).build();
+    }
+
+    @PUT
+    @Path("/{id}/role")
+    @Transactional
+    @RolesAllowed("ADMIN")
+    public Response updateUserRole(
+        @PathParam("id") Long id,
+        Map<String, String> data
+    ) {
+        User currentUser = userContext.getCurrentUser();
+        if (currentUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(Map.of("error", "User not found in session"))
+                .build();
+        }
+
+        User user = User.findById(id);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                .entity(Map.of("error", "User not found"))
+                .build();
+        }
+
+        String newRole = data.get("role");
+        if (
+            newRole == null ||
+            (!newRole.equals("ADMIN") && !newRole.equals("USER"))
+        ) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(Map.of("error", "Invalid role. Must be ADMIN or USER"))
+                .build();
+        }
+
+        LOG.info(
+            "Admin " +
+                currentUser.name +
+                " is changing role of user " +
+                user.name +
+                " from " +
+                user.role +
+                " to " +
+                newRole
+        );
+
+        user.role = newRole;
+        user.persist();
+
+        return Response.ok(user).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    @RolesAllowed("ADMIN")
+    public Response deleteUser(@PathParam("id") Long id) {
+        User currentUser = userContext.getCurrentUser();
+        if (currentUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(Map.of("error", "User not found in session"))
+                .build();
+        }
+
+        User user = User.findById(id);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                .entity(Map.of("error", "User not found"))
+                .build();
+        }
+
+        // Não permitir que o admin delete a si mesmo
+        if (user.id.equals(currentUser.id)) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(Map.of("error", "Cannot delete your own account"))
+                .build();
+        }
+
+        LOG.info(
+            "Admin " +
+                currentUser.name +
+                " is deleting user " +
+                user.name +
+                " (ID: " +
+                user.id +
+                ")"
+        );
+
+        // Deletar o usuário (cascade irá deletar badges e subscriptions automaticamente)
+        user.delete();
+
+        return Response.ok(
+            Map.of("message", "User deleted successfully", "userId", id)
+        ).build();
     }
 }

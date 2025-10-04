@@ -1,0 +1,82 @@
+@import "../../../../styles/variables";
+@import "../../../../styles/mixins";
+
+.page-header {
+    position: relative;
+    padding: 4rem 0;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #363636 0%, #2b2d31 100%);
+    border-bottom: 2px solid $accent-color;
+
+    .header-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            135deg,
+            rgba($accent-color, 0.1),
+            rgba($accent-color, 0.05)
+        );
+        z-index: 0;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    @include mobile {
+        padding: 2rem 0;
+    }
+}
+
+.page-title {
+    font-family: $secondary-font;
+    font-size: 3.5rem;
+    color: $accent-color;
+    margin: 0 0 1rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+    @include mobile {
+        font-size: 2.5rem;
+    }
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+
+    .decoration-line {
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            $accent-color,
+            transparent
+        );
+    }
+
+    .icon {
+        font-size: 2rem;
+        filter: drop-shadow(0 0 10px rgba($accent-color, 0.5));
+    }
+}
+
+.page-subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+
+    @include mobile {
+        font-size: 1rem;
+    }
+}

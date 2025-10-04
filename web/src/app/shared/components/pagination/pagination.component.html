@@ -1,0 +1,35 @@
+<div class="pagination-container" *ngIf="totalPages > 0">
+  <div class="pagination">
+    <button
+      class="pagination-btn"
+      [disabled]="!hasPrevious"
+      (click)="previousPage()"
+      type="button"
+    >
+      ‹
+    </button>
+
+    <button
+      *ngFor="let page of pageNumbers"
+      class="pagination-btn"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+      type="button"
+    >
+      {{ page + 1 }}
+    </button>
+
+    <button
+      class="pagination-btn"
+      [disabled]="!hasNext"
+      (click)="nextPage()"
+      type="button"
+    >
+      ›
+    </button>
+  </div>
+
+  <div class="pagination-info" *ngIf="totalItems > 0">
+    Mostrando {{ startItem }}-{{ endItem }} de {{ totalItems }}
+  </div>
+</div>

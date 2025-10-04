@@ -1,11 +1,13 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Event } from "../../services/events.service";
+import { PaginationComponent } from "../../../../shared/components/pagination/pagination.component";
+import { EmptyStateComponent } from "../../../../shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: "app-event-list",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PaginationComponent, EmptyStateComponent],
   templateUrl: "./event-list.component.html",
   styleUrls: ["./event-list.component.scss"],
 })
@@ -83,39 +85,11 @@ export class EventListComponent {
     return Math.ceil(this.getPastEvents().length / this.pageSize);
   }
 
-  nextPageUpcoming(): void {
-    if (this.currentPageUpcoming < this.getTotalPagesUpcoming() - 1) {
-      this.currentPageUpcoming++;
-    }
-  }
-
-  previousPageUpcoming(): void {
-    if (this.currentPageUpcoming > 0) {
-      this.currentPageUpcoming--;
-    }
-  }
-
-  nextPagePast(): void {
-    if (this.currentPagePast < this.getTotalPagesPast() - 1) {
-      this.currentPagePast++;
-    }
-  }
-
-  previousPagePast(): void {
-    if (this.currentPagePast > 0) {
-      this.currentPagePast--;
-    }
-  }
-
-  goToPageUpcoming(page: number): void {
+  onPageChangedUpcoming(page: number): void {
     this.currentPageUpcoming = page;
   }
 
-  goToPagePast(page: number): void {
+  onPageChangedPast(page: number): void {
     this.currentPagePast = page;
-  }
-
-  getPageNumbers(totalPages: number): number[] {
-    return Array.from({ length: totalPages }, (_, i) => i);
   }
 }

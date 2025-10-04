@@ -1,79 +1,84 @@
 <div class="organizacao-page">
-  <div class="page-header">
-    <div class="header-background"></div>
-    <div class="container">
-      <h1 class="page-title">Organização do Clã</h1>
-    </div>
-  </div>
+    <app-page-header title="Organização do Clã" [showDecoration]="true">
+    </app-page-header>
 
-  <div class="main-content">
-    <div class="container">
-      <div class="intro-section">
-        <p class="intro-text">
-          O Makka-Kuh é uma democracia, exercida principalmente por meio do voto.
-          Seus representantes eleitos, o Conselho Primata Ancião, administram o clã,
-          sempre seguindo nossas leis, enquanto o Conselho de Guerra administra as
-          legiões e funcionamento dos treinos.
-        </p>
-      </div>
-
-      <div class="conselho-section">
-        <h2 class="section-title">Conselho Primata Ancião</h2>
-        <div class="conselho-description">
-          <p>
-            O Conselho Ancião é o órgão de controle administrativo geral do clã,
-            responsável por deliberar sobre questões urgentes, desenvolver eventos,
-            administrar as demandas e gerenciar o andamento do Makka-Kuh. É
-            eleito democraticamente uma vez ao ano e compõe-se de:
-          </p>
-        </div>
-
-        <div class="cargos-grid">
-          <div class="cargo-card" *ngFor="let cargo of cargos">
-            <div class="cargo-header">
-              <div class="cargo-title">{{cargo.title}}</div>
-              <div class="cargo-name">{{cargo.name}}</div>
+    <div class="main-content">
+        <div class="container">
+            <div class="intro-section">
+                <p class="intro-text">
+                    O Makka-Kuh é uma democracia, exercida principalmente por
+                    meio do voto. Seus representantes eleitos, o Conselho
+                    Primata Ancião, administram o clã, sempre seguindo nossas
+                    leis, enquanto o Conselho de Guerra administra as legiões e
+                    funcionamento dos treinos.
+                </p>
             </div>
 
-            <div class="cargo-content">
-              <div class="cargo-description">
-                <p>{{cargo.description}}</p>
-              </div>
+            <div class="conselho-section">
+                <h2 class="section-title">Conselho Primata Ancião</h2>
+                <div class="conselho-description">
+                    <p>
+                        O Conselho Ancião é o órgão de controle administrativo
+                        geral do clã, responsável por deliberar sobre questões
+                        urgentes, desenvolver eventos, administrar as demandas e
+                        gerenciar o andamento do Makka-Kuh. É eleito
+                        democraticamente uma vez ao ano e compõe-se de:
+                    </p>
+                </div>
 
-              <div class="cargo-responsibilities">
-                <h4>Responsabilidade:</h4>
-                <p>{{cargo.responsibilities}}</p>
-              </div>
+                <div class="cargos-grid">
+                    <div class="cargo-card" *ngFor="let cargo of cargos">
+                        <div class="cargo-header">
+                            <div class="cargo-title">{{ cargo.title }}</div>
+                            <div class="cargo-name">{{ cargo.name }}</div>
+                        </div>
 
-              <div class="current-occupant">
-                <strong>Atual Ocupante:</strong>
-                <span class="occupant-name">{{cargo.currentOccupant || 'Vago'}}</span>
-              </div>
+                        <div class="cargo-content">
+                            <div class="cargo-description">
+                                <p>{{ cargo.description }}</p>
+                            </div>
+
+                            <div class="cargo-responsibilities">
+                                <h4>Responsabilidade:</h4>
+                                <p>{{ cargo.responsibilities }}</p>
+                            </div>
+
+                            <div class="current-occupant">
+                                <strong>Atual Ocupante:</strong>
+                                <span class="occupant-name">{{
+                                    cargo.currentOccupant || "Vago"
+                                }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="conselho-guerra-section">
-        <h2 class="section-title">Conselho de Guerra</h2>
-        <div class="guerra-description">
-          <p>
-            O Conselho de Guerra é composto pelo Shogun, 1º Conselheiro, Oficial
-            Tático e Dama da Moeda, organizando o treinamento e progressões do Clã.
-            Diferente do Conselho Ancião, que tem função administrativa, o Conselho
-            de Guerra tem como foco apenas nossa parte tática e técnica.
-          </p>
-        </div>
+            <div class="conselho-guerra-section">
+                <h2 class="section-title">Conselho de Guerra</h2>
+                <div class="guerra-description">
+                    <p>
+                        O Conselho de Guerra é composto pelo Shogun, 1º
+                        Conselheiro, Oficial Tático e Dama da Moeda, organizando
+                        o treinamento e progressões do Clã. Diferente do
+                        Conselho Ancião, que tem função administrativa, o
+                        Conselho de Guerra tem como foco apenas nossa parte
+                        tática e técnica.
+                    </p>
+                </div>
 
-        <div class="funcoes-guerra">
-          <h3>São funções do Conselho de Guerra:</h3>
-          <ul class="funcoes-list">
-            <li *ngFor="let funcao of conselhoDeFuncoes" class="funcao-item">
-              {{funcao}}
-            </li>
-          </ul>
+                <div class="funcoes-guerra">
+                    <h3>São funções do Conselho de Guerra:</h3>
+                    <ul class="funcoes-list">
+                        <li
+                            *ngFor="let funcao of conselhoDeFuncoes"
+                            class="funcao-item"
+                        >
+                            {{ funcao }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

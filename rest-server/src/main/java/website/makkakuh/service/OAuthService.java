@@ -13,17 +13,14 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Map;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import website.makkakuh.model.OAuthPKCE;
 import website.makkakuh.model.OAuthSession;
 import website.makkakuh.model.User;
 import website.makkakuh.model.UserProfile;
-import website.makkakuh.service.CDNService;
+import website.makkakuh.util.SessionSigningUtil;
 
 @ApplicationScoped
 public class OAuthService {
@@ -32,12 +29,14 @@ public class OAuthService {
     private static final String SESSION_COOKIE_NAME = "makkakuh-session";
     private static final String OAUTH_SESSION_KEY = "oauth-session";
     private static final SecureRandom secureRandom = new SecureRandom();
-    private static final String HMAC_ALGORITHM = "HmacSHA256";
-    private static final long SESSION_EXPIRY_SECONDS = 3600; // 1 hour instead of 24 hours
-    private static final long OAUTH_SESSION_EXPIRY_SECONDS = 600; // 10 minutes, unchanged
+    private static final long SESSION_EXPIRY_SECONDS = 2592000; // 30 days for persistent login
+    private static final long OAUTH_SESSION_EXPIRY_SECONDS = 600; // 10 minutes
 
     @Inject
     Instance<OAuthProviderService> providerServices;
+
+    @Inject
+    CDNService cdnService;
 
     @ConfigProperty(
         name = "website.makkakuh.frontend.url",
@@ -145,7 +144,7 @@ public class OAuthService {
                             String tempUserId =
                                 java.util.UUID.randomUUID().toString();
                             String avatarFilename =
-                                CDNService.getInstance().downloadImageFromUrl(
+                                cdnService.downloadImageFromUrl(
                                     userProfile.getPictureUrl(),
                                     "avatar",
                                     tempUserId
@@ -180,7 +179,7 @@ public class OAuthService {
                                 user.avatarFilename.isEmpty()
                             ) {
                                 String avatarFilename =
-                                    CDNService.getInstance().downloadImageFromUrl(
+                                    cdnService.downloadImageFromUrl(
                                         userProfile.getPictureUrl(),
                                         "avatar",
                                         user.id.toString()
@@ -247,12 +246,10 @@ public class OAuthService {
             ) {
                 try {
                     String oldFilename = userProfile.getAvatarFilename();
-
-                    newUser.avatarFilename =
-                        CDNService.getInstance().renameAvatarFile(
-                            oldFilename,
-                            newUser.id.toString()
-                        );
+                    newUser.avatarFilename = cdnService.renameAvatarFile(
+                        oldFilename,
+                        newUser.id.toString()
+                    );
                     newUser.persist();
                     LOG.info("Renamed avatar file for new user: " + newUser.id);
                 } catch (Exception e) {
@@ -283,15 +280,6 @@ public class OAuthService {
         ).build();
     }
 
-    public Response getCurrentUser(RoutingContext context) {
-        User user = getUserFromSession(context);
-        if (user != null) {
-            return Response.ok(user).build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-    }
-
     private OAuthProviderService getProviderService(String provider) {
         for (OAuthProviderService service : providerServices) {
             if (service.getProviderName().equalsIgnoreCase(provider)) {
@@ -311,65 +299,6 @@ public class OAuthService {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
-    private String computeHmac(String data) {
-        try {
-            SecretKeySpec keySpec = new SecretKeySpec(
-                cookieSecret.getBytes(StandardCharsets.UTF_8),
-                HMAC_ALGORITHM
-            );
-            Mac mac = Mac.getInstance(HMAC_ALGORITHM);
-            mac.init(keySpec);
-            byte[] hmacBytes = mac.doFinal(
-                data.getBytes(StandardCharsets.UTF_8)
-            );
-            return Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(hmacBytes);
-        } catch (Exception e) {
-            LOG.error("Error computing HMAC", e);
-            throw new RuntimeException("Failed to compute HMAC", e);
-        }
-    }
-
-    private String createSignedValue(String value, long expirySeconds) {
-        long expiryTime = System.currentTimeMillis() + (expirySeconds * 1000);
-        String payload = value + "|" + expiryTime;
-        String signature = computeHmac(payload);
-        return payload + "|" + signature;
-    }
-
-    private String extractSignedValue(String signedValue) {
-        try {
-            String[] parts = signedValue.split("\\|", 3);
-            if (parts.length != 3) {
-                LOG.warn("Invalid signed value format");
-                return null;
-            }
-
-            String value = parts[0];
-            long expiryTime = Long.parseLong(parts[1]);
-            String signature = parts[2];
-
-            if (System.currentTimeMillis() > expiryTime) {
-                LOG.warn("Signed value has expired");
-                return null;
-            }
-
-            String payload = value + "|" + expiryTime;
-            String computedSignature = computeHmac(payload);
-
-            if (!computedSignature.equals(signature)) {
-                LOG.warn("Invalid signature for signed value");
-                return null;
-            }
-
-            return value;
-        } catch (Exception e) {
-            LOG.error("Error extracting signed value", e);
-            return null;
-        }
-    }
-
     private void storeOAuthSessionInCookie(
         RoutingContext context,
         OAuthSession session
@@ -387,9 +316,10 @@ public class OAuthService {
             String serialized = Base64.getUrlEncoder().encodeToString(
                 sessionData.getBytes(StandardCharsets.UTF_8)
             );
-            String signedValue = createSignedValue(
+            String signedValue = SessionSigningUtil.createSignedValue(
                 serialized,
-                OAUTH_SESSION_EXPIRY_SECONDS
+                OAUTH_SESSION_EXPIRY_SECONDS,
+                cookieSecret
             );
 
             Cookie cookie = Cookie.cookie(OAUTH_SESSION_KEY, signedValue)
@@ -416,7 +346,10 @@ public class OAuthService {
 
         try {
             String signedValue = cookie.getValue();
-            String extractedValue = extractSignedValue(signedValue);
+            String extractedValue = SessionSigningUtil.extractSignedValue(
+                signedValue,
+                cookieSecret
+            );
 
             if (extractedValue == null) {
                 return null;
@@ -455,19 +388,27 @@ public class OAuthService {
         String sessionToken = generateSecureRandomString();
 
         String sessionData = user.id + ":" + sessionToken;
-        String signedValue = createSignedValue(
+        String signedValue = SessionSigningUtil.createSignedValue(
             sessionData,
-            SESSION_EXPIRY_SECONDS
+            SESSION_EXPIRY_SECONDS,
+            cookieSecret
         );
 
         Cookie cookie = Cookie.cookie(SESSION_COOKIE_NAME, signedValue)
             .setPath("/")
             .setHttpOnly(true)
-            .setSecure(true)
+            .setSecure(false) // Set to true only in production with HTTPS
             .setSameSite(CookieSameSite.LAX)
-            .setMaxAge(SESSION_EXPIRY_SECONDS);
+            .setMaxAge(SESSION_EXPIRY_SECONDS); // 30 days
 
         context.response().addCookie(cookie);
+        LOG.info(
+            "Created session cookie for user " +
+                user.id +
+                " with expiry: " +
+                SESSION_EXPIRY_SECONDS +
+                " seconds"
+        );
     }
 
     private User getUserFromSession(RoutingContext context) {
@@ -478,7 +419,10 @@ public class OAuthService {
 
         try {
             String signedValue = cookie.getValue();
-            String extractedValue = extractSignedValue(signedValue);
+            String extractedValue = SessionSigningUtil.extractSignedValue(
+                signedValue,
+                cookieSecret
+            );
 
             if (extractedValue == null) {
                 LOG.warn("Invalid or expired session");
@@ -503,16 +447,18 @@ public class OAuthService {
             User user = User.findById(Long.parseLong(userId));
 
             if (user != null) {
-                String[] valueParts = signedValue.split("\\|", 3);
-                if (valueParts.length == 3) {
-                    long expiryTime = Long.parseLong(valueParts[1]);
-                    long halfExpiryThreshold =
-                        (SESSION_EXPIRY_SECONDS * 1000) / 2;
+                // Refresh session cookie if more than 7 days have passed
+                long expiryTime = SessionSigningUtil.getExpiryTime(signedValue);
+                if (expiryTime > 0) {
+                    long refreshThreshold = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
                     if (
                         System.currentTimeMillis() >
-                        (expiryTime - halfExpiryThreshold)
+                        (expiryTime - refreshThreshold)
                     ) {
+                        LOG.info(
+                            "Refreshing session cookie for user " + user.id
+                        );
                         storeUserInSession(context, user);
                     }
                 }

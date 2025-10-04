@@ -9,11 +9,11 @@ import {
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Event, EventsService } from "../../services/events.service";
+import { ParticipantsListComponent } from "../participants-list/participants-list.component";
 import {
   GenericModalComponent,
   ModalButton,
-} from "../../../../shared/components/generic-modal/generic-modal.component";
-import { ParticipantsListComponent } from "../participants-list/participants-list.component";
+} from "../../../../shared/components/empty-state/generic-modal/generic-modal.component";
 
 @Component({
   selector: "app-event-modal",

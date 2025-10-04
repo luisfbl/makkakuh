@@ -45,11 +45,7 @@ public class User extends PanacheEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
-    public List<UserHonor> honors;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    public List<UserAchievement> achievements;
+    public List<UserBadge> badges;
 
     @OneToOne(
         mappedBy = "user",

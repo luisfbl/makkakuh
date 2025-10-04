@@ -1,0 +1,57 @@
+@import "../../../../styles/variables";
+@import "../../../../styles/mixins";
+
+.search-container {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem;
+        padding-right: 2.5rem;
+        border: 1px solid rgba($accent-color, 0.3);
+        border-radius: 8px;
+        background: #2b2d31;
+        color: $text-color;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: $accent-color;
+            box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+        }
+
+        &::placeholder {
+            color: #999;
+        }
+    }
+
+    .clear-search-btn {
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: #999;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: $text-color;
+        }
+    }
+}

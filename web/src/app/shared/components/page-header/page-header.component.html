@@ -1,0 +1,12 @@
+<div class="page-header">
+  <div class="header-background"></div>
+  <div class="container">
+    <h1 class="page-title">{{ title }}</h1>
+    <div *ngIf="showDecoration" class="title-decoration">
+      <div class="decoration-line"></div>
+      <div *ngIf="icon" class="icon">{{ icon }}</div>
+      <div class="decoration-line"></div>
+    </div>
+    <p *ngIf="subtitle" class="page-subtitle">{{ subtitle }}</p>
+  </div>
+</div>

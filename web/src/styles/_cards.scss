@@ -1,0 +1,215 @@
+@import "variables";
+@import "mixins";
+
+// Base card
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba($accent-color, 0.2);
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: rgba($accent-color, 0.5);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Card header
+.card-header {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba($accent-color, 0.2);
+
+  h3 {
+    font-family: $secondary-font;
+    color: $accent-color;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+}
+
+// Card body
+.card-body {
+  p {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+}
+
+// Card footer
+.card-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba($accent-color, 0.2);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+// Info card variant
+.card-info {
+  background: linear-gradient(135deg, rgba($accent-color, 0.1), rgba($accent-color, 0.05));
+  border: 2px solid rgba($accent-color, 0.3);
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba($accent-color, 0.2), rgba($accent-color, 0.1));
+    border-color: $accent-color;
+  }
+
+  img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-family: $secondary-font;
+    color: $accent-color;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #ccc;
+    font-size: 0.9rem;
+  }
+}
+
+// Event card variant
+.event-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba($accent-color, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: $accent-color;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .event-header {
+    background: linear-gradient(135deg, rgba($accent-color, 0.2), rgba($accent-color, 0.1));
+    padding: 1rem;
+    border-bottom: 1px solid rgba($accent-color, 0.3);
+
+    h3 {
+      color: $accent-color;
+      margin: 0;
+      font-size: 1.25rem;
+      font-family: $secondary-font;
+    }
+  }
+
+  .event-body {
+    padding: 1rem;
+  }
+
+  .event-description {
+    color: #ccc;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .event-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    .event-label {
+      color: #999;
+      font-size: 0.875rem;
+    }
+
+    .event-value {
+      color: $text-color;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Law card (special variant for rules/laws)
+.law-card {
+  background: linear-gradient(135deg, rgba($accent-color, 0.1), rgba($accent-color, 0.05));
+  border: 2px solid rgba($accent-color, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+
+  .law-number {
+    font-size: 2rem;
+    color: $accent-color;
+    font-family: $secondary-font;
+    margin-bottom: 0.5rem;
+  }
+
+  .law-title {
+    font-size: 1.25rem;
+    color: $accent-color;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: #ccc;
+    line-height: 1.6;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: $accent-color;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Position card (for organization/hierarchy)
+.position-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba($accent-color, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+
+  .position-title {
+    color: $accent-color;
+    font-size: 1.25rem;
+    font-family: $secondary-font;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      color: #ccc;
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+
+      &:before {
+        content: "⚔";
+        position: absolute;
+        left: 0;
+        color: $accent-color;
+      }
+    }
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: rgba($accent-color, 0.5);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  }
+}

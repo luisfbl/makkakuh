@@ -7,8 +7,11 @@ import {
   OnChanges,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
 import { EventsService, Event } from "../../services/events.service";
+import { SearchBarComponent } from "../../../../shared/components/search-bar/search-bar.component";
+import { PaginationComponent } from "../../../../shared/components/pagination/pagination.component";
+import { EmptyStateComponent } from "../../../../shared/components/empty-state/empty-state.component";
+import { LoadingComponent } from "../../../../shared/components/loading.component";
 
 export interface Participant {
   id: number;
@@ -34,7 +37,13 @@ export interface ParticipantsResponse {
 @Component({
   selector: "app-participants-list",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    SearchBarComponent,
+    PaginationComponent,
+    EmptyStateComponent,
+    LoadingComponent,
+  ],
   templateUrl: "./participants-list.component.html",
   styleUrls: ["./participants-list.component.scss"],
 })
@@ -45,15 +54,12 @@ export class ParticipantsListComponent implements OnInit, OnChanges {
 
   participants: Participant[] = [];
   isLoading = false;
-  searchTerm = "";
   currentPage = 0;
   pageSize = 10;
   totalElements = 0;
   totalPages = 0;
   hasNext = false;
   hasPrevious = false;
-
-  private searchTimeout: any;
 
   constructor(private eventsService: EventsService) {}
 
@@ -66,7 +72,7 @@ export class ParticipantsListComponent implements OnInit, OnChanges {
     }
   }
 
-  loadParticipants() {
+  loadParticipants(searchTerm: string = "") {
     if (!this.event?.id) return;
 
     this.isLoading = true;
@@ -76,7 +82,7 @@ export class ParticipantsListComponent implements OnInit, OnChanges {
         this.event.id,
         this.currentPage,
         this.pageSize,
-        this.searchTerm,
+        searchTerm,
       )
       .subscribe({
         next: (response: ParticipantsResponse) => {
@@ -94,41 +100,14 @@ export class ParticipantsListComponent implements OnInit, OnChanges {
       });
   }
 
-  onSearch() {
-    // Debounce search
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout);
-    }
-
-    this.searchTimeout = setTimeout(() => {
-      this.resetPagination();
-      this.loadParticipants();
-    }, 500);
-  }
-
-  clearSearch() {
-    this.searchTerm = "";
+  onSearchChanged(searchTerm: string) {
     this.resetPagination();
-    this.loadParticipants();
+    this.loadParticipants(searchTerm);
   }
 
-  goToPage(page: number) {
+  onPageChanged(page: number) {
     this.currentPage = page;
     this.loadParticipants();
-  }
-
-  nextPage() {
-    if (this.hasNext) {
-      this.currentPage++;
-      this.loadParticipants();
-    }
-  }
-
-  previousPage() {
-    if (this.hasPrevious) {
-      this.currentPage--;
-      this.loadParticipants();
-    }
   }
 
   removeParticipant(participant: Participant) {
@@ -159,17 +138,6 @@ export class ParticipantsListComponent implements OnInit, OnChanges {
     this.currentPage = 0;
   }
 
-  get pageNumbers(): number[] {
-    const pages: number[] = [];
-    const startPage = Math.max(0, this.currentPage - 2);
-    const endPage = Math.min(this.totalPages - 1, this.currentPage + 2);
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    return pages;
-  }
-
   getUserDisplayName(participant: Participant): string {
     return participant.user.name || participant.user.nickname || "Usuário";
   }
@@ -180,11 +148,5 @@ export class ParticipantsListComponent implements OnInit, OnChanges {
     }
     // SVG padrão inline
     return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyNCIgY3k9IjI0IiByPSIyNCIgZmlsbD0iIzRBNEE0QSIvPjxwYXRoIGQ9Ik0yNCAyNEM4LjUgMjQgOC41IDI0IDguNSAyNFYzNkM4LjUgNDAgMTEuNSA0MyAxNS41IDQzSDMyLjVDMzYuNSA0MyAzOS41IDQwIDM5LjUgMzZWMjRDMzkuNSAyNCAzOS41IDI0IDI0IDI0WiIgZmlsbD0iI0ZGRDcwMCIvPjxjaXJjbGUgY3g9IjI0IiBjeT0iMTYiIHI9IjgiIGZpbGw9IiNGRkQ3MDAiLz48L3N2Zz4=";
-  }
-
-  getEndItem(): number {
-    return (this.currentPage + 1) * this.pageSize > this.totalElements
-      ? this.totalElements
-      : (this.currentPage + 1) * this.pageSize;
   }
 }

@@ -44,32 +44,14 @@
             </div>
         </div>
 
-        <div class="pagination" *ngIf="getTotalPagesUpcoming() > 1">
-            <button
-                class="pagination-btn"
-                [disabled]="currentPageUpcoming === 0"
-                (click)="previousPageUpcoming()"
-            >
-                Anterior
-            </button>
-            <div class="pagination-numbers">
-                <button
-                    *ngFor="let page of getPageNumbers(getTotalPagesUpcoming())"
-                    class="pagination-number"
-                    [class.active]="page === currentPageUpcoming"
-                    (click)="goToPageUpcoming(page)"
-                >
-                    {{ page + 1 }}
-                </button>
-            </div>
-            <button
-                class="pagination-btn"
-                [disabled]="currentPageUpcoming === getTotalPagesUpcoming() - 1"
-                (click)="nextPageUpcoming()"
-            >
-                Próxima
-            </button>
-        </div>
+        <app-pagination
+            *ngIf="getTotalPagesUpcoming() > 1"
+            [currentPage]="currentPageUpcoming"
+            [totalPages]="getTotalPagesUpcoming()"
+            [totalItems]="getUpcomingEvents().length"
+            [pageSize]="pageSize"
+            (pageChanged)="onPageChangedUpcoming($event)"
+        ></app-pagination>
     </div>
 
     <div class="events-section" *ngIf="getPastEvents().length > 0">
@@ -107,38 +89,20 @@
             </div>
         </div>
 
-        <div class="pagination" *ngIf="getTotalPagesPast() > 1">
-            <button
-                class="pagination-btn"
-                [disabled]="currentPagePast === 0"
-                (click)="previousPagePast()"
-            >
-                Anterior
-            </button>
-            <div class="pagination-numbers">
-                <button
-                    *ngFor="let page of getPageNumbers(getTotalPagesPast())"
-                    class="pagination-number"
-                    [class.active]="page === currentPagePast"
-                    (click)="goToPagePast(page)"
-                >
-                    {{ page + 1 }}
-                </button>
-            </div>
-            <button
-                class="pagination-btn"
-                [disabled]="currentPagePast === getTotalPagesPast() - 1"
-                (click)="nextPagePast()"
-            >
-                Próxima
-            </button>
-        </div>
+        <app-pagination
+            *ngIf="getTotalPagesPast() > 1"
+            [currentPage]="currentPagePast"
+            [totalPages]="getTotalPagesPast()"
+            [totalItems]="getPastEvents().length"
+            [pageSize]="pageSize"
+            (pageChanged)="onPageChangedPast($event)"
+        ></app-pagination>
     </div>
 
-    <div class="no-events" *ngIf="events.length === 0">
-        <div class="no-events-content">
-            <h3>Nenhum evento encontrado</h3>
-            <p>Não há eventos cadastrados no momento.</p>
-        </div>
-    </div>
+    <app-empty-state
+        *ngIf="events.length === 0"
+        icon="📅"
+        message="Nenhum evento encontrado"
+        description="Não há eventos cadastrados no momento."
+    ></app-empty-state>
 </div>

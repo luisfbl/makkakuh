@@ -1,0 +1,19 @@
+<div class="search-container">
+  <div class="search-input-wrapper">
+    <input
+      type="text"
+      class="search-input"
+      [placeholder]="placeholder"
+      [(ngModel)]="searchTerm"
+      (input)="onSearchInput()"
+    />
+    <button
+      *ngIf="searchTerm"
+      class="clear-search-btn"
+      (click)="clearSearch()"
+      type="button"
+    >
+      ×
+    </button>
+  </div>
+</div>

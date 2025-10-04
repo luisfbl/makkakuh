@@ -20,17 +20,12 @@ dependencies {
     implementation("io.quarkus:quarkus-hibernate-orm-panache")
     implementation("io.quarkus:quarkus-jdbc-postgresql")
     implementation("io.quarkus:quarkus-arc")
-    implementation("io.quarkus:quarkus-hibernate-orm")
     implementation("io.quarkus:quarkus-oidc")
     implementation("io.quarkus:quarkus-oidc-client")
     implementation("io.quarkus:quarkus-security")
-    implementation("io.quarkus:quarkus-smallrye-jwt")
-    implementation("io.quarkus:quarkus-undertow")
-    implementation("io.quarkus:quarkus-vertx")
-    implementation("io.quarkus:quarkus-vertx-http")
+    implementation("io.quarkus:quarkus-scheduler")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
-    implementation("io.quarkus:quarkus-scheduler")
 }
 
 group = "website.makkakuh"
